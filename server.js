@@ -7,6 +7,10 @@ const path = require('path');
 const routes = require('./backend/routes');
 const auth = require('./backend/auth');
 
+// connect to postgres database
+
+// const pg = require('./backend/database.js');
+
 // require user model
 // const User = require('./models/models.js').User;
 
