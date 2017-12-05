@@ -1,7 +1,6 @@
 const Sequelize = require('sequelize');
-var sequelize;
 
-sequelize = new Sequelize(process.env.DEV_MODE ? process.env.DEV_DATABASE_URL : process.env.DATABASE_URL);
+const sequelize = new Sequelize(process.env.DEV_MODE ? process.env.DEV_DATABASE_URL : process.env.DATABASE_URL);
 
 sequelize.authenticate()
   .then(() => {
