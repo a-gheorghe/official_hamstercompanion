@@ -4,29 +4,29 @@ import { connect } from 'react-redux';
 import Title from '../components/Title';
 
 const AppContainer = ({ name }) => {
-    return (
-        <div>
-            <Title name={name} />
-        </div>
-    );
+  return (
+    <div>
+      <Title name={name} />
+    </div>
+  );
 };
 
 AppContainer.propTypes = {
-    name: PropTypes.string,
+  name: PropTypes.string,
 };
 
 const mapStateToProps = (state) => {
-    return {
-        name: state.name
-    };
+  return {
+    name: state.name
+  };
 };
 
 const mapDispatchToProps = (/* dispatch */) => {
-    return {
-    };
+  return {
+  };
 };
 
 export default connect(
-    mapStateToProps,
-    mapDispatchToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(AppContainer);
