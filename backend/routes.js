@@ -1,11 +1,9 @@
 const express = require('express');
 const router = express.Router();
 
-// YOUR API ROUTES HERE
-
-// SAMPLE ROUTE
-router.use('/users', (req, res) => {
-    res.json({ success: true });
+router.get('/hamster', (req, res) => {
+    console.log('Hello World!');
+    res.send('hello world');
 });
 
 module.exports = router;
