@@ -6,6 +6,10 @@ const path = require('path');
 const routes = require('./backend/routes');
 const auth = require('./backend/auth');
 
+// connect to postgres database
+
+const pg = require('./backend/database.js');
+
 // require user model
 // const User = require('./models/models.js').User;
 
@@ -17,21 +21,21 @@ const app = express();
 // body parser
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
-    extended: false
+  extended: false
 }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Passport stuff here
 app.use(session({
-    secret: "kittykatsccmittyscchmat",
-    name: 'Catscookie',
-    proxy: true,
-    resave: true,
-    saveUninitialized: true
+  secret: process.env.PASSPORT_SECRET,
+  name: 'Catscookie',
+  proxy: true,
+  resave: true,
+  saveUninitialized: true
 }));
 
 passport.serializeUser((user, done) => {
-    done(null, user.id);
+  done(null, user.id);
 });
 
 passport.deserializeUser((id, done) => {
@@ -50,7 +54,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/public/index.html'); // For React/Redux
+  res.sendFile(__dirname + '/public/index.html'); // For React/Redux
 });
 
 app.use('/', auth());
@@ -58,15 +62,15 @@ app.use('/', routes);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
-    var err = new Error('Not Found');
-    err.status = 404;
-    next(err);
+  var err = new Error('Not Found');
+  err.status = 404;
+  next(err);
 });
 
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, error => {
-    error
+  error
         ? console.error(error)
         : console.info(`==> 🌎 Listening on port ${PORT}. Visit http://localhost:${PORT}/ in your browser.`);
 });
