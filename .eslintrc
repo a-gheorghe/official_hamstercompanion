@@ -123,15 +123,15 @@
      */
     "indent": [
       2,
-      4,
+      2,
       { "SwitchCase": 1 }
     ],                              // http://eslint.org/docs/rules/indent
-    "brace-style": [
-      2,
-      "1tbs", {
-        "allowSingleLine": true
-      }
-    ],                               // http://eslint.org/docs/rules/brace-style
+    # "brace-style": [
+    #   2,
+    #   "1tbs", {
+    #     "allowSingleLine": false
+    #   }
+    # ],                               // http://eslint.org/docs/rules/brace-style
     # "quotes": [
     #   2, "single", "avoid-escape"    // http://eslint.org/docs/rules/quotes
     # ],
@@ -144,7 +144,7 @@
     }],
     "comma-style": [2, "last"],      // http://eslint.org/docs/rules/comma-style
     # "eol-last": 2,                   // http://eslint.org/docs/rules/eol-last
-    "func-names": 1,                 // http://eslint.org/docs/rules/func-names
+    # "func-names": 1,                 // http://eslint.org/docs/rules/func-names
     "key-spacing": [2, {             // http://eslint.org/docs/rules/key-spacing
       "beforeColon": false,
       "afterColon": true

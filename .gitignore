@@ -6,3 +6,4 @@ package-lock.json
 *hot-update.js
 *hot-update.json
 env.sh
+view_db.sh
