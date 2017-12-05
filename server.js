@@ -23,7 +23,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Passport stuff here
 app.use(session({
-    secret: "kittykatsccmittyscchmat",
+    secret: process.env.PASSPORT_SECRET,
     name: 'Catscookie',
     proxy: true,
     resave: true,
