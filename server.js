@@ -49,7 +49,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // app.use(passport.initialize());
 // app.use(passport.session());
 
-app.get('/', (req, res) => {
+app.use('/', (req, res) => {
   res.sendFile(__dirname + '/public/index.html'); // For React/Redux
 });
 

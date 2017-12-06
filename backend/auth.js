@@ -7,9 +7,9 @@ module.exports = () => {
     res.send('hello');
   });
 
-  router.get('/login', (req, res) => {
-    res.send('nothing');
-  });
+  // router.get('/login', (req, res) => {
+  //   res.send('nothing');
+  // });
 
   return router;
 };
