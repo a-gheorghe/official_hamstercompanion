@@ -1,4 +1,4 @@
-export default[
+module.exports = [
   {
     userId: 1,
     experimentId: 1
