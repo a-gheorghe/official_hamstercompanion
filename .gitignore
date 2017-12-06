@@ -7,4 +7,4 @@ package-lock.json
 *hot-update.json
 env.sh
 view_db.sh
-createDummyData.js
+./createDummyData.js
