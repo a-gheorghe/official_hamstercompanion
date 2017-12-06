@@ -1,32 +1,17 @@
-import PropTypes from 'prop-types';
 import React from 'react';
-import { connect } from 'react-redux';
-import Title from '../components/Title';
+import { Route } from 'react-router';
+import Register from '../components/Register';
+import Login from '../components/Login';
+import Experiments from '../components/Experiments';
 
-const AppContainer = ({ name }) => {
+const AppContainer = () => {
   return (
     <div>
-      <Title name={name} />
+      <Route path="/register" component={Register} />
+      <Route path="/login" component={Login} />
+      <Route path="/experiments" component={Experiments} />
     </div>
   );
 };
 
-AppContainer.propTypes = {
-  name: PropTypes.string,
-};
-
-const mapStateToProps = (state) => {
-  return {
-    name: state.name
-  };
-};
-
-const mapDispatchToProps = (/* dispatch */) => {
-  return {
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AppContainer);
+export default AppContainer;
