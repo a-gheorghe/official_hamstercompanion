@@ -64,7 +64,7 @@ const Mouse = sequelize.define('mouse', {
     autoIncrement: true
   },
   rfid: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.STRING,
     allowNull: false
   },
   sex: {
@@ -107,23 +107,33 @@ const UserExperiment = sequelize.define('user_experiment', {
   }
 });
 
-UserExperiment.belongsTo(User, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
-User.hasMany(UserExperiment, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
+// UserExperiment.belongsTo(User, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
+// User.hasMany(UserExperiment, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
+UserExperiment.belongsTo(User);
+User.hasMany(UserExperiment);
 
-UserExperiment.belongsTo(Experiment, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
-Experiment.hasMany(UserExperiment, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
+// UserExperiment.belongsTo(Experiment, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
+// Experiment.hasMany(UserExperiment, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
+UserExperiment.belongsTo(Experiment);
+Experiment.hasMany(UserExperiment);
 
 User.belongsToMany(Experiment, { through: UserExperiment });
 Experiment.belongsToMany(User, { through: UserExperiment });
 
-Cage.belongsTo(Experiment, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
-Experiment.hasMany(Cage, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
+// Cage.belongsTo(Experiment, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
+// Experiment.hasMany(Cage, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
+Cage.belongsTo(Experiment);
+Experiment.hasMany(Cage);
 
-Mouse.belongsTo(Cage, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
-Cage.hasMany(Mouse, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
+// Mouse.belongsTo(Cage, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
+// Cage.hasMany(Mouse, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
+Mouse.belongsTo(Cage);
+Cage.hasMany(Mouse);
 
-Session.belongsTo(Mouse, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
-Mouse.hasMany(Session, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
+// Session.belongsTo(Mouse, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
+// Mouse.hasMany(Session, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
+Session.belongsTo(Mouse);
+Mouse.hasMany(Session);
 
 
 module.exports = {
