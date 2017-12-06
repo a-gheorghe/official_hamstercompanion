@@ -1,1 +1,1 @@
-import 
+const Models = require('./models')
