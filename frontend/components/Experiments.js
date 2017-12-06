@@ -2,7 +2,7 @@ import React from 'react';
 
 class Experiments extends React.Component {
   componentDidMount() {
-    $.ajax('./getExperiments');
+    // $.ajax('./getExperiments');
   }
 
   render() {
