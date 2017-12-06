@@ -10,7 +10,7 @@ sequelize.authenticate()
     console.error('Unable to connect to the database:', err);
   });
 
-  // Define models here
+// Define models here
 const User = sequelize.define('user', {
   username: { type: Sequelize.STRING, allowNull: false, unique: true},
   password: { type: Sequelize.STRING, allowNull: false },
@@ -127,7 +127,7 @@ Mouse.hasMany(Session, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' }
 
 
 module.exports = {
-    // Export models here
+  // Export models here
   sequelize,
   Sequelize,
   User,
