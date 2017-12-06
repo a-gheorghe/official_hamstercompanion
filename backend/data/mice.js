@@ -24,7 +24,7 @@ export default[
     rfid: 5438309297,
     sex: F,
     age: 2,
-    cageId: 3
+    cageId: 2
   },
   {
     rfid: 938309297,
