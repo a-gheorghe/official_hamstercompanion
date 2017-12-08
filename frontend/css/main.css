@@ -1,3 +1,19 @@
 body {
     text-align: center;
 }
+
+.col {
+    display: flex;
+    flex-direction: column;
+}
+
+.form {
+    width: 300px;
+    margin: 10px auto;
+}
+
+.form * {
+    margin: 20px 0;
+    height: 20px;
+    border-radius: 5px;
+}

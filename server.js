@@ -2,59 +2,38 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const path = require('path');
+const session = require('express-session');
 
 // route files
-const routes = require('./backend/routes');
+const piRoutes = require('./backend/piRoutes');
 const auth = require('./backend/auth');
+const api = require('./backend/api');
 
-// require user model
-// const User = require('./models/models.js').User;
-
-// const session = require('express-session');
-// const passport = require('passport');
-// const LocalStrategy = require('passport-local').Strategy;
-
-// body parser
+// Body parser setup
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: false
 }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Passport stuff here
-// app.use(session({
-//   secret: process.env.PASSPORT_SECRET,
-//   name: 'Catscookie',
-//   proxy: true,
-//   resave: true,
-//   saveUninitialized: true
-// }));
-//
-// passport.serializeUser((user, done) => {
-//   done(null, user.id);
-// });
-//
-// passport.deserializeUser((id, done) => {
-//   User.findById(id).then(user => done(null, user)).catch(e => console.log(e));
-// });
-//
-// passport.use(new LocalStrategy((username, password, done) => {
-//   User.findOne({ where: { username } }).then(user => {
-//     if (!user) done(null, false);
-//     else if (user.password === password) done(null, user);
-//     else done(null, false);
-//   }).catch(e => console.log(e));
-// }));
-//
-// app.use(passport.initialize());
-// app.use(passport.session());
+// Session setup
+app.use(session({
+  secret: process.env.PASSPORT_SECRET,
+  name: 'Catscookie',
+  proxy: true,
+  resave: true,
+  saveUninitialized: true
+}));
+
+// Rasberry Pi API routes
+app.use('/', piRoutes);
+app.use('/', auth);
+app.use('/', api);
 
 app.use('/', (req, res) => {
   res.sendFile(__dirname + '/public/index.html'); // For React/Redux
 });
 
-app.use('/', auth());
-app.use('/', routes);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
