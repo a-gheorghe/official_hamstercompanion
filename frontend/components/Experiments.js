@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 class Experiments extends React.Component {
@@ -16,10 +17,11 @@ class Experiments extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="col">
         <h1>Experiments</h1>
         {this.state.exps.map(e => (
-          <div key={e.id}>{e.name}</div>
+          // <div key={e.id}>{JSON.stringify(e)}</div>
+          <Link to={`/experiment/${e.id}`} key={e.id}>{e.name}</Link>
         ))}
       </div>
     );

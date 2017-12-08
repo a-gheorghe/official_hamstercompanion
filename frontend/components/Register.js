@@ -1,17 +1,28 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import axios from 'axios';
 
 class Register extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      registered: false
+    };
+  }
+
   submit(e) {
     e.preventDefault();
     axios.post('/auth/register', {
       username: e.target.username.value,
       password: e.target.password.value
-    }).then(resp => console.log("reponse", resp)).catch(err => console.log("error", err));
+    }).then(resp => {
+      if (resp.data.success) this.setState({ registered: true });
+    }).catch(err => console.log(err));
   }
 
   render() {
+    if (this.state.registered) return <Redirect to="/login" />;
+
     return (
       <div>
         <h3>Register</h3>
