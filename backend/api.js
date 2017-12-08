@@ -15,4 +15,10 @@ router.get('/experiment/:id', (req, res) => {
   }).catch(e => console.log(e));
 });
 
+router.post('/experiment', (req, res) => {
+  Experiment.create(req.body)
+    .then(resp => res.send({ success: true, response: resp }))
+    .catch(e => console.log(e));
+});
+
 module.exports = router;

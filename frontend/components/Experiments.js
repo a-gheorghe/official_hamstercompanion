@@ -23,6 +23,7 @@ class Experiments extends React.Component {
           // <div key={e.id}>{JSON.stringify(e)}</div>
           <Link to={`/experiment/${e.id}`} key={e.id}>{e.name}</Link>
         ))}
+        <Link to="/new/experiment">Create a new experiment</Link>
       </div>
     );
   }
