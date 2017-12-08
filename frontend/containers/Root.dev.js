@@ -1,28 +1,39 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Provider, connect } from 'react-redux';
-import { Redirect } from 'react-router';
 import { BrowserRouter } from 'react-router-dom';
+import axios from 'axios';
 import ViewingContainer from './ViewingContainer.js';
 import UserContainer from './UserContainer.js';
 
-function Root({ store, loggedIn }) {
-  return (
-    <Provider store={store}>
-      <BrowserRouter>
-        { loggedIn ?
-          <div><UserContainer /> <Redirect to="/experiments" /></div> :
-          <div><ViewingContainer /> <Redirect to="/register" /></div> }
-      </BrowserRouter>
-    </Provider>
-  );
+class Root extends React.Component {
+  componentWillMount() {
+    axios.get('/auth/isLoggedIn').then(resp => {
+      if (resp.data) this.props.login();
+    }).catch(e => console.log(e));
+  }
+  render() {
+    return (
+      <Provider store={this.props.store}>
+        <BrowserRouter>
+          { this.props.loggedIn ?
+            <div><UserContainer /></div> :
+            <div><ViewingContainer /></div> }
+        </BrowserRouter>
+      </Provider>
+    );
+  }
 }
 
 const mapStateToProps = state => ({
   loggedIn: state.loggedIn
 });
 
-export default connect(mapStateToProps, null)(Root);
+const mapDispatchToProps = dispatch => ({
+  login: () => dispatch({ type: 'LOGIN' })
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Root);
 
 Root.propTypes = {
   store: PropTypes.object.isRequired,

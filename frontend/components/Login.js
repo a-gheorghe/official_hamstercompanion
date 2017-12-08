@@ -6,10 +6,12 @@ import { connect } from 'react-redux';
 class Login extends React.Component {
   submit(e) {
     e.preventDefault();
-    axios.post('/login', {
+    axios.post('/auth/login', {
       username: e.target.username.value,
       password: e.target.password.value
-    }).then(() => this.props.login()).catch(err => console.log("error", err));
+    }).then(resp => {
+      if (resp.data) this.props.login();
+    }).catch(err => console.log("error", err));
   }
 
   render() {
@@ -22,7 +24,7 @@ class Login extends React.Component {
           <input type="submit" />
         </form>
         <h5>Don't have an account?</h5>
-        <Link to="/register">Register</Link>
+        <Link to="/">Register</Link>
       </div>
     );
   }

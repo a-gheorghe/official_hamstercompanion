@@ -5,7 +5,7 @@ import axios from 'axios';
 class Register extends React.Component {
   submit(e) {
     e.preventDefault();
-    axios.post('/register', {
+    axios.post('/auth/register', {
       username: e.target.username.value,
       password: e.target.password.value
     }).then(resp => console.log("reponse", resp)).catch(err => console.log("error", err));

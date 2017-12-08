@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route } from 'react-router';
+import { Route, Redirect, Switch } from 'react-router';
 import Experiments from '../components/Experiments';
 // import ViewExperiment from '../components/ViewExperiment';
 
@@ -7,8 +7,11 @@ const UserContainer = () => {
   return (
     <div>
       <h1>Hamster Companion</h1>
-      <Route path="/experiments" component={Experiments} />
-      {/* <Route path="/viewExperiment" component={ViewExperiment} /> */}
+      <Switch>
+        {/* <Route path="/viewExperiment" component={ViewExperiment} /> */}
+        <Route path="/" exact component={Experiments} />
+        <Redirect to="/" />
+      </Switch>
     </div>
   );
 };

@@ -27,8 +27,8 @@ app.use(session({
 
 // Rasberry Pi API routes
 app.use('/', piRoutes);
-app.use('/', auth);
-app.use('/', api);
+app.use('/auth', auth);
+app.use('/api', api);
 
 app.use('/', (req, res) => {
   res.sendFile(__dirname + '/public/index.html'); // For React/Redux

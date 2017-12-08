@@ -9,7 +9,7 @@ class Experiments extends React.Component {
     };
   }
   componentWillMount() {
-    axios.get('./experiments').then(resp => {
+    axios.get('/api/experiments').then(resp => {
       this.setState({exps: resp.data});
     }).catch(e => console.log(e));
   }
@@ -18,9 +18,9 @@ class Experiments extends React.Component {
     return (
       <div>
         <h1>Experiments</h1>
-        {this.state.exps.map(() => {
-          // TODO render the exeriment
-        })}
+        {this.state.exps.map(e => (
+          <div>{e}</div>
+        ))}
       </div>
     );
   }
