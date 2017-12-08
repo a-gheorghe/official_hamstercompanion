@@ -19,7 +19,7 @@ class Experiments extends React.Component {
       <div>
         <h1>Experiments</h1>
         {this.state.exps.map(e => (
-          <div>{e}</div>
+          <div key={e.id}>{e.name}</div>
         ))}
       </div>
     );
