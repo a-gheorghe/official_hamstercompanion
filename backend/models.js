@@ -35,6 +35,26 @@ const Experiment = sequelize.define('experiment', {
   }
 });
 
+const TreatmentGroup = sequelize.define('treatment_group', {
+  id: {
+    type: Sequelize.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
+  name: {
+    type: Sequelize.STRING,
+    allowNull: false
+  },
+  isControl: {
+    type: Sequelize.BOOLEAN,
+    allowNull: false,
+    defaultValue: false
+  },
+  notes: {
+    type: Sequelize.STRING
+  }
+});
+
 const Cage = sequelize.define('cage', {
   id: {
     type: Sequelize.INTEGER,
@@ -43,9 +63,6 @@ const Cage = sequelize.define('cage', {
   },
   name: {
     type: Sequelize.STRING
-  },
-  control: {
-    type: Sequelize.BOOLEAN
   },
   wheel_diameter: {
     type: Sequelize.INTEGER,
@@ -107,34 +124,26 @@ const UserExperiment = sequelize.define('user_experiment', {
   }
 });
 
-// UserExperiment.belongsTo(User, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
-// User.hasMany(UserExperiment, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
-UserExperiment.belongsTo(User);
-User.hasMany(UserExperiment);
+UserExperiment.belongsTo(User, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
+User.hasMany(UserExperiment, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
 
-// UserExperiment.belongsTo(Experiment, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
-// Experiment.hasMany(UserExperiment, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
-UserExperiment.belongsTo(Experiment);
-Experiment.hasMany(UserExperiment);
+UserExperiment.belongsTo(Experiment, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
+Experiment.hasMany(UserExperiment, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
 
 User.belongsToMany(Experiment, { through: UserExperiment });
 Experiment.belongsToMany(User, { through: UserExperiment });
 
-// Cage.belongsTo(Experiment, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
-// Experiment.hasMany(Cage, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
-Cage.belongsTo(Experiment);
-Experiment.hasMany(Cage);
+TreatmentGroup.belongsTo(Experiment, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
+Experiment.hasMany(TreatmentGroup, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
 
-// Mouse.belongsTo(Cage, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
-// Cage.hasMany(Mouse, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
-Mouse.belongsTo(Cage);
-Cage.hasMany(Mouse);
+Cage.belongsTo(TreatmentGroup, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
+TreatmentGroup.hasMany(Cage, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
 
-// Session.belongsTo(Mouse, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
-// Mouse.hasMany(Session, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
-Session.belongsTo(Mouse);
-Mouse.hasMany(Session);
+Mouse.belongsTo(Cage, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
+Cage.hasMany(Mouse, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
 
+Session.belongsTo(Mouse, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
+Mouse.hasMany(Session, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
 
 module.exports = {
   // Export models here
@@ -142,6 +151,7 @@ module.exports = {
   Sequelize,
   User,
   Experiment,
+  TreatmentGroup,
   Cage,
   Mouse,
   Session,
