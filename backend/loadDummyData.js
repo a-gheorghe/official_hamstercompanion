@@ -1,10 +1,12 @@
 const models = require('./models');
 const userData = require('./data/users');
+const experimentData = require('./data/experiments');
+const treatmentGroupData = require('./data/treatmentGroups');
 const cageData = require('./data/cages');
 const mouseData = require('./data/mice');
-const experimentData = require('./data/experiments');
-const sessionData = require('./data/session');
-const userExperimentData = require('./data/userExperiment');
+
+const sessionData = require('./data/sessions');
+const userExperimentData = require('./data/userExperiments');
 
 models.sequelize.sync({ force: true })
 .then(()=>{
@@ -12,6 +14,9 @@ models.sequelize.sync({ force: true })
 })
 .then(()=>{
   return models.Experiment.bulkCreate(experimentData);
+})
+.then(()=>{
+  return models.TreatmentGroup.bulkCreate(treatmentGroupData);
 })
 .then(()=>{
   return models.Cage.bulkCreate(cageData);
