@@ -1,11 +1,14 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import axios from 'axios';
 import './styles/register.css';
 
 class Register extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      registered: false
+    };
   }
 
   submit(e) {
@@ -13,10 +16,14 @@ class Register extends React.Component {
     axios.post('/auth/register', {
       username: e.target.username.value,
       password: e.target.password.value
-    }).then(resp => console.log("reponse", resp)).catch(err => console.log("error", err));
+    }).then(resp => {
+      if (resp.data.success) this.setState({ registered: true });
+    }).catch(err => console.log(err));
   }
 
   render() {
+    if (this.state.registered) return <Redirect to="/login" />;
+
     return (
       <div id="register-container">
         <div id="mouse-login-btn"><img src={`http://weclipart.com/gimg/A0F8CD424E369A2C/cute-mouse-silhouette.png`}/></div>
