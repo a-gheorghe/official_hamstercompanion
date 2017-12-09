@@ -5,8 +5,10 @@ import Login from '../components/Login';
 
 const ViewingContainer = () => {
   return (
-    <div>
-      <h1>Hamster Companion</h1>
+    <div id="router-container">
+      <div id="main-header">
+        <h1>Hamster Companion</h1>
+      </div>
       <Switch>
         <Route path="/login" component={Login} />
         <Route path="/" exact component={Register} />
