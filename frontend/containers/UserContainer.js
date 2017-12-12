@@ -3,6 +3,7 @@ import { Route, Redirect, Switch } from 'react-router';
 import Experiments from '../components/Experiments';
 import Dashboard from '../components/Dashboard';
 import EditExperiment from '../components/EditExperiment';
+import '../components/styles/temp.css';
 
 const UserContainer = () => {
   return (
