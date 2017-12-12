@@ -20,7 +20,8 @@ class Login extends React.Component {
     }).then(resp => {
       console.log(resp.data);
       if (resp.data) this.props.login();
-    }).catch(err => {
+    }).catch((err) => {
+      console.log(err);
       this.setState({
         loginError: `Incorrect username/password combination`
       });
