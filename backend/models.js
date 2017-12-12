@@ -30,6 +30,7 @@ const Experiment = sequelize.define('experiment', {
   },
   name: { type: Sequelize.STRING, allowNull: false },
   password: { type: Sequelize.STRING, allowNull: false },
+  adminPassword: { type: Sequelize.STRING, allowNull: false },
   description: {
     type: Sequelize.STRING
   }
