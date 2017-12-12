@@ -18,6 +18,10 @@ html{
   background-color: black;
 }
 
+.error-msg{
+  color: red;
+}
+
 #login-container{
   background-color: black;
   color: white;

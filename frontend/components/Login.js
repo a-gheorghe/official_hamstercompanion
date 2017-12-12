@@ -5,14 +5,26 @@ import { connect } from 'react-redux';
 import './styles/login.css';
 
 class Login extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      loginError: ''
+    };
+  }
+
   submit(e) {
     e.preventDefault();
     axios.post('/api/login', {
       username: e.target.username.value,
       password: e.target.password.value
     }).then(resp => {
+      console.log(resp.data);
       if (resp.data) this.props.login();
-    }).catch(err => console.log("error", err));
+    }).catch(err => {
+      this.setState({
+        loginError: `Incorrect username/password combination`
+      });
+    });
   }
 
   render() {
@@ -24,6 +36,7 @@ class Login extends React.Component {
           <input type="text" name="username" placeholder="username" />
           <input type="password" name="password" placeholder="password" />
           <input type="submit" />
+          <p className="error-msg">{this.state.loginError ? `Error: ${this.state.loginError}` : ''}</p>
         </form>
         <Link to="/" id="register-btn">Register</Link>
       </div>
