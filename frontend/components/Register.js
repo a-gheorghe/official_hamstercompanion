@@ -58,8 +58,7 @@ class Register extends React.Component {
             <input type="password" name="password" placeholder="password" />
             <input type="submit" />
           </form>
-          <h5>Already have an account?</h5>
-          <Link to="/login">Login</Link>
+          <Link to="/login" id="login-btn">Login</Link>
         </div>
       </div>
     );

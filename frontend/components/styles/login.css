@@ -18,7 +18,7 @@ html{
   background-color: black;
 }
 
-#register-container{
+#login-container{
   background-color: black;
   color: white;
   flex: 100%;
@@ -28,10 +28,10 @@ html{
   top: 85px;
 }
 
-#login-btn{
+#register-btn{
   color: white;
   position: fixed;
-  left: calc(100vw - 95px);
+  left: calc(100vw - 105px);
   top: 50px;
   text-decoration: none;
 }
