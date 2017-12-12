@@ -7,7 +7,7 @@ import './styles/login.css';
 class Login extends React.Component {
   submit(e) {
     e.preventDefault();
-    axios.post('/auth/login', {
+    axios.post('/api/login', {
       username: e.target.username.value,
       password: e.target.password.value
     }).then(resp => {

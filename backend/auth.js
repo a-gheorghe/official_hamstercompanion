@@ -5,6 +5,9 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 
 // Passport stuff here
+router.use(passport.initialize());
+router.use(passport.session());
+
 passport.serializeUser((user, done) => {
   done(null, user.id);
 });
@@ -21,9 +24,6 @@ passport.use(new LocalStrategy((username, password, done) => {
   }).catch(e => console.log(e));
 }));
 
-router.use(passport.initialize());
-router.use(passport.session());
-
 // login routes go here
 router.get('/isLoggedIn', (req, res) => {
   if (req.user) res.send(true);
@@ -37,7 +37,9 @@ router.post('/register', (req, res) => {
 });
 
 router.post('/login', passport.authenticate('local'), (req, res) => {
-  if (req.user) res.send(true);
+  if (req.user) {
+    res.send(true);
+  }
   else res.send(false);
 });
 
