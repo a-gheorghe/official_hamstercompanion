@@ -1,0 +1,106 @@
+#register-container{
+  /*background-image: url('https://www.ucdavis.edu/sites/default/files/images/article/gettyimages-183246803.jpg');
+  /*-webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;*/
+  /*background-size: cover;*/
+  background-color: black;
+  /*background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Mouse_cartoon.svg/2000px-Mouse_cartoon.svg.png');
+  background-size: 500px;*/
+  flex: 100%;
+  display: flex;
+  width: 100vw;
+  position: fixed;
+  top: 85px;
+}
+
+#mouse-login-btn{
+  width: 120px;
+  height: 100px;
+  position: fixed;
+  left: calc(100vw - 150px);
+  top: 9px;
+
+}
+
+#mouse-login-btn img{
+  width: 100%;
+  height: auto;
+}
+
+#feature-list{
+  display: flex;
+  flex-direction: column;
+  flex: 2;
+}
+
+.feature-item{
+  background-color: black;
+  color: white;
+  display: flex;
+  padding: 10px 5px 10px 10px;
+  align-items: center;
+}
+
+.feature-item h2{
+  margin: 0;
+}
+
+.mouse-bullet-point{
+  width: 30px;
+  height: 100%;
+  margin: 0 10px 0 0;
+}
+
+.mouse-bullet-point img{
+  width: 100%;
+  height: 100%;
+}
+
+.color-inverted{
+  filter: invert(100%);
+}
+
+#test-tubes{
+  width: 400px;
+  height: auto;
+  position: absolute;
+  left: 56px;
+  top: calc(100vh - 430px);
+}
+
+#blue-flask{
+  width: 250px;
+  height: auto;
+  position: fixed;
+  left: 900px;
+  top: calc(100vh - 300px);
+  filter: invert(100%);
+}
+
+#sniffing-mouse{
+  width: 300px;
+  height: auto;
+  position: fixed;
+  left: 15px;
+  top: calc(100vh - 583px);
+  filter: invert(100%);
+}
+
+#curious-mouse{
+  width: 300px;
+  height: auto;
+  position: fixed;
+  left: 1100px;
+  top: calc(100vh - 250px);
+  filter: invert(100%);
+  transform: scaleX(-1);
+}
+
+#right-side{
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
