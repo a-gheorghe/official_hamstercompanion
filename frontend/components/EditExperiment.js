@@ -34,7 +34,7 @@ class EditExperiment extends React.Component {
           <input type="text" name="desc" placeholder="Description of your experiment" />
           <input type="submit" />
         </form>
-        <Link to="/">Back to Experiments</Link>
+        <Link to="/">Cancel</Link>
       </div>
     );
   }

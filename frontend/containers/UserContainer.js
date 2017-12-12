@@ -7,7 +7,7 @@ import '../components/styles/temp.css';
 
 const UserContainer = () => {
   return (
-    <div>
+    <div id="user-container">
       <h1>Hamster Companion</h1>
       <Switch>
         <Route path="/new/experiment" component={EditExperiment} />
