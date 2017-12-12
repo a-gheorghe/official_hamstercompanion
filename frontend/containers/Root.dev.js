@@ -8,7 +8,7 @@ import UserContainer from './UserContainer.js';
 
 class Root extends React.Component {
   componentWillMount() {
-    axios.get('/auth/isLoggedIn').then(resp => {
+    axios.get('/api/isLoggedIn').then(resp => {
       if (resp.data) this.props.login();
       else this.props.logout();
     }).catch(e => console.log(e));

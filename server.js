@@ -4,11 +4,6 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const session = require('express-session');
 
-// route files
-const piRoutes = require('./backend/piRoutes');
-const auth = require('./backend/auth');
-const api = require('./backend/api');
-
 // Body parser setup
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
@@ -25,9 +20,14 @@ app.use(session({
   saveUninitialized: true
 }));
 
+// route files
+const piRoutes = require('./backend/piRoutes');
+const auth = require('./backend/auth');
+const api = require('./backend/api');
+
 // Rasberry Pi API routes
 app.use('/', piRoutes);
-app.use('/auth', auth);
+app.use('/api', auth);
 app.use('/api', api);
 
 app.use('/', (req, res) => {
