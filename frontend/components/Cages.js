@@ -1,9 +1,9 @@
 import React from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import './styles/dashboard.css';
+import './styles/cages.css';
 
-class Dashboard extends React.Component {
+class Cages extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -19,13 +19,8 @@ class Dashboard extends React.Component {
   render() {
     return (this.state.experiment ? (
       <div id="dashboard-container">
-        <h1>Dashboard: {this.state.experiment.name}</h1>
-        <h3>Experiment ID: {this.state.experiment.id}</h3>
-        <h3>Description: {this.state.experiment.description}</h3>
-        <Link to={`/experiment/${this.state.experiment.id}/groups`}><button>Treatment Groups: </button></Link>
-        <Link to={`/experiment/${this.state.experiment.id}/cages`}><button>Cages: </button></Link>
-        <Link to={`/experiment/${this.state.experiment.id}/mice`}><button>Mice: </button></Link>
-        <Link to="/" className={"back-btn"}><button>Back to Experiments</button></Link>
+        <h1>Cages: {this.state.experiment.name}</h1>
+        <Link to={`/experiment/${this.state.experiment.id}/`} className={"back-btn"}><button>Back to Dashboard</button></Link>
       </div>
     ) : (
       <div>
@@ -36,4 +31,4 @@ class Dashboard extends React.Component {
   }
 }
 
-export default Dashboard;
+export default Cages;
