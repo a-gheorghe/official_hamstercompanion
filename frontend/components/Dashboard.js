@@ -12,6 +12,7 @@ class Dashboard extends React.Component {
   }
   componentWillMount() {
     axios.get('/api/experiment/' + this.props.match.params.id).then(resp => {
+      console.log(resp.data);
       this.setState({experiment: resp.data});
     }).catch(e => console.log(e));
   }
@@ -26,7 +27,9 @@ class Dashboard extends React.Component {
             <h3>Description: {this.state.experiment.description}</h3>
           </div>
           <div id="dashboard-btn-bank">
-            <Link to={`/experiment/${this.state.experiment.id}/groups`}><button>Treatment Groups: </button></Link>
+            <div id="column">
+              <Link to={`/experiment/${this.state.experiment.id}/groups`}><button>Treatment Groups: </button></Link>
+            </div>
             <Link to={`/experiment/${this.state.experiment.id}/cages`}><button>Cages: </button></Link>
             <Link to={`/experiment/${this.state.experiment.id}/mice`}><button>Mice: </button></Link>
           </div>
