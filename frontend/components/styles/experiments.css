@@ -1,0 +1,15 @@
+#boxes {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    flex: 1;
+}
+
+.box {
+    padding: 10px;
+    margin: 10px;
+    border: 2px solid white;
+    border-radius: 5px;
+    background-color: grey;
+}

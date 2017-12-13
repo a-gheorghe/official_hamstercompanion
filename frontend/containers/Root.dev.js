@@ -19,8 +19,8 @@ class Root extends React.Component {
       <Provider store={this.props.store}>
         <BrowserRouter>
           { this.props.loggedIn ?
-            <div><UserContainer /></div> :
-            <div><ViewingContainer /></div> }
+            <UserContainer /> :
+            <ViewingContainer /> }
         </BrowserRouter>
       </Provider>
     );
