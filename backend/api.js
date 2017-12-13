@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const { Experiment, UserExperiment, User, Mouse, Cage, TreatmentGroup  } = require('./models');
+const { Experiment, UserExperiment, Mouse, Cage, TreatmentGroup  } = require('./models');
 
 router.get('/experiments', (req, res) => {
   Experiment.findAll({ include: {
@@ -29,9 +29,9 @@ router.get('/experiment/:id', (req, res) => {
         }
       }
     ]}).then(resp => {
-      console.log('*******************', resp, '***************');
-      res.json(resp);
-    }).catch(e => console.log(e));
+    console.log('*******************', resp, '***************');
+    res.json(resp);
+  }).catch(e => console.log(e));
 });
 
 router.post('/experiment', (req, res) => {
