@@ -4,7 +4,8 @@ module.exports = [
     id: '2016090401',
     sex: "M",
     age: 1,
-    cageId: 1
+    cageId: 1,
+    isAlive: false
   },
   {
     id: '2016090517',

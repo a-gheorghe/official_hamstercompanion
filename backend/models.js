@@ -90,6 +90,11 @@ const Mouse = sequelize.define('mouse', {
   },
   notes: {
     type: Sequelize.STRING
+  },
+  isAlive: {
+    type: Sequelize.BOOLEAN,
+    allowNull: false,
+    defaultValue: true
   }
 });
 
