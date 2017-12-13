@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const { Experiment, UserExperiment, User } = require('./models');
+const { Experiment, UserExperiment } = require('./models');
 
 router.get('/experiments', (req, res) => {
   Experiment.findAll({ include: {
@@ -22,7 +22,10 @@ router.get('/experiment/:id', (req, res) => {
 
 router.post('/experiment', (req, res) => {
   Experiment.create(req.body)
-    .then(resp => res.send({ success: true, response: resp }))
+    .then(resp => UserExperiment.create({
+      userId: req.user.id,
+      experimentId: resp.id
+    })).then(resp => res.send({ success: true, response: resp }))
     .catch(e => console.log(e));
 });
 
