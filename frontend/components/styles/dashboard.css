@@ -16,3 +16,35 @@
   justify-content: left;
   padding: 0 20px 0 20px;
 }
+
+#dashboard-main{
+  display: flex;
+  width: 100%;
+}
+#dashboard-info{
+  flex: 1;
+}
+#dashboard-btn-bank{
+  flex: 2;
+  display: flex;
+}
+
+#dashboard-btn-bank a {
+  text-decoration: none;
+}
+
+#dashboard-btn-bank a button{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  height: 100px;
+  border-radius: 10px;
+  background-color: LightBlue;
+  margin-left: 50px;
+  text-decoration: none;
+}
+
+#dashboard-btn-bank a button:hover{
+  background-color: Yellow;
+}

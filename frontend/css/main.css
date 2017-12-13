@@ -49,7 +49,3 @@ body {
   display: flex;
   flex-direction: column;
 }
-
-#root div:first-child{
-  height: 100%;
-}
