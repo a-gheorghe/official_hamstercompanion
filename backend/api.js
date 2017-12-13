@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const { Experiment, UserExperiment, User, Mouse, Cage, TreatmentGroup  } = require('./models');
+const { Experiment, UserExperiment, Mouse, Cage, TreatmentGroup  } = require('./models');
 
 router.get('/experiments', (req, res) => {
   Experiment.findAll({ include: {
@@ -29,9 +29,9 @@ router.get('/experiment/:id', (req, res) => {
         }
       }
     ]}).then(resp => {
-      console.log('*******************', resp, '***************');
-      res.json(resp);
-    }).catch(e => console.log(e));
+    console.log('*******************', resp, '***************');
+    res.json(resp);
+  }).catch(e => console.log(e));
 });
 
 router.post('/experiment', (req, res) => {
@@ -44,14 +44,28 @@ router.post('/experiment', (req, res) => {
 });
 
 router.post('/join/experiment', (req, res) => {
-  Experiment.findById(req.body.id).then(resp => {
-    if (req.body.password === resp.password) {
-      return UserExperiment.create({
-        userId: req.user.id,
-        experimentId: req.body.id
+  Experiment.findById(req.body.id, { include: {
+    model: UserExperiment,
+    where: { userId: req.user.id }
+  } }).then(resp => {
+    console.log(resp);
+    if (req.body.password !== resp.password) {
+      res.json({
+        success: false,
+        error: "Incorrect Password"
       });
-    } return res.send(false);
-  }).then(resp => res.send(resp)).catch(e => console.log(e));
+    } else if (resp.user_experiments[0]) {
+      res.json({
+        success: false,
+        error: "You're already in this experiment"
+      });
+    } else {
+      UserExperiment.create({
+        userId: req.user.id,
+        experimentId: resp.id
+      }).then(() => res.json({ success: true }));
+    }
+  }).catch(e => console.log(e));
 });
 
 module.exports = router;

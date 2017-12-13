@@ -32,8 +32,8 @@ class Login extends React.Component {
     return (
       <div id="login-container">
         <div id="mouse-login-btn"><img src={`http://weclipart.com/gimg/A0F8CD424E369A2C/cute-mouse-silhouette.png`}/></div>
-        <h3>Login</h3>
         <form className="col form" onSubmit={e => this.submit(e)}>
+          <h3>Login</h3>
           <input type="text" name="username" placeholder="username" />
           <input type="password" name="password" placeholder="password" />
           <input type="submit" />
