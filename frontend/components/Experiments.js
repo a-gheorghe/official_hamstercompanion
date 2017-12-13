@@ -1,12 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import DisplayBox from './DisplayBox';
 import axios from 'axios';
+import './styles/experiments.css';
 
 class Experiments extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      exps: []
+      exps: [],
+      id: '',
+      password: ''
     };
   }
 
@@ -23,28 +28,57 @@ class Experiments extends React.Component {
       password: e.target.password.value
     }).then(resp => {
       if (!resp.data) alert('Incorrect password!');
-      else this.componentWillMount();
+      else {
+        this.componentWillMount();
+        this.setState({ id: '', password: '' });
+      }
     });
+  }
+
+  logout() {
+    axios.get('/logout').then(resp => {
+      if (resp.data) this.props.logout();
+      else alert('Sorry, there was an error');
+    }).catch(e => console.log(e));
+  }
+
+  changeId(e) {
+    this.setState({ id: e.target.value });
+  }
+
+  changePass(e) {
+    this.setState({ password: e.target.value });
   }
 
   render() {
     return (
       <div className="col">
         <h1>Experiments</h1>
-        {this.state.exps.map(e => (
-          // <div key={e.id}>{JSON.stringify(e)}</div>
-          <Link to={`/experiment/${e.id}`} key={e.id}>{e.name}</Link>
-        ))}
+        <div id="boxes">
+          {this.state.exps.map(e => (
+            <DisplayBox key={e.id} experiment={e} />
+          ))}
+        </div>
         <h3>Join an Experiment</h3>
         <form className="col form" onSubmit={e => this.submit(e)}>
-          <input type="text" name="id" placeholder="Experiment ID" />
-          <input type="password" name="password" placeholder="Experiment Password" />
+          <input type="text" name="id" placeholder="Experiment ID"
+            value={this.state.id} onChange={e => this.changeId(e)}
+          />
+          <input type="password" name="password"
+            placeholder="Experiment Password"
+            value={this.state.password} onChange={e => this.changePass(e)}
+          />
           <input type="submit" />
         </form>
         <Link to="/new/experiment">Create a new experiment</Link>
+        <button onClick={e => this.logout(e)}>Logout</button>
       </div>
     );
   }
 }
 
-export default Experiments;
+const mapDispatchToProps = dispatch => ({
+  logout: () => dispatch({ type: 'LOGOUT' })
+});
+
+export default connect(null, mapDispatchToProps)(Experiments);

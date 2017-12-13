@@ -30,7 +30,7 @@ class EditExperiment extends React.Component {
         <h3>Create or edit an Experiment</h3>
         <form className="col form" onSubmit={e => this.submit(e)}>
           <input type="text" name="name" placeholder="Experiment Name" />
-          <input type="password" name="password" placeholder="Experiment Password" />
+          <input type="password" name="password" placeholder="Password to Join Experiment" />
           <input type="text" name="desc" placeholder="Description of your experiment" />
           <input type="submit" />
         </form>
