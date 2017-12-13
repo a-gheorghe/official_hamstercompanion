@@ -11,7 +11,8 @@ class Experiments extends React.Component {
     this.state = {
       exps: [],
       id: '',
-      password: ''
+      password: '',
+      error: ''
     };
   }
 
@@ -27,7 +28,7 @@ class Experiments extends React.Component {
       id: e.target.id.value,
       password: e.target.password.value
     }).then(resp => {
-      if (!resp.data) alert('Incorrect password!');
+      if (!resp.data.success) this.setState({ error: resp.data.error });
       else {
         this.componentWillMount();
         this.setState({ id: '', password: '' });
@@ -60,6 +61,9 @@ class Experiments extends React.Component {
           ))}
         </div>
         <h3>Join an Experiment</h3>
+        { this.state.error ?
+          <p style={{ color: 'red' }}>{this.state.error}</p> :
+          null }
         <form className="col form" onSubmit={e => this.submit(e)}>
           <input type="text" name="id" placeholder="Experiment ID"
             value={this.state.id} onChange={e => this.changeId(e)}
