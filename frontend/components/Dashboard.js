@@ -7,7 +7,9 @@ class Dashboard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      experiment: false
+      experiment: false,
+      groupSelected: null,
+      cageSelected: null,
     };
   }
   componentWillMount() {
@@ -15,6 +17,23 @@ class Dashboard extends React.Component {
       console.log(resp.data);
       this.setState({experiment: resp.data});
     }).catch(e => console.log(e));
+  }
+
+  selectGroup(evt, index) {
+    evt.preventDefault();
+    var newGroup = this.state.experiment.treatment_groups[index];
+    this.setState({
+      groupSelected: newGroup,
+      cageSelected: null
+    });
+  }
+
+  selectCage(evt, index) {
+    evt.preventDefault();
+    var newCage = this.state.groupSelected.cages[index];
+    this.setState({
+      cageSelected: newCage
+    });
   }
 
   render() {
@@ -27,11 +46,25 @@ class Dashboard extends React.Component {
             <h3>Description: {this.state.experiment.description}</h3>
           </div>
           <div id="dashboard-btn-bank">
-            <div id="column">
+            <div className="column">
               <Link to={`/experiment/${this.state.experiment.id}/groups`}><button>Treatment Groups: </button></Link>
+              {this.state.experiment.treatment_groups.map((group, index)=>(<button key={group.id} onClick={(evt)=>this.selectGroup(evt, index)} className={`list-btn ${(this.state.groupSelected && group.id === this.state.groupSelected.id) ? 'selected' : ''}`}>{group.name}</button>))}
             </div>
-            <Link to={`/experiment/${this.state.experiment.id}/cages`}><button>Cages: </button></Link>
-            <Link to={`/experiment/${this.state.experiment.id}/mice`}><button>Mice: </button></Link>
+            <div className="column">
+              <Link to={`/experiment/${this.state.experiment.id}/cages`}><button>Cages: </button></Link>
+              {this.state.groupSelected ?
+                (this.state.groupSelected.cages.map((cage, index)=>(
+                  <button
+                  key={cage.id}
+                  onClick={(evt)=>this.selectCage(evt, index)}
+                  className={`list-btn ${(this.state.cageSelected && cage.id === this.state.cageSelected.id) ? 'selected' : ''}`}>
+                    {cage.name}
+                  </button>))) :
+                (<div>none</div>)}
+            </div>
+            <div className="column">
+              <Link to={`/experiment/${this.state.experiment.id}/mice`}><button>Mice: </button></Link>
+            </div>
           </div>
         </div>
         <Link to="/" className={"back-btn"}><button>Back to Experiments</button></Link>

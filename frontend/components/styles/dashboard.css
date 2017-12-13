@@ -29,19 +29,44 @@
   display: flex;
 }
 
+.column{
+  flex: 1;
+  margin-left: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.list-btn{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(100% - 40px);
+  margin-top: 10px;
+  height: 100px;
+  border-radius: 10px;
+  background-color: LightGreen;
+  text-decoration: none;
+  border: 3px solid white;
+}
+
+.selected{
+  width: 100%;
+}
+
 #dashboard-btn-bank a {
   text-decoration: none;
+  width: 100%;
 }
 
 #dashboard-btn-bank a button{
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100px;
+  width: 100%;
   height: 100px;
   border-radius: 10px;
   background-color: LightBlue;
-  margin-left: 50px;
   text-decoration: none;
   border: 3px solid white;
 }
