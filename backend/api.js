@@ -31,10 +31,12 @@ router.post('/experiment', (req, res) => {
 
 router.post('/join/experiment', (req, res) => {
   Experiment.findById(req.body.id).then(resp => {
-    if (req.body.password === resp.password) {return UserExperiment.create({
-      userId: req.user.id,
-      experimentId: req.body.id
-    });} return res.send(false);
+    if (req.body.password === resp.password) {
+      return UserExperiment.create({
+        userId: req.user.id,
+        experimentId: req.body.id
+      });
+    } return res.send(false);
   }).then(resp => res.send(resp)).catch(e => console.log(e));
 });
 

@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { Session, Mouse } = require('./models');
 
-router.post('/hamster', (req, res) => {
+router.post('/new/session', (req, res) => {
   console.log(req.body);
   Session.create(req.body).then(resp => {
     console.log('RESPONSE', resp);
