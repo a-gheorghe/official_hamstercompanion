@@ -4,12 +4,20 @@
     flex-wrap: wrap;
     justify-content: center;
     flex: 1;
+    width: 80%;
+    margin: 0 auto;
 }
 
 .box {
     padding: 10px;
     margin: 10px;
+    width: 30%;
     border: 2px solid white;
     border-radius: 5px;
-    background-color: grey;
+    color: black;
+    background-color: LightBlue;
+}
+
+.box:hover {
+    background-color: yellow
 }
