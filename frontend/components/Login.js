@@ -1,25 +1,52 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+import { connect } from 'react-redux';
+import './styles/login.css';
 
 class Login extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      loginError: ''
+    };
+  }
+
   submit(e) {
     e.preventDefault();
+    axios.post('/api/login', {
+      username: e.target.username.value,
+      password: e.target.password.value
+    }).then(resp => {
+      console.log(resp.data);
+      if (resp.data) this.props.login();
+    }).catch((err) => {
+      console.log(err);
+      this.setState({
+        loginError: `Incorrect username/password combination`
+      });
+    });
   }
 
   render() {
     return (
-      <div>
-        <h3>Login</h3>
-        <form onSubmit={e => this.submit(e)}>
+      <div id="login-container">
+        <div id="mouse-login-btn"><img src={`http://weclipart.com/gimg/A0F8CD424E369A2C/cute-mouse-silhouette.png`}/></div>
+        <form className="col form" onSubmit={e => this.submit(e)}>
+          <h3>Login</h3>
           <input type="text" name="username" placeholder="username" />
           <input type="password" name="password" placeholder="password" />
           <input type="submit" />
+          <p className="error-msg">{this.state.loginError ? `Error: ${this.state.loginError}` : ''}</p>
         </form>
-        <h5>Don't have an account?</h5>
-        <Link to="/register">Register</Link>
+        <Link to="/" id="register-btn">Register</Link>
       </div>
     );
   }
 }
 
-export default Login;
+const mapDispatchToProps = dispatch => ({
+  login: () => dispatch({ type: 'LOGIN' })
+});
+
+export default connect(null, mapDispatchToProps)(Login);

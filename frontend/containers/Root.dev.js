@@ -1,18 +1,42 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import {Provider} from 'react-redux';
-import AppContainer from './AppContainer.js';
+import { Provider, connect } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
+import axios from 'axios';
+import ViewingContainer from './ViewingContainer.js';
+import UserContainer from './UserContainer.js';
 
-export default function Root({ store }) {
-  return (
-    <Provider store={store}>
-      <BrowserRouter>
-        <AppContainer />
-      </BrowserRouter>
-    </Provider>
-  );
+class Root extends React.Component {
+  componentWillMount() {
+    axios.get('/api/isLoggedIn').then(resp => {
+      if (resp.data) this.props.login();
+      else this.props.logout();
+    }).catch(e => console.log(e));
+  }
+  render() {
+    if (this.props.loggedIn === 'pending') return <div />;
+    return (
+      <Provider store={this.props.store}>
+        <BrowserRouter>
+          { this.props.loggedIn ?
+            <UserContainer /> :
+            <ViewingContainer /> }
+        </BrowserRouter>
+      </Provider>
+    );
+  }
 }
+
+const mapStateToProps = state => ({
+  loggedIn: state.loggedIn
+});
+
+const mapDispatchToProps = dispatch => ({
+  login: () => dispatch({ type: 'LOGIN' }),
+  logout: () => dispatch({ type: 'LOGOUT' })
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Root);
 
 Root.propTypes = {
   store: PropTypes.object.isRequired,
