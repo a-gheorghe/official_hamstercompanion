@@ -43,6 +43,7 @@
   background-color: LightBlue;
   margin-left: 50px;
   text-decoration: none;
+  border: 3px solid white;
 }
 
 #dashboard-btn-bank a button:hover{
