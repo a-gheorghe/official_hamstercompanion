@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const { Experiment, UserExperiment } = require('./models');
+const { Experiment, UserExperiment, User } = require('./models');
 
 router.get('/experiments', (req, res) => {
   Experiment.findAll({ include: {
@@ -12,7 +12,10 @@ router.get('/experiments', (req, res) => {
 });
 
 router.get('/experiment/:id', (req, res) => {
-  Experiment.findById(req.params.id).then(resp => {
+  Experiment.findById(req.params.id, { include: {
+    model: UserExperiment,
+    where: { userId: req.user.id }
+  }}).then(resp => {
     res.json(resp);
   }).catch(e => console.log(e));
 });

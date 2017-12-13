@@ -40,7 +40,7 @@ router.post('/login', passport.authenticate('local'), (req, res) => {
   if (req.user) {
     res.send(true);
   }
-  else res.send(false);
+  else res.status(401).send('incorrect username/password combination');
 });
 
 router.get('/logout', function(req, res) {
