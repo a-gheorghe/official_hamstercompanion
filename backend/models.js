@@ -33,6 +33,10 @@ const Experiment = sequelize.define('experiment', {
   adminPassword: { type: Sequelize.STRING, allowNull: false },
   description: {
     type: Sequelize.STRING
+  },
+  minDailySessions: {
+    type: Sequelize.INTEGER,
+    defaultValue: 0
   }
 });
 
@@ -127,25 +131,38 @@ const UserExperiment = sequelize.define('user_experiment', {
 });
 
 UserExperiment.belongsTo(User, { onDelete: 'CASCADE' });
-User.hasMany(UserExperiment, { onDelete: 'CASCADE' });
-
 UserExperiment.belongsTo(Experiment, { onDelete: 'CASCADE' });
-Experiment.hasMany(UserExperiment, { onDelete: 'CASCADE' });
 
 User.belongsToMany(Experiment, { through: UserExperiment });
+User.hasMany(UserExperiment, { onDelete: 'CASCADE' });
+
 Experiment.belongsToMany(User, { through: UserExperiment });
+Experiment.hasMany(UserExperiment, { onDelete: 'CASCADE' });
+Experiment.hasMany(TreatmentGroup, { onDelete: 'CASCADE' });
+Experiment.hasMany(Cage, { onDelete: 'CASCADE' });
+Experiment.hasMany(Mouse, { onDelete: 'CASCADE' });
+Experiment.hasMany(Session, { onDelete: 'CASCADE' });
 
 TreatmentGroup.belongsTo(Experiment, { onDelete: 'CASCADE' });
-Experiment.hasMany(TreatmentGroup, { onDelete: 'CASCADE' });
-
-Cage.belongsTo(TreatmentGroup, { onDelete: 'CASCADE' });
 TreatmentGroup.hasMany(Cage, { onDelete: 'CASCADE' });
+TreatmentGroup.hasMany(Mouse, { onDelete: 'CASCADE' });
+TreatmentGroup.hasMany(Session, { onDelete: 'CASCADE' });
 
-Mouse.belongsTo(Cage, { onDelete: 'CASCADE' });
+Cage.belongsTo(Experiment, { onDelete: 'CASCADE' });
+Cage.belongsTo(TreatmentGroup, { onDelete: 'CASCADE' });
 Cage.hasMany(Mouse, { onDelete: 'CASCADE' });
+Cage.hasMany(Session, { onDelete: 'CASCADE' });
 
-Session.belongsTo(Mouse, { onDelete: 'CASCADE' });
+Mouse.belongsTo(Experiment, { onDelete: 'CASCADE' });
+Mouse.belongsTo(TreatmentGroup, { onDelete: 'CASCADE' });
+Mouse.belongsTo(Cage, { onDelete: 'CASCADE' });
 Mouse.hasMany(Session, { onDelete: 'CASCADE' });
+
+Session.belongsTo(Experiment, { onDelete: 'CASCADE' });
+Session.belongsTo(TreatmentGroup, { onDelete: 'CASCADE' });
+Session.belongsTo(Cage, { onDelete: 'CASCADE' });
+Session.belongsTo(Mouse, { onDelete: 'CASCADE' });
+
 
 module.exports = {
   // Export models here

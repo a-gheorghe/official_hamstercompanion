@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
-const { Experiment, UserExperiment, Mouse, Cage, TreatmentGroup  } = require('./models');
+const { Experiment, UserExperiment, Mouse, Cage, TreatmentGroup, Session, Sequelize, sequelize  } = require('./models');
+const Op = Sequelize.Op;
 
 router.get('/experiments', (req, res) => {
   Experiment.findAll({ include: {
@@ -12,8 +13,10 @@ router.get('/experiments', (req, res) => {
 });
 
 router.get('/experiment/:id', (req, res) => {
+  var yesterday = new Date();
+  yesterday = new Date(yesterday.setTime(yesterday.getTime() - 86400000));
   Experiment.findById(req.params.id, {
-    attributes: ['id', 'createdAt', 'name', 'description'],
+    attributes: ['id', 'createdAt', 'name', 'description', 'minDailySessions'],
     include: [
       {
         model: UserExperiment,
@@ -21,17 +24,74 @@ router.get('/experiment/:id', (req, res) => {
       },
       {
         model: TreatmentGroup,
-        include: {
-          model: Cage,
-          include: {
-            model: Mouse
+        required: false,
+        include: [
+          {
+            model: Cage,
+            required: false,
+            include: [
+              {
+                model: Mouse,
+                include: [
+                  {
+                    model: Session,
+                    required: false,
+                    attributes: ['id'],
+                    where: {
+                      createdAt: {[Op.gte]: yesterday}
+                    }
+                  }
+                ]
+              },
+              {
+                model: Session,
+                required: false,
+                attributes: ['id'],
+                where: {
+                  createdAt: {[Op.gte]: yesterday}
+                }
+              }
+            ]
+          },
+          {
+            model: Session,
+            required: false,
+            attributes: ['id'],
+            where: {
+              createdAt: {[Op.gte]: yesterday}
+            }
+          }
+        ]
+      }
+    ]}).then(resp => {
+      console.log('*******************', resp, '***************');
+      res.json(resp);
+    }).catch(e => console.log(e));
+});
+
+router.get('/experiment/:id/sessions', (req, res)=>{
+  var now = new Date();
+  now = new Date(now.setTime(now.getTime() - 86400000));
+  Experiment.findById(1, {
+    attributes: ['id', 'name'],
+    include: [
+      {
+        model: Session,
+        attributes: ['id'],
+        where: {
+          createdAt: {
+            [Op.gte]: now
           }
         }
       }
-    ]}).then(resp => {
-    console.log('*******************', resp, '***************');
-    res.json(resp);
-  }).catch(e => console.log(e));
+    ]})
+    .then((resp)=>{
+      res.send(resp.dataValues);
+    })
+    .catch((err)=>{
+      res.status(400).send(err);
+      console.log(err);
+    });
 });
 
 router.post('/experiment', (req, res) => {
