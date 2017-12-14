@@ -31,7 +31,7 @@
 
 .column{
   flex: 1;
-  margin-left: 50px;
+  margin-left: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -39,6 +39,7 @@
 
 .list-btn{
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   width: calc(100% - 40px);
@@ -50,6 +51,14 @@
   border: 3px solid white;
 }
 
+.dead{
+  color: red;
+}
+
+.control-group{
+  background-color: orange;
+}
+
 .selected{
   width: 100%;
 }
@@ -59,18 +68,18 @@
   width: 100%;
 }
 
-#dashboard-btn-bank a button{
+.column div:first-child{
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
   height: 100px;
-  border-radius: 10px;
+  color: black;
   background-color: LightBlue;
   text-decoration: none;
   border: 3px solid white;
 }
 
-#dashboard-btn-bank a button:hover{
+/* .column div:first-child:hover{
   background-color: Yellow;
-}
+} */
