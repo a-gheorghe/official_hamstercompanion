@@ -25,8 +25,8 @@ class Experiments extends React.Component {
   submit(e) {
     e.preventDefault();
     axios.post('/api/join/experiment', {
-      id: e.target.id.value,
-      password: e.target.password.value
+      id: this.state.id,
+      password: this.state.password
     }).then(resp => {
       if (!resp.data.success) this.setState({ error: resp.data.error });
       else {

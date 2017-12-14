@@ -46,10 +46,15 @@ router.post('/experiment', (req, res) => {
 router.post('/join/experiment', (req, res) => {
   Experiment.findById(req.body.id, { include: {
     model: UserExperiment,
+    required: false,
     where: { userId: req.user.id }
   } }).then(resp => {
-    console.log(resp);
-    if (req.body.password !== resp.password) {
+    if (!resp) {
+      res.json({
+        success: false,
+        error: "Experiment does not exist"
+      });
+    } else if (req.body.password !== resp.password) {
       res.json({
         success: false,
         error: "Incorrect Password"

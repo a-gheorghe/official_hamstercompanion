@@ -40,7 +40,7 @@ class EditExperiment extends React.Component {
           <input type="password" name="adminPassRepeat" placeholder="Repeat Admin Password" />
           <input type="submit" />
         </form>
-        <Link to="/">Cancel</Link>
+        <Link className="box btn" to="/">Cancel</Link>
       </div>
     );
   }
