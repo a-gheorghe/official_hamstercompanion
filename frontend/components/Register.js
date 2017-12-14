@@ -7,18 +7,31 @@ class Register extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      registered: false
+      registered: false,
+      error: ''
     };
   }
 
   submit(e) {
     e.preventDefault();
-    axios.post('/api/register', {
-      username: e.target.username.value,
-      password: e.target.password.value
-    }).then(resp => {
-      if (resp.data.success) this.setState({ registered: true });
-    }).catch(err => console.log(err));
+    if (!e.target.password.value) {
+      this.setState({ error: 'Password is required!' });
+    } else if (e.target.password.value !== e.target.passRepeat.value) {
+      this.setState({ error: 'Passwords do not match!' });
+    } else if (!e.target.username.value) {
+      this.setState({ error: 'Username is required! '});
+    } else {
+      axios.post('/api/register', {
+        fName: e.target.fname.value || null,
+        lName: e.target.lname.value || null,
+        email: e.target.email.value || null,
+        username: e.target.username.value,
+        password: e.target.password.value
+      }).then(resp => {
+        if (resp.data.success) this.setState({ registered: true });
+        else this.setState({ error: resp.data.error });
+      }).catch(err => console.log(err));
+    }
   }
 
   render() {
@@ -51,15 +64,21 @@ class Register extends React.Component {
           <img id="sniffing-mouse" src="https://image.flaticon.com/icons/png/512/47/47240.png" alt=""/>
           <img id="curious-mouse" src="https://img.clipartxtras.com/c9490d6d5087f542980b90624ab29347_mouse-clipart-clipartpen-black-mouse-clipart_333-261.png" alt=""/>
         </div>
-        <div id="right-side">
-          <h3>Register</h3>
+        <div id="middle">
+          <h2>Register</h2>
+          { this.state.error ? <p style={{ color: 'red' }}>{this.state.error}</p> : null }
           <form className="col form" onSubmit={e => this.submit(e)}>
-            <input type="text" name="username" placeholder="username" />
-            <input type="password" name="password" placeholder="password" />
+            <input type="text" name="fname" placeholder="First Name" />
+            <input type="text" name="lname" placeholder="Last Name" />
+            <input type="email" name="email" placeholder="Email" />
+            <input type="text" name="username" placeholder="Username" />
+            <input type="password" name="password" placeholder="Password" />
+            <input type="password" name="passRepeat" placeholder="Repeat Password" />
             <input type="submit" />
           </form>
           <Link to="/login" id="login-btn">Login</Link>
         </div>
+        <div id="right-side" />
       </div>
     );
   }

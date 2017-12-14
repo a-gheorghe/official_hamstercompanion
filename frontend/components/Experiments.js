@@ -74,8 +74,8 @@ class Experiments extends React.Component {
           />
           <input type="submit" />
         </form>
-        <Link to="/new/experiment">Create a new experiment</Link>
-        <button onClick={e => this.logout(e)}>Logout</button>
+        <Link className="btn box" to="/new/experiment">Create a new experiment</Link>
+        <button className="btn box" onClick={e => this.logout(e)}>Logout</button>
       </div>
     );
   }

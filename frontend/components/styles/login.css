@@ -52,12 +52,6 @@ html {
     height: auto;
 }
 
-#feature-list {
-    display: flex;
-    flex-direction: column;
-    flex: 2;
-}
-
 .feature-item {
     background-color: black;
     color: white;
@@ -121,13 +115,14 @@ html {
     transform: scaleX(-1);
 }
 
+/* 
 #right-side {
     flex: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-}
+} */
 
 .form {
     text-align: center

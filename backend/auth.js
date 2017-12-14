@@ -31,15 +31,13 @@ router.get('/isLoggedIn', (req, res) => {
 });
 
 router.post('/register', (req, res) => {
-  User.create({username: req.body.username, password: req.body.password})
+  User.create(req.body)
     .then(resp => res.send({ success: true, response: resp }))
-    .catch(e => res.json({success: false, error: e}));
+    .catch(e => res.json({success: false, error: e.errors[0].message}));
 });
 
 router.post('/login', passport.authenticate('local'), (req, res) => {
-  if (req.user) {
-    res.send(true);
-  }
+  if (req.user) res.send(true);
   else res.status(401).send('incorrect username/password combination');
 });
 
