@@ -13,8 +13,10 @@ class Dashboard extends React.Component {
   }
   componentWillMount() {
     axios.get('/api/experiment/' + this.props.match.params.id).then(resp => {
-      console.log(resp.data);
-      this.setState({experiment: resp.data});
+      this.setState({
+        experiment: resp.data.experiment,
+        isAdmin: resp.data.isAdmin
+      });
     }).catch(e => console.log(e));
   }
 
@@ -26,7 +28,7 @@ class Dashboard extends React.Component {
           <div id="dashboard-info">
             <h3>Experiment ID: {this.state.experiment.id}</h3>
             <h3>Description: {this.state.experiment.description}</h3>
-            {this.state.experiment.user_experiments[0].isAdmin ?
+            {this.state.isAdmin ?
             (<Link to={`/experiment/${this.state.experiment.id}/edit`}><button>Edit Experiment</button></Link>) :
             (<button>Become Administrator</button>)
             }
