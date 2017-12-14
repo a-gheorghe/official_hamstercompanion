@@ -127,6 +127,11 @@ const UserExperiment = sequelize.define('user_experiment', {
     type: Sequelize.INTEGER,
     primaryKey: true,
     autoIncrement: true
+  },
+  isAdmin: {
+    type: Sequelize.BOOLEAN,
+    allowNull: false,
+    defaultValue: false
   }
 });
 
