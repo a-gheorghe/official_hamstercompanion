@@ -21,3 +21,9 @@
 .box:hover {
     background-color: yellow
 }
+
+.btn {
+    width: 200px;
+    margin: 10px auto;
+    text-decoration: none;
+}

@@ -18,7 +18,6 @@ class Login extends React.Component {
       username: e.target.username.value,
       password: e.target.password.value
     }).then(resp => {
-      console.log(resp.data);
       if (resp.data) this.props.login();
     }).catch((err) => {
       console.log(err);
@@ -34,8 +33,8 @@ class Login extends React.Component {
         <div id="mouse-login-btn"><img src={`http://weclipart.com/gimg/A0F8CD424E369A2C/cute-mouse-silhouette.png`}/></div>
         <form className="col form" onSubmit={e => this.submit(e)}>
           <h3>Login</h3>
-          <input type="text" name="username" placeholder="username" />
-          <input type="password" name="password" placeholder="password" />
+          <input type="text" name="username" placeholder="Username" />
+          <input type="password" name="password" placeholder="Password" />
           <input type="submit" />
           <p className="error-msg">{this.state.loginError ? `Error: ${this.state.loginError}` : ''}</p>
         </form>
