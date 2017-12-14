@@ -14,6 +14,7 @@ const UserContainer = () => {
       <h1>Hamster Companion</h1>
       <Switch>
         <Route path="/new/experiment" component={EditExperiment} />
+        <Route path="/experiment/:id/edit" component={EditExperiment} />
         <Route path="/experiment/:id" exact component={Dashboard} />
         <Route path="/experiment/:id/groups" component={TreatmentGroups} />
         <Route path="/experiment/:id/cages" component={Cages} />

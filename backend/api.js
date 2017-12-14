@@ -20,6 +20,7 @@ router.get('/experiment/:id', (req, res) => {
     include: [
       {
         model: UserExperiment,
+        attributes: ['isAdmin'],
         where: { userId: req.user.id },
       },
       {
