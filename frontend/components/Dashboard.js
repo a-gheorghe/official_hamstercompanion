@@ -12,7 +12,8 @@ class Dashboard extends React.Component {
       isAdmin: false,
       focusData: {
         header: '',
-        data: false
+        data: false,
+        type: null
       }
     };
   }
@@ -26,23 +27,56 @@ class Dashboard extends React.Component {
   }
 
   updateFocusData(dataType, data) {
-    // var attributes = [['ID:', data.id]];
-    // var header = '';
-    // switch (dataType) {
-    //   case 'group':
-    //     header = `Group: ${data.name} ${data.isControl ? '(control)' : ''}`;
-    //     attributes.push();
-    //     break;
-    //   case 'cage':
-    //     break;
-    //   default:
-    //     break;
-    // }
+    var attributes = [`ID: ${data.id}`];
+    var header = '';
+    switch (dataType) {
+      case 'group':
+        header = `Group: ${data.name} ${data.isControl ? '(control)' : ''}`;
+        attributes.push(`Cages: ${data.cages.length}`);
+        var numMice = data.cages.reduce((total, cage)=>(total + cage.mice.length), 0);
+        attributes.push(`Mice: ${numMice}`);
+        attributes.push(`Exercise sessions in last 24 hours ${data.sessions.length}`);
+        break;
+      case 'cage':
+        header = "Cage: ";
+        if(data.name) {
+          var name = data.name.split(' ');
+          var firstWord = name[0].toLowerCase();
+          if(firstWord === 'cage') {
+            name.splice(0, 1);
+            name = name.join('');
+            header = header + name;
+          }
+          else{
+            header = header + data.name;
+          }
+        }
+        attributes.push(`Wheel Diameter: ${data.wheel_diameter} cm`);
+        attributes.push(`Mice: ${data.mice.length}`);
+        attributes.push(`Exercise sessions in last 24 hours ${data.sessions.length}`);
+        break;
+      default:
+        header = `Mouse:`;
+        attributes.push(`Sex: ${data.sex}`);
+        if(data.age) {
+          var age = data.age;
+          var now = (new Date()).getTime();
+          var then = (new Date(data.createdAt)).getTime();
+          var months = Math.floor((now - then) / 2592000000);
+          age = age + months;
+          attributes.push(`Current age: ${age} months`);
+        }
+        attributes.push(`Status: ${data.isAlive ? 'alive' : 'dead'}`);
+        attributes.push(`Exercise sessions in last 24 hours ${data.sessions.length}`);
+        break;
+    }
 
+    attributes.push(`Notes: ${data.notes || 'None'}`);
     this.setState({
       focusData: {
-        header: dataType,
-        data: true
+        header,
+        data: attributes,
+        type: dataType
       }
     });
   }
@@ -60,12 +94,16 @@ class Dashboard extends React.Component {
             (<button>Become Administrator</button>)
             }
             <div id="focus-data">
-              {this.state.focusData.data ? <h2>{this.state.focusData.header}</h2> : <p>Select a treatment group, cage, or mouse to the right to view data.</p>}
+              {this.state.focusData.data ?
+                <h2>{this.state.focusData.header}</h2>
+                : <p>Select a treatment group, cage, or mouse to the right to view data.</p>
+              }
             </div>
           </div>
           <DashboardTable experiment={this.state.experiment} updateFocusData = {(dataType, data)=>this.updateFocusData(dataType, data)}/>
         </div>
         <Link to="/" className={"back-btn"}><button>Back to Experiments</button></Link>
+        (<Link to={`/experiment/${this.state.experiment.id}/data`}><button>View Data</button></Link>)
       </div>
     ) : (
       <div>
