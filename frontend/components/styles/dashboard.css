@@ -20,13 +20,25 @@
 #dashboard-main{
   display: flex;
   width: 100%;
+  flex: 1;
 }
 #dashboard-info{
   flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 #dashboard-btn-bank{
   flex: 2;
   display: flex;
+}
+
+#focus-data{
+  border: 2px solid white;
+  margin-top: 20px;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .column{
@@ -72,11 +84,6 @@
   background-color: LightGreen;
   text-decoration: none;
   border: 3px solid white;
-}
-
-.list-btn h2, .list-btn h4{
-  margin: 0;
-  flex: 1;
 }
 
 .inactive{

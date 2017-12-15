@@ -8,7 +8,12 @@ class Dashboard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      experiment: false
+      experiment: false,
+      isAdmin: false,
+      focusData: {
+        header: '',
+        data: false
+      }
     };
   }
   componentWillMount() {
@@ -19,6 +24,28 @@ class Dashboard extends React.Component {
         isAdmin: resp.data.isAdmin
       });
     }).catch(e => console.log(e));
+  }
+
+  updateFocusData(dataType, data) {
+    // var attributes = [['ID:', data.id]];
+    // var header = '';
+    // switch (dataType) {
+    //   case 'group':
+    //     header = `Group: ${data.name} ${data.isControl ? '(control)' : ''}`;
+    //     attributes.push();
+    //     break;
+    //   case 'cage':
+    //     break;
+    //   default:
+    //     break;
+    // }
+
+    this.setState({
+      focusData: {
+        header: dataType,
+        data: true
+      }
+    });
   }
 
   render() {
@@ -34,8 +61,11 @@ class Dashboard extends React.Component {
               (<Link to={`/experiment/${this.state.experiment.id}/edit`}><button>Edit Experiment</button></Link>) :
               (<button>Become Administrator</button>)
             }
+            <div id="focus-data">
+              {this.state.focusData.data ? <h2>{this.state.focusData.header}</h2> : <p>Select a treatment group, cage, or mouse to the right to view data.</p>}
+            </div>
           </div>
-          <DashboardTable experiment={this.state.experiment}/>
+          <DashboardTable experiment={this.state.experiment} updateFocusData = {(dataType, data)=>this.updateFocusData(dataType, data)}/>
         </div>
         <Link to="/" className={"back-btn"}><button>Back to Experiments</button></Link>
       </div>
