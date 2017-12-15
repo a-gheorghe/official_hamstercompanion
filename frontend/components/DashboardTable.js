@@ -8,6 +8,7 @@ class DashboardTable extends React.Component {
       experiment: props.experiment,
       groupSelected: null,
       cageSelected: null,
+      mouseSelected: null
     };
   }
 
@@ -16,16 +17,29 @@ class DashboardTable extends React.Component {
     var newGroup = this.state.experiment.treatment_groups[index];
     this.setState({
       groupSelected: newGroup,
-      cageSelected: null
+      cageSelected: null,
+      mouseSelected: null
     });
+    this.props.updateFocusData('group', newGroup);
   }
 
   selectCage(evt, index) {
     evt.preventDefault();
     var newCage = this.state.groupSelected.cages[index];
     this.setState({
-      cageSelected: newCage
+      cageSelected: newCage,
+      mouseSelected: null
     });
+    this.props.updateFocusData('cage', newCage);
+  }
+
+  selectMouse(evt, index) {
+    evt.preventDefault();
+    var newMouse = this.state.cageSelected.mice[index];
+    this.setState({
+      mouseSelected: newMouse
+    });
+    this.props.updateFocusData('mouse', newMouse);
   }
 
   render() {
@@ -43,8 +57,6 @@ class DashboardTable extends React.Component {
               `}
               >
               <h2>{group.name}</h2>
-              <h4>{group.cages.length} cages</h4>
-              <h4>Sessions: {group.sessions.length}</h4>
             </button>))
             ) : ''
           }
@@ -62,8 +74,6 @@ class DashboardTable extends React.Component {
                 ${(this.state.cageSelected && cage.id === this.state.cageSelected.id) ? 'selected' : ''}
                 ${cage.sessions.length <= this.state.experiment.minDailySessions ? 'inactive' : ''}`}>
               <h2>{cage.name}</h2>
-              <h4>{`${cage.mice.length} mice`}</h4>
-              <h4>Sessions: {cage.sessions.length}</h4>
               </button>))) :
             (<div>No group selected</div>)}
         </div>
@@ -71,15 +81,16 @@ class DashboardTable extends React.Component {
           <div>Mice:</div>
           {/* <Link to={`/experiment/${this.state.experiment.id}/mice`}><button>Mice: </button></Link> */}
           {this.state.cageSelected ?
-            (this.state.cageSelected.mice.map((mouse)=>(
+            (this.state.cageSelected.mice.map((mouse, index)=>(
               <button
               key={mouse.id}
+              onClick={(evt)=>this.selectMouse(evt, index)}
               className={`list-btn
                 ${mouse.isAlive ? '' : 'inactive'}
+                ${(this.state.mouseSelected && mouse.id === this.state.mouseSelected.id) ? 'selected' : ''}
               `}>
               {/* className={`list-btn ${(this.state.cageSelected && cage.id === this.state.cageSelected.id) ? 'selected' : ''}`}> */}
               <h2>{mouse.id}</h2>
-              <h4>Sessions: {mouse.sessions.length}</h4>
               </button>))) :
             (<div>No cage selected</div>)}
         </div>
