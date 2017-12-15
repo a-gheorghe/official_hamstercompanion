@@ -163,7 +163,7 @@ router.get('/experiment/:id/sessions', (req, res)=>{
       const file = json2csv({ data, fields: Object.keys(data[0]) });
       console.log(file);
       fs.writeFile(__dirname + '/data.csv', file, err => console.log(err));
-      res.download(__dirname + '/data.csv', 'data.csv');
+      res.download('./data.csv', 'data.csv');
     })
     .catch((err)=>{
       res.status(400).send(err);
