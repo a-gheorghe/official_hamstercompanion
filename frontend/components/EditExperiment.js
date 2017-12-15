@@ -18,8 +18,8 @@ class EditExperiment extends React.Component {
     if (this.props.match.params.id) {
       axios.get('/api/experiment/' + this.props.match.params.id).then(resp => {
         this.setState({
-          name: resp.data.name,
-          desc: resp.data.description,
+          name: resp.data.experiment.name,
+          desc: resp.data.experiment.description,
           edit: true
         });
       });
@@ -44,7 +44,7 @@ class EditExperiment extends React.Component {
           }
           body.adminPassword = e.target.adminPassword.value;
         }
-        axios.post(`/api/experiment/${this.props.match.params.id}/edit`, body)
+        axios.post(`/api/experiment/${this.props.match.params.id}`, body)
           .then(resp => {
             if (resp.data.success) this.setState({ submitted: true });
             else this.setState({ error: resp.data.error });
@@ -69,7 +69,11 @@ class EditExperiment extends React.Component {
   changeDesc(e) { this.setState({ desc: e.target.value }); }
 
   render() {
-    if (this.state.submitted) return <Redirect to="/" />;
+    if (this.state.submitted) {
+      return (this.state.edit ?
+        <Redirect to="/" />
+        : <Redirect to={`/experiment/${this.props.match.params.id}`} />);
+    }
 
     return (
       <div>
@@ -93,7 +97,9 @@ class EditExperiment extends React.Component {
             : null }
           <input type="submit" />
         </form>
-        <Link className="box btn" to="/">Cancel</Link>
+        { this.state.edit ?
+          <Link className="box btn" to={`/experiment/${this.props.match.params.id}`}>Cancel</Link>
+          : <Link className="box btn" to="/">Cancel</Link> }
       </div>
     );
   }

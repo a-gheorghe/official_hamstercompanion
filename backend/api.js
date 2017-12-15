@@ -126,7 +126,6 @@ router.get('/experiment/:id', (req, res) => {
         ]
       }
     ]}).then(resp => {
-    console.log(resp);
     res.send({
       experiment: resp,
       isAdmin: req.isAdmin
