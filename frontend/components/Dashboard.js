@@ -78,6 +78,12 @@ class Dashboard extends React.Component {
     });
   }
 
+  download() {
+    axios.get(`/api/experiment/${this.props.match.params.id}/sessions`).then(resp => {
+      console.log(resp.data);
+    }).catch(e => console.log(e));
+  }
+
   render() {
     return (this.state.experiment ? (
       <div id="dashboard-container">
@@ -104,7 +110,7 @@ class Dashboard extends React.Component {
           <DashboardTable experiment={this.state.experiment} updateFocusData = {(dataType, data)=>this.updateFocusData(dataType, data)}/>
         </div>
         <Link to="/" className={"back-btn"}><button>Back to Experiments</button></Link>
-        <Link to={`/experiment/${this.state.experiment.id}/data`}><button>View Data</button></Link>
+        <button onClick={() => this.download()}>Download Data</button>
       </div>
     ) : (
       <div>

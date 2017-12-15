@@ -1,7 +1,9 @@
 const express = require('express');
 const router = express.Router();
+const json2csv = require('json2csv');
+const fs = require('fs');
 
-const { Experiment, UserExperiment, Mouse, Cage, TreatmentGroup, Session, Sequelize, sequelize  } = require('./models');
+const { Experiment, UserExperiment, Mouse, Cage, TreatmentGroup, Session, Sequelize } = require('./models');
 const Op = Sequelize.Op;
 
 router.get('/experiments', (req, res) => {
@@ -13,8 +15,6 @@ router.get('/experiments', (req, res) => {
 });
 
 router.post('/experiment', (req, res) => {
-  console.log('TEST');
-  res.send({ success: false, error: 'you done fucked up brock' });
   Experiment.create(req.body)
     .then(resp => UserExperiment.create({
       userId: req.user.id,
@@ -134,23 +134,36 @@ router.get('/experiment/:id', (req, res) => {
 });
 
 router.get('/experiment/:id/sessions', (req, res)=>{
-  var now = new Date();
-  now = new Date(now.setTime(now.getTime() - 86400000));
-  Experiment.findById(1, {
-    attributes: ['id', 'name'],
+  Session.findAll({
+    where: { experimentId: req.params.id },
     include: [
       {
-        model: Session,
-        attributes: ['id'],
-        where: {
-          createdAt: {
-            [Op.gte]: now
-          }
-        }
+        model: Mouse
+      },
+      {
+        model: Cage
+      },
+      {
+        model: TreatmentGroup
       }
     ]})
     .then((resp)=>{
-      res.send(resp.dataValues);
+      const data = resp.map(sesh => ({
+        "id": sesh.id,
+        "revolutions": sesh.revolutions,
+        "start_time": sesh.start_time,
+        "time_elapse(minutes)": (sesh.end_time.getTime() - sesh.start_time.getTime()) / 60000,
+        "pace": (sesh.end_time.getTime() - sesh.start_time.getTime()) / 60000 / sesh.revolutions,
+        "mouse_id": sesh.mouse.id,
+        "mouse_sex": sesh.mouse.sex,
+        "mouse_age": sesh.mouse.age,
+        "cage": sesh.cage.name,
+        "treatment_group": sesh.treatment_group.name
+      }));
+      const file = json2csv({ data, fields: Object.keys(data[0]) });
+      console.log(file);
+      fs.writeFile(__dirname + '/data.csv', file, err => console.log(err));
+      res.download(__dirname + '/data.csv', 'data.csv');
     })
     .catch((err)=>{
       res.status(400).send(err);

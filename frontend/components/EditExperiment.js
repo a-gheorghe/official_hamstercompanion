@@ -71,8 +71,8 @@ class EditExperiment extends React.Component {
   render() {
     if (this.state.submitted) {
       return (this.state.edit ?
-        <Redirect to="/" />
-        : <Redirect to={`/experiment/${this.props.match.params.id}`} />);
+        <Redirect to={`/experiment/${this.props.match.params.id}`} />
+        : <Redirect to="/" />);
     }
 
     return (
