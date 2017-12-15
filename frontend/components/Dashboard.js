@@ -35,7 +35,6 @@ class Dashboard extends React.Component {
         attributes.push(`Cages: ${data.cages.length}`);
         var numMice = data.cages.reduce((total, cage)=>(total + cage.mice.length), 0);
         attributes.push(`Mice: ${numMice}`);
-        attributes.push(`Exercise sessions in last 24 hours ${data.sessions.length}`);
         break;
       case 'cage':
         header = "Cage: ";
@@ -53,7 +52,6 @@ class Dashboard extends React.Component {
         }
         attributes.push(`Wheel Diameter: ${data.wheel_diameter} cm`);
         attributes.push(`Mice: ${data.mice.length}`);
-        attributes.push(`Exercise sessions in last 24 hours ${data.sessions.length}`);
         break;
       default:
         header = `Mouse:`;
@@ -64,13 +62,12 @@ class Dashboard extends React.Component {
           var then = (new Date(data.createdAt)).getTime();
           var months = Math.floor((now - then) / 2592000000);
           age = age + months;
-          attributes.push(`Current age: ${age} months`);
+          attributes.push(`Current age in months: ${age}`);
         }
         attributes.push(`Status: ${data.isAlive ? 'alive' : 'dead'}`);
-        attributes.push(`Exercise sessions in last 24 hours ${data.sessions.length}`);
         break;
     }
-
+    attributes.push(`Exercise sessions in last 24 hours: ${data.sessions.length}`);
     attributes.push(`Notes: ${data.notes || 'None'}`);
     this.setState({
       focusData: {
@@ -94,8 +91,12 @@ class Dashboard extends React.Component {
               (<button>Become Administrator</button>)
             }
             <div id="focus-data">
-              {this.state.focusData.data ?
+              {this.state.focusData.data ? (<div>
                 <h2>{this.state.focusData.header}</h2>
+                <div id="attributes">
+                  {this.state.focusData.data.map((attribute, index)=><p key={index}>{attribute}</p>)}
+                </div>
+              </div>)
                 : <p>Select a treatment group, cage, or mouse to the right to view data.</p>
               }
             </div>
@@ -103,7 +104,7 @@ class Dashboard extends React.Component {
           <DashboardTable experiment={this.state.experiment} updateFocusData = {(dataType, data)=>this.updateFocusData(dataType, data)}/>
         </div>
         <Link to="/" className={"back-btn"}><button>Back to Experiments</button></Link>
-        (<Link to={`/experiment/${this.state.experiment.id}/data`}><button>View Data</button></Link>)
+        <Link to={`/experiment/${this.state.experiment.id}/data`}><button>View Data</button></Link>
       </div>
     ) : (
       <div>

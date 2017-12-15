@@ -16,7 +16,7 @@ const UserContainer = () => {
       <Switch>
         <Route path="/new/experiment" component={EditExperiment} />
         <Route path="/experiment/:id/edit" component={EditExperiment} />
-        <Route path="/experiment/:id/data" component={ExperimentData} />
+        {/* <Route path="/experiment/:id/data" component={ExperimentData} /> */}
         <Route path="/experiment/:id" exact component={Dashboard} />
         <Route path="/experiment/:id/groups" component={TreatmentGroups} />
         <Route path="/experiment/:id/cages" component={Cages} />
