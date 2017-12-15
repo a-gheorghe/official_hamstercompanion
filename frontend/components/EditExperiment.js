@@ -32,7 +32,23 @@ class EditExperiment extends React.Component {
       if (!e.target.adminPasswordCheck.value) {
         this.setState({ error: 'Admin password required to edit' });
       } else {
-        // TODO EDIT EXPERIMENT ON SERVER SIDE
+        const body = {
+          name: this.state.name,
+          description: this.state.desc
+        };
+        if (e.target.password.value) body.password = e.target.password.value;
+        if (e.target.adminPassword.value) {
+          if (e.target.adminPassword.value !== e.target.adminPassRepeat.value) {
+            this.setState({ error: 'Admin passwords must match!'});
+            return;
+          }
+          body.adminPassword = e.target.adminPassword.value;
+        }
+        axios.post(`/api/experiment/${this.props.match.params.id}/edit`, body)
+          .then(resp => {
+            if (resp.data.success) this.setState({ submitted: true });
+            else this.setState({ error: resp.data.error });
+          }).catch(err => console.log(err));
       }
     } else {
       if (e.target.adminPassword.value === e.target.adminPassRepeat.value) {

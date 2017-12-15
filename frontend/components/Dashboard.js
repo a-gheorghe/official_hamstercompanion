@@ -13,12 +13,16 @@ class Dashboard extends React.Component {
   }
   componentWillMount() {
     axios.get('/api/experiment/' + this.props.match.params.id).then(resp => {
-      console.log(resp.data);
-      this.setState({experiment: resp.data});
+      console.log('RESPONSE', resp);
+      this.setState({
+        experiment: resp.data.experiment,
+        isAdmin: resp.data.isAdmin
+      });
     }).catch(e => console.log(e));
   }
 
   render() {
+    console.log('STATE', this.state);
     return (this.state.experiment ? (
       <div id="dashboard-container">
         <div id="dashboard-header"><h1>Dashboard: {this.state.experiment.name}</h1></div>
