@@ -13,6 +13,8 @@ router.get('/experiments', (req, res) => {
 });
 
 router.post('/experiment', (req, res) => {
+  console.log('TEST');
+  res.send({ success: false, error: 'you done fucked up brock' });
   Experiment.create(req.body)
     .then(resp => UserExperiment.create({
       userId: req.user.id,
@@ -61,19 +63,19 @@ router.use('/experiment/:id', (req, res, next) => {
       userId: req.user.id
     }
   })
-  .then((resp)=>{
-    if(!resp.dataValues) {
-      res.send(false);
-    }
-    else{
-      req.isAdmin = resp.dataValues.isAdmin;
-      next();
-    }
-  })
-  .catch((err)=>{
-    console.log('Server Error');
-    res.status(500).send(err);
-  });
+    .then((resp)=>{
+      if(!resp.dataValues) {
+        res.send(false);
+      }
+      else{
+        req.isAdmin = resp.dataValues.isAdmin;
+        next();
+      }
+    })
+    .catch((err)=>{
+      console.log('Server Error');
+      res.status(500).send(err);
+    });
 });
 
 router.get('/experiment/:id', (req, res) => {
@@ -124,11 +126,11 @@ router.get('/experiment/:id', (req, res) => {
         ]
       }
     ]}).then(resp => {
-      res.send({
-        experiment: resp,
-        isAdmin: req.isAdmin
-      });
-    }).catch(e => console.log(e));
+    res.send({
+      experiment: resp,
+      isAdmin: req.isAdmin
+    });
+  }).catch(e => console.log(e));
 });
 
 router.get('/experiment/:id/sessions', (req, res)=>{
@@ -166,5 +168,9 @@ router.use('/experiment/:id', (req, res, next)=>{
   }
 });
 
-
+router.post('/experiment/:id', (req, res) => {
+  Experiment.update(req.body, { where: { id: req.params.id }})
+    .then(resp => res.json({ success: true, respnse: resp }))
+    .catch(e => res.json({ success: false, error: e.errors[0].message }));
+});
 module.exports = router;

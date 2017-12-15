@@ -90,8 +90,8 @@ class Dashboard extends React.Component {
             <h3>Experiment ID: {this.state.experiment.id}</h3>
             <h3>Description: {this.state.experiment.description}</h3>
             {this.state.isAdmin ?
-            (<Link to={`/experiment/${this.state.experiment.id}/edit`}><button>Edit Experiment</button></Link>) :
-            (<button>Become Administrator</button>)
+              (<Link to={`/experiment/${this.state.experiment.id}/edit`}><button>Edit Experiment</button></Link>) :
+              (<button>Become Administrator</button>)
             }
             <div id="focus-data">
               {this.state.focusData.data ?
