@@ -14,7 +14,8 @@ class Dashboard extends React.Component {
         header: '',
         data: false,
         type: null
-      }
+      },
+      error: ''
     };
   }
   componentWillMount() {
@@ -78,6 +79,16 @@ class Dashboard extends React.Component {
     });
   }
 
+  becomeAdmin(e) {
+    e.preventDefault();
+    axios.post(`/api/experiment/${this.props.match.params.id}/join/admin`, {
+      password: e.target.password.value
+    }).then(resp => {
+      if (resp.data.success) this.componentWillMount();
+      else this.setState({ error: resp.data.error });
+    }).catch(err => console.log(err));
+  }
+
   render() {
     return (this.state.experiment ? (
       <div id="dashboard-container">
@@ -88,7 +99,11 @@ class Dashboard extends React.Component {
             <h3>Description: {this.state.experiment.description}</h3>
             {this.state.isAdmin ?
               (<Link to={`/experiment/${this.state.experiment.id}/edit`}><button>Edit Experiment</button></Link>) :
-              (<button>Become Administrator</button>)
+              (<form className="col form" onSubmit={e => this.becomeAdmin(e)}>
+                { this.state.error ? <p style={{ color: 'red' }}>{this.state.error}</p> : null }
+                <input type="password" name="password" placeholder="Admin Password" />
+                <input type="submit" value="Become Administrator" />
+              </form>)
             }
             <div id="focus-data">
               {this.state.focusData.data ? (<div>
