@@ -161,9 +161,8 @@ router.get('/experiment/:id/sessions', (req, res)=>{
         "treatment_group": sesh.treatment_group.name
       }));
       const file = json2csv({ data, fields: Object.keys(data[0]) });
-      console.log(file);
       fs.writeFile(__dirname + '/data.csv', file, err => console.log(err));
-      res.download('./data.csv', 'data.csv');
+      res.sendfile('./data.csv');
     })
     .catch((err)=>{
       res.status(400).send(err);
