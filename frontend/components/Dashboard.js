@@ -98,7 +98,7 @@ class Dashboard extends React.Component {
             <h3>Experiment ID: {this.state.experiment.id}</h3>
             <h3>Description: {this.state.experiment.description}</h3>
             {this.state.isAdmin ?
-              (<Link to={`/experiment/${this.state.experiment.id}/edit`}><button>Edit Experiment</button></Link>) :
+              (<Link to={`/experiment/${this.state.experiment.id}/edit`} className="btn box">Edit Experiment</Link>) :
               (<form className="col form" onSubmit={e => this.becomeAdmin(e)}>
                 { this.state.error ? <p style={{ color: 'red' }}>{this.state.error}</p> : null }
                 <input type="password" name="password" placeholder="Admin Password" />
@@ -118,7 +118,7 @@ class Dashboard extends React.Component {
           </div>
           <DashboardTable experiment={this.state.experiment} updateFocusData = {(dataType, data)=>this.updateFocusData(dataType, data)}/>
         </div>
-        <Link to="/" className={"back-btn"}><button>Back to Experiments</button></Link>
+        <Link to="/" className={"back-btn btn box"}>Back to Experiments</Link>
         <a className="btn box" href={`/api/experiment/${this.props.match.params.id}/sessions`} download="sessions.csv">Download Data</a>
       </div>
     ) : (

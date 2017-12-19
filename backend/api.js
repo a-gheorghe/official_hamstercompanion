@@ -160,7 +160,7 @@ router.get('/experiment/:id/sessions', (req, res)=>{
         "cage": sesh.cage.name,
         "treatment_group": sesh.treatment_group.name
       }));
-      const file = json2csv({ data, fields: Object.keys(data[0]) });
+      const file = json2csv({ data, fields: data[0] ? Object.keys(data[0]) : ["no sessions available"] });
       fs.writeFile(__dirname + '/data.csv', file, err => console.log(err));
       res.sendfile('./data.csv');
     })
