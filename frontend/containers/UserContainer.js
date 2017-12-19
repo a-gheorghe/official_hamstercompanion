@@ -3,7 +3,7 @@ import { Route, Redirect, Switch } from 'react-router';
 import Experiments from '../components/Experiments';
 import Dashboard from '../components/Dashboard';
 import EditExperiment from '../components/EditExperiment';
-import ExperimentData from '../components/ExperimentData';
+// import ExperimentData from '../components/ExperimentData';
 import TreatmentGroups from '../components/TreatmentGroups';
 import Cages from '../components/Cages';
 import Mice from '../components/Mice';

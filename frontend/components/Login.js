@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import './styles/login.css';
@@ -30,15 +29,13 @@ class Login extends React.Component {
   render() {
     return (
       <div id="login-container">
-        <div id="mouse-login-btn"><img src={`http://weclipart.com/gimg/A0F8CD424E369A2C/cute-mouse-silhouette.png`}/></div>
         <form className="col form" onSubmit={e => this.submit(e)}>
-          <h3>Login</h3>
+          <h2>Login</h2>
           <input type="text" name="username" placeholder="Username" />
           <input type="password" name="password" placeholder="Password" />
           <input type="submit" />
           <p className="error-msg">{this.state.loginError ? `Error: ${this.state.loginError}` : ''}</p>
         </form>
-        <Link to="/" id="register-btn">Register</Link>
       </div>
     );
   }
