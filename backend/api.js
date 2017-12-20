@@ -13,8 +13,6 @@ router.get('/experiments', (req, res) => {
 });
 
 router.post('/experiment', (req, res) => {
-  console.log('TEST');
-  res.send({ success: false, error: 'you done fucked up brock' });
   Experiment.create(req.body)
     .then(resp => UserExperiment.create({
       userId: req.user.id,
@@ -126,11 +124,11 @@ router.get('/experiment/:id', (req, res) => {
         ]
       }
     ]}).then(resp => {
-    res.send({
-      experiment: resp,
-      isAdmin: req.isAdmin
-    });
-  }).catch(e => console.log(e));
+      res.send({
+        experiment: resp,
+        isAdmin: req.isAdmin
+      });
+    }).catch(e => console.log(e));
 });
 
 router.get('/experiment/:id/sessions', (req, res)=>{

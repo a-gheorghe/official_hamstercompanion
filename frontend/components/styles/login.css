@@ -1,45 +1,27 @@
-@media (min-width: 900px) {
-    #register-container {
-        --blue-flask-width: 400px;
-        --curious-mouse-width: 250px;
-    }
-}
-
-@media (max-width: 899px) {
-    #register-container {
-        /*--blue-flask-width: calc(100vw/3 - 10px);*/
-        --blue-flask-width: 400px;
-        --curious-mouse-width: 250px;
-    }
+#register-container {
+    --tube-width: 380px;
+    --tube-height: calc(var(--tube-width)*0.833);
+    --sniffing-mouse-width: 250px;
+    --sniffing-mouse-height: var(--sniffing-mouse-width);
+    --flask-width: 500px;
+    --flask-height: calc(1.042*var(--flask-width));
+    --curious-mouse-width: 250px;
+    --curious-mouse-height: calc(0.784*var(--curious-mouse-width));
 }
 
 html {
     background-color: black;
 }
 
-.error-msg {
-    color: red;
-}
-
-#login-container {
-    background-color: black;
-    color: white;
-    flex: 100%;
-    display: flex;
-    width: 100vw;
-    position: fixed;
-    top: 85px;
-}
-
 #register-btn {
     color: white;
     position: fixed;
-    left: calc(100vw - 105px);
+    left: calc(100vw - 95px);
     top: 50px;
     text-decoration: none;
 }
 
-#mouse-login-btn {
+#mouse-register-btn {
     width: 120px;
     height: 100px;
     position: fixed;
@@ -50,6 +32,31 @@ html {
 #mouse-login-btn img {
     width: 100%;
     height: auto;
+}
+
+#login-container {
+    background-color: black;
+    color: white;
+    flex: 100%;
+    display: flex;
+    width: 100vw;
+    height: 100%;
+    position: fixed;
+    top: 85px;
+}
+
+.main-column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+#feature-list {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 100px;
+    flex: 1;
 }
 
 .feature-item {
@@ -79,51 +86,84 @@ html {
     filter: invert(100%);
 }
 
-#test-tubes {
-    width: 400px;
-    height: auto;
-    position: absolute;
-    left: 56px;
-    top: calc(100vh - 430px);
+.fixed-image-container {
+  flex: 1;
 }
 
-#blue-flask {
-    width: var(--blue-flask-width);
-    height: auto;
+#fixed-image-container-1 {
+  flex: 2;
+}
+
+#test-tubes {
     position: fixed;
-    left: calc((5/6)*100vw - var(--blue-flask-width)/2);
-    top: calc(100vh - 1.17*var(--blue-flask-width));
-    filter: invert(100%);
+    top: calc(100vh - var(--tube-height) - 20px);
+    left: calc((33.33vw - var(--tube-width))/2);
+    width: var(--tube-width);
+    height: var(--tube-height);
 }
 
 #sniffing-mouse {
-    width: 300px;
-    height: auto;
+    width: var(--sniffing-mouse-width);
+    height: var(--sniffing-mouse-height);
     position: fixed;
-    left: 15px;
-    top: calc(100vh - 583px);
+    top: calc(100vh - var(--tube-height) - var(--sniffing-mouse-height) + 30px);
+    left: calc((33.33vw - var(--sniffing-mouse-width))/2 - 65px);
+    filter: invert(100%);
+}
+
+#login-form-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#login-form-container h1{
+  margin-top: 50px;
+}
+
+
+form.col.form {
+  margin: 0;
+  width: 100%;
+  align-items: center;
+}
+
+form input{
+  width: 500px;
+  margin-top: 0 !important;
+  height: 50px !important;
+  padding-left: 20px;
+}
+
+#big-submit-btn{
+  background-color: #A0CE05 !important;
+}
+
+#big-submit-btn:hover{
+  background-color: #FFC506 !important;
+}
+
+#right-side {
+    margin: 0 auto;
+    flex: 1;
+}
+
+#flask {
+    width: var(--flask-width);
+    height: var(--flase-height);
+    position: fixed;
+    left: calc(83.33vw - var(--flask-width)/2);
+    top: calc(100vh - var(--flask-height) - 20px);
     filter: invert(100%);
 }
 
 #curious-mouse {
     width: var(--curious-mouse-width);
-    height: auto;
+    height: var(--curious-mouse-height);
     position: fixed;
-    left: calc((5/6)*100vw - var(--curious-mouse-width)/2);
-    top: calc(100vh - 0.81*var(--curious-mouse-width));
+    left: calc(83.33vw - var(--curious-mouse-width)/2 + 30px);
+    top: calc(100vh - var(--curious-mouse-height) - 20px);
     filter: invert(100%);
     transform: scaleX(-1);
-}
-
-/* 
-#right-side {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-} */
-
-.form {
-    text-align: center
 }
