@@ -3,25 +3,25 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import './styles/treatmentGroups.css';
 
-class TreatmentGroups extends React.Component {
+class TreatmentGroupEdit extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      experiment: false
+      group: null
     };
   }
 
   componentWillMount() {
-    axios.get('/api/experiment/' + this.props.match.params.id).then(resp => {
-      this.setState({experiment: resp.data});
+    axios.get(`/api/experiment/${this.props.match.params.id}/group/${this.props.match.params.groupId}`).then(resp => {
+      this.setState({group: resp.data});
     }).catch(e => console.log(e));
   }
 
   render() {
-    return (this.state.experiment ? (
+    if (this.state.group === null) return null;
+    return (this.state.group ? (
       <div id="dashboard-container">
-        <h1>Treatment Groups: {this.state.experiment.name}</h1>
-        <Link to={`/experiment/${this.state.experiment.id}/`} className={"back-btn"}><button>Back to Dashboard</button></Link>
+        <h1>Treatment Group: {this.state.group.name}</h1>
       </div>
     ) : (
       <div>
@@ -32,4 +32,4 @@ class TreatmentGroups extends React.Component {
   }
 }
 
-export default TreatmentGroups;
+export default TreatmentGroupEdit;

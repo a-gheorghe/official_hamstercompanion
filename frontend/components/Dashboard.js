@@ -92,7 +92,6 @@ class Dashboard extends React.Component {
   }
 
   render() {
-    console.log(this.state.focusData);
     return (this.state.experiment ? (
       <div id="dashboard-container">
         <a download="sessions.csv" className="back-btn" style={{ left: '260px' }}
@@ -120,7 +119,7 @@ class Dashboard extends React.Component {
                 <div id="attributes">
                   {this.state.focusData.data.map((attribute, index)=><p key={index}>{attribute}</p>)}
                 </div>
-                <Link to={`/experiment/${this.state.focusData.type}/${this.state.focusData.id}`}>
+                <Link to={`/experiment/${this.props.match.params.id}/${this.state.focusData.type}/${this.state.focusData.id}`}>
                   <RaisedButton className="btn" label={`Edit ${this.state.focusData.type}`} default />
                 </Link>
               </div>)

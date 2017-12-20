@@ -1,26 +1,27 @@
 import React from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import './styles/mice.css';
+import './styles/treatmentGroups.css';
 
-class Mice extends React.Component {
+class MouseEdit extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      experiment: false
+      mouse: null
     };
   }
+
   componentWillMount() {
-    axios.get('/api/experiment/' + this.props.match.params.id).then(resp => {
-      this.setState({experiment: resp.data});
+    axios.get(`/api/experiment/${this.props.match.params.id}/mouse/${this.props.match.params.mouseId}`).then(resp => {
+      this.setState({mouse: resp.data});
     }).catch(e => console.log(e));
   }
 
   render() {
-    return (this.state.experiment ? (
+    if (this.state.mouse === null) return null;
+    return (this.state.mouse ? (
       <div id="dashboard-container">
-        <h1>Mice: {this.state.experiment.name}</h1>
-        <Link to={`/experiment/${this.state.experiment.id}/`} className={"back-btn"}><button>Back to Dashboard</button></Link>
+        <h1>Mouse: {this.state.mouse.id}</h1>
       </div>
     ) : (
       <div>
@@ -31,4 +32,4 @@ class Mice extends React.Component {
   }
 }
 
-export default Mice;
+export default MouseEdit;

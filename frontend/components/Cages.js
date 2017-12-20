@@ -1,26 +1,27 @@
 import React from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import './styles/cages.css';
+import './styles/treatmentGroups.css';
 
-class Cages extends React.Component {
+class CageEdit extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      experiment: false
+      cage: null
     };
   }
+
   componentWillMount() {
-    axios.get('/api/experiment/' + this.props.match.params.id).then(resp => {
-      this.setState({experiment: resp.data});
+    axios.get(`/api/experiment/${this.props.match.params.id}/cage/${this.props.match.params.cageId}`).then(resp => {
+      this.setState({cage: resp.data});
     }).catch(e => console.log(e));
   }
 
   render() {
-    return (this.state.experiment ? (
+    if (this.state.cage === null) return null;
+    return (this.state.cage ? (
       <div id="dashboard-container">
-        <h1>Cages: {this.state.experiment.name}</h1>
-        <Link to={`/experiment/${this.state.experiment.id}/`} className={"back-btn"}><button>Back to Dashboard</button></Link>
+        <h1>Cage: {this.state.cage.name}</h1>
       </div>
     ) : (
       <div>
@@ -31,4 +32,4 @@ class Cages extends React.Component {
   }
 }
 
-export default Cages;
+export default CageEdit;

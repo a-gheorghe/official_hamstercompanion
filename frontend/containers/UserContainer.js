@@ -16,9 +16,9 @@ const UserContainer = () => {
       <Switch>
         <Route path="/experiment/new" exact component={NewExperiment} />
         <Route path="/experiment/:id/edit" component={EditExperiment} />
-        <Route path="/experiment/group/:id" component={TreatmentGroups} />
-        <Route path="/experiment/cage/:id" component={Cages} />
-        <Route path="/experiment/mouse/:id" component={Mice} />
+        <Route path="/experiment/:id/group/:groupId" component={TreatmentGroups} />
+        <Route path="/experiment/:id/cage/:cageId" component={Cages} />
+        <Route path="/experiment/:id/mouse/:mouseId" component={Mice} />
         <Route path="/experiment/:id" exact component={Dashboard} />
         <Route path="/" exact component={Experiments} />
         <Redirect to="/" />
