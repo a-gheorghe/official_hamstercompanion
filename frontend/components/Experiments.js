@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { RaisedButton } from 'material-ui';
 import DisplayBox from './DisplayBox';
 import axios from 'axios';
 import './styles/experiments.css';
@@ -72,10 +73,14 @@ class Experiments extends React.Component {
             placeholder="Experiment Password"
             value={this.state.password} onChange={e => this.changePass(e)}
           />
-          <input type="submit" />
+          <RaisedButton label="Join" primary type="submit" />
         </form>
-        <Link className="btn box" to="/new/experiment">Create a new experiment</Link>
-        <button className="btn box" onClick={e => this.logout(e)}>Logout</button>
+        <div className="col" style={{ marginTop: '30px' }}>
+          <Link to="/new/experiment">
+            <RaisedButton label="Create a new experiment" primary />
+          </Link>
+          <RaisedButton className="btn" label="Logout" primary onClick={e => this.logout(e)} />
+        </div>
       </div>
     );
   }

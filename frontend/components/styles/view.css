@@ -1,0 +1,116 @@
+@media (min-width: 900px) {
+    #body-container {
+        --blue-flask-width: 400px;
+        --curious-mouse-width: 250px;
+    }
+}
+
+@media (max-width: 899px) {
+    #body-container {
+        /*--blue-flask-width: calc(100vw/3 - 10px);*/
+        --blue-flask-width: 400px;
+        --curious-mouse-width: 250px;
+    }
+}
+
+#body-container {
+    color: white;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 100px;
+}
+
+#header {
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 95px;
+}
+
+#header h1 {
+    margin: 0;
+}
+
+#left-side {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+#test-tubes {
+    width: 400px;
+    height: auto;
+    position: absolute;
+    left: 56px;
+    /* top: calc(100vh - 430px); */
+    bottom: 125px
+}
+
+#sniffing-mouse {
+    width: 300px;
+    height: auto;
+    position: fixed;
+    left: 15px;
+    /* top: calc(100vh - 583px); */
+    bottom: 300px;
+    filter: invert(100%);
+}
+
+#middle {
+    flex: 1;
+}
+
+#right-side {
+    flex: 1
+}
+
+#blue-flask {
+    width: var(--blue-flask-width);
+    height: auto;
+    position: fixed;
+    left: calc((5/6)*100vw - var(--blue-flask-width)/2);
+    top: calc(100vh - 1.17*var(--blue-flask-width));
+    filter: invert(100%);
+}
+
+#curious-mouse {
+    width: var(--curious-mouse-width);
+    height: auto;
+    position: fixed;
+    left: calc((5/6)*100vw - var(--curious-mouse-width)/2);
+    top: calc(100vh - 0.81*var(--curious-mouse-width));
+    filter: invert(100%);
+    transform: scaleX(-1);
+}
+
+#mouse-btn {
+    width: 120px;
+    height: 100px;
+    position: fixed;
+    left: calc(100vw - 150px);
+    top: 30px;
+}
+
+#mouse-btn img {
+    width: 100%;
+    height: auto;
+}
+
+#login-btn {
+    color: white;
+    position: fixed;
+    left: calc(100vw - 95px);
+    top: 71px;
+    text-decoration: none;
+}
+
+#register-btn {
+    color: white;
+    position: fixed;
+    left: calc(100vw - 105px);
+    top: 71px;
+    text-decoration: none;
+}
