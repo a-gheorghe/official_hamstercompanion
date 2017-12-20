@@ -36,9 +36,7 @@ class Register extends React.Component {
   }
 
   render() {
-    console.log(this.state);
     if (this.state.registered) return <Redirect to="/login" />;
-
     return (
       <form className="col form" onSubmit={e => this.submit(e)}>
         <h2>Register</h2>
