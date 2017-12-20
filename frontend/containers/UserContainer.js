@@ -3,6 +3,7 @@ import { Route, Redirect, Switch } from 'react-router';
 import Experiments from '../components/Experiments';
 import Dashboard from '../components/Dashboard';
 import EditExperiment from '../components/EditExperiment';
+import NewExperiment from '../components/NewExperiment';
 import TreatmentGroups from '../components/TreatmentGroups';
 import Cages from '../components/Cages';
 import Mice from '../components/Mice';
@@ -13,7 +14,7 @@ const UserContainer = () => {
     <div id="user-container">
       <h1>Hamster Companion</h1>
       <Switch>
-        <Route path="/new/experiment" component={EditExperiment} />
+        <Route path="/experiment/new" exact component={NewExperiment} />
         <Route path="/experiment/:id/edit" component={EditExperiment} />
         <Route path="/experiment/group/:id" component={TreatmentGroups} />
         <Route path="/experiment/cage/:id" component={Cages} />
