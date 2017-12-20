@@ -79,23 +79,23 @@ class EditExperiment extends React.Component {
     return (
       <div>
         <h3>Create or edit an Experiment</h3>
-        { this.state.error ? <p style={{ color: 'red' }}>{this.state.error}</p> : null }
+        { this.state.error ? <p style={{ color: 'red' }}>{this.state.error}</p> : '' }
         <form className="col form" onSubmit={e => this.submit(e)}>
           <input type="text" name="name" onChange={e => this.changeName(e)}
-            placeholder="Experiment Name" value={this.state.name}
+            placeholder="Experiment Name" value={this.state.name || ''}
           />
           <input type="password" name="password" placeholder="Password to Join Experiment" />
           <input type="text" name="desc" onChange={e => this.changeDesc(e)}
-            placeholder="Description of your experiment" value={this.state.desc}
+            placeholder="Description of your experiment" value={this.state.desc || ''}
           />
-          <input type="password" name="adminPassword" placeholder="Admin Password" />
-          <input type="password" name="adminPassRepeat" placeholder="Repeat Admin Password" />
+          <input type="password" name="adminPassword" placeholder="Admin Password" value=""/>
+          <input type="password" name="adminPassRepeat" placeholder="Repeat Admin Password" value=""/>
           { this.state.edit ?
             <p>In order to edit this experimgnt you must enter the admin password:</p>
-            : null }
+            : '' }
           { this.state.edit ?
-            <input type="password" name="adminPasswordCheck" />
-            : null }
+            <input type="password" name="adminPasswordCheck" value=""/>
+            : '' }
           <RaisedButton label="Submit" primary type="submit" />
         </form>
         { this.state.edit ?
