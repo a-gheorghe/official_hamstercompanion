@@ -10,6 +10,7 @@ class TreatmentGroups extends React.Component {
       experiment: false
     };
   }
+
   componentWillMount() {
     axios.get('/api/experiment/' + this.props.match.params.id).then(resp => {
       this.setState({experiment: resp.data});

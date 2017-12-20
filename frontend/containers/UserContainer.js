@@ -15,10 +15,10 @@ const UserContainer = () => {
       <Switch>
         <Route path="/new/experiment" component={EditExperiment} />
         <Route path="/experiment/:id/edit" component={EditExperiment} />
+        <Route path="/experiment/group/:id" component={TreatmentGroups} />
+        <Route path="/experiment/cage/:id" component={Cages} />
+        <Route path="/experiment/mouse/:id" component={Mice} />
         <Route path="/experiment/:id" exact component={Dashboard} />
-        <Route path="/experiment/:id/groups" component={TreatmentGroups} />
-        <Route path="/experiment/:id/cages" component={Cages} />
-        <Route path="/experiment/:id/mice" component={Mice} />
         <Route path="/" exact component={Experiments} />
         <Redirect to="/" />
       </Switch>

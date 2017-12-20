@@ -74,6 +74,7 @@ class Dashboard extends React.Component {
     this.setState({
       focusData: {
         header,
+        id: data.id,
         data: attributes,
         type: dataType
       }
@@ -91,9 +92,11 @@ class Dashboard extends React.Component {
   }
 
   render() {
+    console.log(this.state.focusData);
     return (this.state.experiment ? (
       <div id="dashboard-container">
-        <a href={`/api/experiment/${this.props.match.params.id}/sessions`} download="sessions.csv">
+        <a download="sessions.csv" className="back-btn" style={{ left: '260px' }}
+          href={`/api/experiment/${this.props.match.params.id}/sessions`}>
           <RaisedButton className="btn" label="Download Data" default />
         </a>
         <div id="dashboard-header"><h1>Dashboard: {this.state.experiment.name}</h1></div>
@@ -117,7 +120,9 @@ class Dashboard extends React.Component {
                 <div id="attributes">
                   {this.state.focusData.data.map((attribute, index)=><p key={index}>{attribute}</p>)}
                 </div>
-                <button className="box btn">Edit {this.state.focusData.type}</button>
+                <Link to={`/experiment/${this.state.focusData.type}/${this.state.focusData.id}`}>
+                  <RaisedButton className="btn" label={`Edit ${this.state.focusData.type}`} default />
+                </Link>
               </div>)
                 : <p>Select a treatment group, cage, or mouse to the right to view data.</p>
               }
