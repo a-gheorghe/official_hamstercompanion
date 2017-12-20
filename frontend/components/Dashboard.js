@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { RaisedButton } from 'material-ui';
 import DashboardTable from './DashboardTable';
 import './styles/dashboard.css';
@@ -9,7 +9,7 @@ class Dashboard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      experiment: false,
+      experiment: null,
       isAdmin: false,
       focusData: {
         header: '',
@@ -25,7 +25,12 @@ class Dashboard extends React.Component {
         experiment: resp.data.experiment,
         isAdmin: resp.data.isAdmin
       });
-    }).catch(e => console.log(e));
+    }).catch((e) => {
+      console.log(e);
+      this.setState({
+        experiment: false
+      });
+    });
   }
 
   updateFocusData(dataType, data) {
@@ -91,7 +96,13 @@ class Dashboard extends React.Component {
   }
 
   render() {
-    return (this.state.experiment ? (
+    if(this.state.experiment === null) {
+      return null;
+    }
+    if(this.state.experiment === false) {
+      return <Redirect to={'/denied'} />;
+    }
+    return (
       <div id="dashboard-container">
         <a href={`/api/experiment/${this.props.match.params.id}/sessions`} download="sessions.csv">
           <RaisedButton className="btn" label="Download Data" default />
@@ -129,14 +140,7 @@ class Dashboard extends React.Component {
           <RaisedButton className="back-btn btn" label="Back to Experiments" secondary />
         </Link>
       </div>
-    ) : (
-      <div>
-        <p className="error-msg">You do not have access to this experiment.</p>
-        <Link to="/">
-          <RaisedButton className="btn" label="Back to Experiments" secondary />
-        </Link>
-      </div>
-    ));
+    );
   }
 }
 

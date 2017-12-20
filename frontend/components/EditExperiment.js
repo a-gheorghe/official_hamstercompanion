@@ -11,14 +11,14 @@ class EditExperiment extends React.Component {
       error: '',
       name: '',
       desc: '',
-      isAdmin: false
+      isAdmin: null
     };
   }
 
   componentWillMount() {
     axios.get(`/api/experiment/${this.props.match.params.id}/edit`)
       .then((resp) => {
-        console.log('******************', resp.data);
+        console.log("Setting data");
         this.setState({
           name: resp.data.experiment.name,
           desc: resp.data.experiment.description,
@@ -28,6 +28,9 @@ class EditExperiment extends React.Component {
       })
       .catch((err)=>{
         console.log(err);
+        this.setState({
+          isAdmin: false
+        });
       });
   }
 
@@ -62,11 +65,18 @@ class EditExperiment extends React.Component {
   changeDesc(e) { this.setState({ desc: e.target.value }); }
 
   render() {
+    if(this.state.isAdmin === null) {
+      return null;
+    }
+    if (this.state.isAdmin === false) {
+      return <Redirect to={'/denied'} />;
+    }
+
     if (this.state.submitted) {
       return <Redirect to={`/experiment/${this.props.match.params.id}`} />;
     }
 
-    return ( this.state.isAdmin ?
+    return (
       <div>
         <h3>Create or edit an Experiment</h3>
         { this.state.error ? <p style={{ color: 'red' }}>{this.state.error}</p> : '' }
@@ -86,13 +96,6 @@ class EditExperiment extends React.Component {
         </form>
         <Link to={`/experiment/${this.props.match.params.id}`}>
           <RaisedButton className="btn" label="Cancel" secondary />
-        </Link>
-      </div>
-      :
-      <div>
-        <p className="error-msg" id="permissions-denied-msg">You do not have access to this page.</p>
-        <Link to="/">
-          <RaisedButton className="btn" label="Back to Experiments" secondary />
         </Link>
       </div>
     );
