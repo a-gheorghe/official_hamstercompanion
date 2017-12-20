@@ -76,7 +76,7 @@ class Experiments extends React.Component {
           <RaisedButton label="Join" primary type="submit" />
         </form>
         <div className="col" style={{ marginTop: '30px' }}>
-          <Link to="/new/experiment">
+          <Link to="/experiment/new">
             <RaisedButton label="Create a new experiment" primary />
           </Link>
           <RaisedButton className="btn" label="Logout" primary onClick={e => this.logout(e)} />

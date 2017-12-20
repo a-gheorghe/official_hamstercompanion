@@ -203,7 +203,18 @@ router.use('/experiment/:id', (req, res, next)=>{
   }
 });
 
-router.post('/experiment/:id', (req, res) => {
+router.get('/experiment/:id/edit', (req, res)=>{
+  Experiment.findById(req.params.id, {
+    attributes: ['id', 'name', 'description']
+  })
+  .then(resp => {
+    res.send({
+      experiment: resp
+    });
+  }).catch(e => console.log(e));
+});
+
+router.post('/experiment/:id/edit', (req, res) => {
   Experiment.update(req.body, { where: { id: req.params.id }})
     .then(resp => res.json({ success: true, respnse: resp }))
     .catch(e => res.json({ success: false, error: e.errors[0].message }));
