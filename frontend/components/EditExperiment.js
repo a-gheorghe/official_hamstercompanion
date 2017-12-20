@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
+import { RaisedButton } from 'material-ui';
 import axios from 'axios';
 
 class EditExperiment extends React.Component {
@@ -95,11 +96,15 @@ class EditExperiment extends React.Component {
           { this.state.edit ?
             <input type="password" name="adminPasswordCheck" />
             : null }
-          <input type="submit" />
+          <RaisedButton label="Submit" primary type="submit" />
         </form>
         { this.state.edit ?
-          <Link className="box btn" to={`/experiment/${this.props.match.params.id}`}>Cancel</Link>
-          : <Link className="box btn" to="/">Cancel</Link> }
+          <Link to={`/experiment/${this.props.match.params.id}`}>
+            <RaisedButton className="btn" label="Cancel" secondary />
+          </Link>
+          : <Link to="/">
+            <RaisedButton className="btn" label="Cancel" secondary />
+          </Link> }
       </div>
     );
   }

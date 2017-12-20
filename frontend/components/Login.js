@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux';
-import './styles/login.css';
+import { RaisedButton } from 'material-ui';
 
 class Login extends React.Component {
   constructor(props) {
@@ -28,15 +28,13 @@ class Login extends React.Component {
 
   render() {
     return (
-      <div id="login-container">
-        <form className="col form" onSubmit={e => this.submit(e)}>
-          <h2>Login</h2>
-          <input type="text" name="username" placeholder="Username" />
-          <input type="password" name="password" placeholder="Password" />
-          <input type="submit" />
-          <p className="error-msg">{this.state.loginError ? `Error: ${this.state.loginError}` : ''}</p>
-        </form>
-      </div>
+      <form className="col form" onSubmit={e => this.submit(e)}>
+        <h2>Login</h2>
+        <input type="text" name="username" placeholder="Username" />
+        <input type="password" name="password" placeholder="Password" />
+        <RaisedButton label="Submit" primary type="submit" />
+        <p className="error-msg">{this.state.loginError ? `Error: ${this.state.loginError}` : ''}</p>
+      </form>
     );
   }
 }

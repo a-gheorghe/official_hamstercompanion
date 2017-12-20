@@ -3,12 +3,12 @@ import { Route, Switch, Redirect } from 'react-router';
 import { Link } from 'react-router-dom';
 import Register from '../components/Register';
 import Login from '../components/Login';
-import '../components/styles/viewingHeader.css';
+import '../components/styles/view.css';
 
 const ViewingContainer = () => {
   return (
     <div id="router-container">
-      <div id="main-header">
+      <div id="header">
         <h1>Hamster Companion</h1>
         <div id="mouse-btn"><img src={`http://weclipart.com/gimg/A0F8CD424E369A2C/cute-mouse-silhouette.png`}/></div>
         <Route path="/" exact render={() => <Link to="/login" id="login-btn">Login</Link>} />
@@ -37,24 +37,18 @@ const ViewingContainer = () => {
 };
 
 const Features = () => (
-  <div id="feature-list">
+  <div className="col">
     <div className="feature-item">
       <div className="mouse-bullet-point color-inverted">
         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Mouse_cartoon.svg/2000px-Mouse_cartoon.svg.png" alt = ""/>
       </div>
-      <h2>Cool product feature #1</h2>
+      <h2>High-detailed data results right at your fingertips</h2>
     </div>
     <div className="feature-item">
       <div className="mouse-bullet-point color-inverted">
         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Mouse_cartoon.svg/2000px-Mouse_cartoon.svg.png" alt = ""/>
       </div>
-      <h2>Amazing product feature #2</h2>
-    </div>
-    <div className="feature-item">
-      <div className="mouse-bullet-point color-inverted">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Mouse_cartoon.svg/2000px-Mouse_cartoon.svg.png" alt = ""/>
-      </div>
-      <h2>Groundbreaking product feature #3</h2>
+      <h2>Real-time info on each group, cage, and mouse</h2>
     </div>
   </div>
 );

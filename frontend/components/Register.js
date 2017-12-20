@@ -1,6 +1,7 @@
 import React from 'react';
-import { Redirect } from 'react-router-dom';
 import axios from 'axios';
+import { Redirect } from 'react-router-dom';
+import { RaisedButton } from 'material-ui';
 import './styles/register.css';
 
 class Register extends React.Component {
@@ -35,22 +36,21 @@ class Register extends React.Component {
   }
 
   render() {
+    console.log(this.state);
     if (this.state.registered) return <Redirect to="/login" />;
 
     return (
-      <div id="register-container">
-        { this.state.error ? <p style={{ color: 'red' }}>{this.state.error}</p> : null }
-        <form className="col form" onSubmit={e => this.submit(e)}>
-          <h2>Register</h2>
-          <input type="text" name="fname" placeholder="First Name" />
-          <input type="text" name="lname" placeholder="Last Name" />
-          <input type="email" name="email" placeholder="Email" />
-          <input type="text" name="username" placeholder="Username" />
-          <input type="password" name="password" placeholder="Password" />
-          <input type="password" name="passRepeat" placeholder="Repeat Password" />
-          <input type="submit" />
-        </form>
-      </div>
+      <form className="col form" onSubmit={e => this.submit(e)}>
+        <h2>Register</h2>
+        { this.state.error ? <p style={{ color: 'red' }}>{this.state.error}</p> : "" }
+        <input type="text" name="fname" placeholder="First Name" />
+        <input type="text" name="lname" placeholder="Last Name" />
+        <input type="email" name="email" placeholder="Email" />
+        <input type="text" name="username" placeholder="Username" />
+        <input type="password" name="password" placeholder="Password" />
+        <input type="password" name="passRepeat" placeholder="Repeat Password" />
+        <RaisedButton label="Submit" primary type="submit" />
+      </form>
     );
   }
 }

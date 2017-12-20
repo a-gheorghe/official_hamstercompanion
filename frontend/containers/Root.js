@@ -1,10 +1,13 @@
-import PropTypes from 'prop-types';
 import React from 'react';
+import darkBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import { Provider, connect } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import axios from 'axios';
 import ViewingContainer from './ViewingContainer.js';
 import UserContainer from './UserContainer.js';
+import '../css/main.css';
 
 class Root extends React.Component {
   componentWillMount() {
@@ -18,9 +21,11 @@ class Root extends React.Component {
     return (
       <Provider store={this.props.store}>
         <BrowserRouter>
-          { this.props.loggedIn ?
-            <UserContainer /> :
-            <ViewingContainer /> }
+          <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
+            { this.props.loggedIn ?
+              <UserContainer /> :
+              <ViewingContainer /> }
+          </MuiThemeProvider>
         </BrowserRouter>
       </Provider>
     );
@@ -37,7 +42,3 @@ const mapDispatchToProps = dispatch => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Root);
-
-Root.propTypes = {
-  store: PropTypes.object.isRequired,
-};

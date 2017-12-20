@@ -14,20 +14,30 @@
 }
 
 #body-container {
-    background-color: black;
     color: white;
-    flex: 100%;
     display: flex;
-    width: 100vw;
+    width: 100%;
+    height: 100%;
     position: fixed;
-    top: 85px;
+    top: 100px;
+}
+
+#header {
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 95px;
+}
+
+#header h1 {
+    margin: 0;
 }
 
 #left-side {
     flex: 1;
     display: flex;
     flex-direction: column;
-    width: auto;
 }
 
 #test-tubes {
@@ -35,7 +45,8 @@
     height: auto;
     position: absolute;
     left: 56px;
-    top: calc(100vh - 430px);
+    /* top: calc(100vh - 430px); */
+    bottom: 125px
 }
 
 #sniffing-mouse {
@@ -43,12 +54,13 @@
     height: auto;
     position: fixed;
     left: 15px;
-    top: calc(100vh - 583px);
+    /* top: calc(100vh - 583px); */
+    bottom: 300px;
     filter: invert(100%);
 }
 
 #middle {
-    flex: 1
+    flex: 1;
 }
 
 #right-side {
@@ -79,7 +91,7 @@
     height: 100px;
     position: fixed;
     left: calc(100vw - 150px);
-    top: 9px;
+    top: 30px;
 }
 
 #mouse-btn img {
@@ -91,7 +103,7 @@
     color: white;
     position: fixed;
     left: calc(100vw - 95px);
-    top: 50px;
+    top: 71px;
     text-decoration: none;
 }
 
@@ -99,14 +111,6 @@
     color: white;
     position: fixed;
     left: calc(100vw - 105px);
-    top: 50px;
+    top: 71px;
     text-decoration: none;
-}
-
-.form {
-    text-align: center
-}
-
-html {
-    background-color: black
 }

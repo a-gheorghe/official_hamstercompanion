@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { RaisedButton } from 'material-ui';
 import DashboardTable from './DashboardTable';
 import './styles/dashboard.css';
 
@@ -92,17 +93,22 @@ class Dashboard extends React.Component {
   render() {
     return (this.state.experiment ? (
       <div id="dashboard-container">
+        <a href={`/api/experiment/${this.props.match.params.id}/sessions`} download="sessions.csv">
+          <RaisedButton className="btn" label="Download Data" default />
+        </a>
         <div id="dashboard-header"><h1>Dashboard: {this.state.experiment.name}</h1></div>
         <div id="dashboard-main">
           <div id="dashboard-info">
             <h3>Experiment ID: {this.state.experiment.id}</h3>
             <h3>Description: {this.state.experiment.description}</h3>
             {this.state.isAdmin ?
-              (<Link to={`/experiment/${this.state.experiment.id}/edit`} className="btn box">Edit Experiment</Link>) :
+              (<Link to={`/experiment/${this.state.experiment.id}/edit`}>
+                <RaisedButton label="Edit Experiment" primary />
+              </Link>) :
               (<form className="col form" onSubmit={e => this.becomeAdmin(e)}>
-                { this.state.error ? <p style={{ color: 'red' }}>{this.state.error}</p> : null }
+                { this.state.error ? <p className="error-msg">{this.state.error}</p> : null }
                 <input type="password" name="password" placeholder="Admin Password" />
-                <input type="submit" value="Become Administrator" />
+                <RaisedButton type="submit" primary label="Become Administrator" />
               </form>)
             }
             <div id="focus-data">
@@ -111,6 +117,7 @@ class Dashboard extends React.Component {
                 <div id="attributes">
                   {this.state.focusData.data.map((attribute, index)=><p key={index}>{attribute}</p>)}
                 </div>
+                <button className="box btn">Edit {this.state.focusData.type}</button>
               </div>)
                 : <p>Select a treatment group, cage, or mouse to the right to view data.</p>
               }
@@ -118,13 +125,16 @@ class Dashboard extends React.Component {
           </div>
           <DashboardTable experiment={this.state.experiment} updateFocusData = {(dataType, data)=>this.updateFocusData(dataType, data)}/>
         </div>
-        <Link to="/" className={"back-btn btn box"}>Back to Experiments</Link>
-        <a className="btn box" href={`/api/experiment/${this.props.match.params.id}/sessions`} download="sessions.csv">Download Data</a>
+        <Link to="/">
+          <RaisedButton className="back-btn btn" label="Back to Experiments" secondary />
+        </Link>
       </div>
     ) : (
       <div>
         <p className="error-msg">You do not have access to this experiment.</p>
-        <Link to="/" className={"back-btn"}><button>Back to Experiments</button></Link>
+        <Link to="/">
+          <RaisedButton className="btn" label="Back to Experiments" secondary />
+        </Link>
       </div>
     ));
   }
