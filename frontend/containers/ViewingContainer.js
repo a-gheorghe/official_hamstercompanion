@@ -16,7 +16,7 @@ const ViewingContainer = () => {
       </div>
       <div id="body-container">
         <div id="left-side">
-          <Route path="/" exact component={Features} />
+          <Features />
           <img id="test-tubes" src="http://www.clker.com/cliparts/g/e/N/n/k/Q/test-tubes-md.png" alt=""/>
           <img id="sniffing-mouse" src="https://image.flaticon.com/icons/png/512/47/47240.png" alt=""/>
         </div>
