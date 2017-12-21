@@ -1,8 +1,7 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { connect } from 'react-redux';
-import './styles/login.css';
+import { RaisedButton } from 'material-ui';
 
 class Login extends React.Component {
   constructor(props) {
@@ -20,7 +19,6 @@ class Login extends React.Component {
     }).then(resp => {
       if (resp.data) this.props.login();
     }).catch((err) => {
-      console.log(err);
       this.setState({
         loginError: `Incorrect username/password combination`
       });
@@ -29,17 +27,13 @@ class Login extends React.Component {
 
   render() {
     return (
-      <div id="login-container">
-        <div id="mouse-login-btn"><img src={`http://weclipart.com/gimg/A0F8CD424E369A2C/cute-mouse-silhouette.png`}/></div>
-        <form className="col form" onSubmit={e => this.submit(e)}>
-          <h3>Login</h3>
-          <input type="text" name="username" placeholder="Username" />
-          <input type="password" name="password" placeholder="Password" />
-          <input type="submit" />
-          <p className="error-msg">{this.state.loginError ? `Error: ${this.state.loginError}` : ''}</p>
-        </form>
-        <Link to="/" id="register-btn">Register</Link>
-      </div>
+      <form className="col form" onSubmit={e => this.submit(e)}>
+        <h2>Login</h2>
+        <input type="text" name="username" placeholder="Username" />
+        <input type="password" name="password" placeholder="Password" />
+        <RaisedButton label="Submit" primary type="submit" />
+        <p className="error-msg">{this.state.loginError ? `Error: ${this.state.loginError}` : ''}</p>
+      </form>
     );
   }
 }

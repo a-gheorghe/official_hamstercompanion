@@ -1,5 +1,11 @@
 #user-container {
     color: white;
     text-align: center;
-    height: 100%;
+    margin: auto;
+}
+
+.logout {
+    position: absolute;
+    top: 20px;
+    right: 30px;
 }

@@ -16,6 +16,7 @@
     border-radius: 5px;
     color: black;
     background-color: LightBlue;
+    text-decoration: none;
 }
 
 .box:hover {
@@ -26,4 +27,10 @@
     width: 200px;
     margin: 10px auto;
     text-decoration: none;
+}
+
+label {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
 }

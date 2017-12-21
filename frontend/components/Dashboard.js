@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
+import { RaisedButton, Dialog } from 'material-ui';
 import DashboardTable from './DashboardTable';
 import './styles/dashboard.css';
 
@@ -8,13 +9,16 @@ class Dashboard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      experiment: false,
+      experiment: null,
       isAdmin: false,
       focusData: {
         header: '',
         data: false,
         type: null
-      }
+      },
+      error: '',
+      adminPassword: '',
+      modalOpen: false
     };
   }
   componentWillMount() {
@@ -23,7 +27,12 @@ class Dashboard extends React.Component {
         experiment: resp.data.experiment,
         isAdmin: resp.data.isAdmin
       });
-    }).catch(e => console.log(e));
+    }).catch((e) => {
+      console.log(e);
+      this.setState({
+        experiment: false
+      });
+    });
   }
 
   updateFocusData(dataType, data) {
@@ -72,30 +81,74 @@ class Dashboard extends React.Component {
     this.setState({
       focusData: {
         header,
+        id: data.id,
         data: attributes,
         type: dataType
       }
     });
   }
 
+  becomeAdmin(e) {
+    e.preventDefault();
+    axios.post(`/api/experiment/${this.props.match.params.id}/join/admin`, {
+      password: this.state.adminPassword
+    }).then(resp => {
+      if (resp.data.success) this.componentWillMount();
+      else {
+        this.setState({ error: resp.data.error });
+      }
+    }).catch(err => console.log(err));
+  }
+
+  updateAdminPassword(evt) {
+    this.setState({
+      adminPassword: evt.target.value
+    });
+  }
+
+  toggleModal() { this.setState({ modalOpen: !this.state.modalOpen }); }
+
+  deleteItem() {
+    axios.delete(`/api/experiment/${this.state.experiment.id}/${this.state.focusData.type}/${this.state.focusData.id}`)
+      .then(resp => {
+        console.log(resp);
+        if (resp.data.success) {
+          this.setState({ modalOpen: false }, () => this.componentWillMount());
+        } else alert(resp.data.error);
+      }).catch(e => alert(e.errors[0].message));
+  }
+
   render() {
-    return (this.state.experiment ? (
+    if(this.state.experiment === null) {
+      return null;
+    }
+    if(this.state.experiment === false) {
+      return <Redirect to={'/denied'} />;
+    }
+    return (
       <div id="dashboard-container">
-        <div id="dashboard-header"><h1>Dashboard: {this.state.experiment.name}</h1></div>
+        <Link to="/">
+          <RaisedButton className="back-btn btn" label="Back to Experiments" secondary />
+        </Link>
+        <div id="dashboard-header">
+          <h1>Dashboard: {this.state.experiment.name}</h1>
+          <h3>Experiment ID: {this.state.experiment.id}</h3>
+          <h3>Description: {this.state.experiment.description}</h3>
+        </div>
         <div id="dashboard-main">
           <div id="dashboard-info">
-            <h3>Experiment ID: {this.state.experiment.id}</h3>
-            <h3>Description: {this.state.experiment.description}</h3>
-            {this.state.isAdmin ?
-              (<Link to={`/experiment/${this.state.experiment.id}/edit`}><button>Edit Experiment</button></Link>) :
-              (<button>Become Administrator</button>)
-            }
             <div id="focus-data">
-              {this.state.focusData.data ? (<div>
+              {this.state.focusData.data ? (<div className="col">
                 <h2>{this.state.focusData.header}</h2>
                 <div id="attributes">
                   {this.state.focusData.data.map((attribute, index)=><p key={index}>{attribute}</p>)}
                 </div>
+                <Link to={`/experiment/${this.props.match.params.id}/${this.state.focusData.type}/${this.state.focusData.id}`}>
+                  <RaisedButton className="btn" label={`Edit ${this.state.focusData.type}`} default />
+                </Link>
+                <RaisedButton className="btn" label={`Delete this ${this.state.focusData.type}`}
+                  onClick={() => this.toggleModal()} secondary
+                />
               </div>)
                 : <p>Select a treatment group, cage, or mouse to the right to view data.</p>
               }
@@ -103,15 +156,33 @@ class Dashboard extends React.Component {
           </div>
           <DashboardTable experiment={this.state.experiment} updateFocusData = {(dataType, data)=>this.updateFocusData(dataType, data)}/>
         </div>
-        <Link to="/" className={"back-btn"}><button>Back to Experiments</button></Link>
-        <Link to={`/experiment/${this.state.experiment.id}/data`}><button>View Data</button></Link>
+        <div id="dashboard-footer">
+          <a download="sessions.csv" href={`/api/experiment/${this.props.match.params.id}/sessions`}>
+            <RaisedButton className="btn" style={{width: '220px'}} label="Download Data" default />
+          </a>
+          {this.state.isAdmin ?
+            (<Link to={`/experiment/${this.state.experiment.id}/edit`}>
+              <RaisedButton style={{width: '220px'}} label="Edit Experiment" primary />
+            </Link>) :
+            (<div id="form-become-admin">
+              <RaisedButton style={{marginRight: '20px', width: '220px'}} type="submit" onClick={(e)=>this.becomeAdmin(e)} primary label="Become Administrator" />
+              <input type="password" name="password" placeholder="Admin Password" value={this.state.adminPassword} onChange={(e)=>this.updateAdminPassword(e)} />
+              <div>
+                { this.state.error ? <p className="error-msg">{this.state.error}</p> : null }
+              </div>
+            </div>)
+          }
+        </div>
+
+        <Dialog open={this.state.modalOpen} modal title="Warning!"
+          children={<p>This action will delete the {this.state.focusData.type} and all data associated with it. Do you wish to proceed?</p>}
+          actions={[
+            <RaisedButton label="Cancel" onClick={()=>this.toggleModal()} primary/>,
+            <RaisedButton label="Delete" onClick={()=>this.deleteItem()} secondary/>
+          ]}
+        />
       </div>
-    ) : (
-      <div>
-        <p className="error-msg">You do not have access to this experiment.</p>
-        <Link to="/" className={"back-btn"}><button>Back to Experiments</button></Link>
-      </div>
-    ));
+    );
   }
 }
 
