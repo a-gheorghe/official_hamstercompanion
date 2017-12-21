@@ -32,7 +32,7 @@ class Experiments extends React.Component {
       if (!resp.data.success) this.setState({ error: resp.data.error });
       else {
         this.componentWillMount();
-        this.setState({ id: '', password: '' });
+        this.setState({ id: '', password: '', error: '' });
       }
     });
   }

@@ -13,7 +13,6 @@ import '../components/styles/temp.css';
 const UserContainer = () => {
   return (
     <div id="user-container">
-      <h1>Hamster Companion</h1>
       <Switch>
         <Route path="/denied" exact component={PermissionsDenied} />
         <Route path="/experiment/new" exact component={NewExperiment} />
