@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import { RaisedButton } from 'material-ui';
+import { RaisedButton, Dialog } from 'material-ui';
 import axios from 'axios';
 
 class EditExperiment extends React.Component {
@@ -11,14 +11,15 @@ class EditExperiment extends React.Component {
       error: '',
       name: '',
       desc: '',
-      isAdmin: null
+      isAdmin: null,
+      adminPassword: '',
+      modalOpen: false
     };
   }
 
   componentWillMount() {
     axios.get(`/api/experiment/${this.props.match.params.id}/edit`)
       .then((resp) => {
-        console.log("Setting data");
         this.setState({
           name: resp.data.experiment.name,
           desc: resp.data.experiment.description,
@@ -41,8 +42,8 @@ class EditExperiment extends React.Component {
     }
     else {
       const body = {
-        name: this.state.name,
-        description: this.state.desc
+        name: this.state.name || null,
+        description: this.state.desc || null
       };
       if (e.target.password.value) body.password = e.target.password.value;
       if (e.target.adminPassword.value) {
@@ -64,6 +65,21 @@ class EditExperiment extends React.Component {
 
   changeDesc(e) { this.setState({ desc: e.target.value }); }
 
+  changeAdminPassword(e) { this.setState({ adminPassword: e.target.value }); }
+
+  toggleModal() {
+    if(!this.state.modalOpen) {
+      console.log('You need admin password to open modal');
+    }
+    this.setState({
+      modalOpen: !this.state.modalOpen
+    });
+  }
+
+  deleteExperiment() {
+
+  }
+
   render() {
     if(this.state.isAdmin === null) {
       return null;
@@ -77,8 +93,8 @@ class EditExperiment extends React.Component {
     }
 
     return (
-      <div>
-        <h3>Create or edit an Experiment</h3>
+      <div style={{display: 'flex', flexDirection: 'column'}}>
+        <h3>Edit Experiment</h3>
         { this.state.error ? <p style={{ color: 'red' }}>{this.state.error}</p> : '' }
         <form className="col form" onSubmit={e => this.submit(e)}>
           <input type="text" name="name" onChange={e => this.changeName(e)}
@@ -88,15 +104,26 @@ class EditExperiment extends React.Component {
           <input type="text" name="desc" onChange={e => this.changeDesc(e)}
             placeholder="Description of your experiment" value={this.state.desc || ''}
           />
-          <input type="password" name="adminPassword" placeholder="Admin Password"/>
-          <input type="password" name="adminPassRepeat" placeholder="Repeat Admin Password"/>
-          <p>In order to edit this experimgnt you must enter the admin password:</p>
-          <input type="password" name="adminPasswordCheck"/>
+          <input type="password" name="adminPassword" placeholder="New Admin Password"/>
+          <input type="password" name="adminPassRepeat" placeholder="Repeat New Admin Password"/>
+          <p>In order to edit this experimgnt you must enter the current admin password:</p>
+          <input type="password" name="adminPasswordCheck" placeholder="Current Admin Password"
+            onChange={e => this.changeAdminPassword(e)} value={this.state.adminPassword}
+          />
           <RaisedButton label="Submit" primary type="submit" />
+          <RaisedButton label="Delete Experiment" onClick={()=>this.toggleModal()} secondary />
         </form>
         <Link to={`/experiment/${this.props.match.params.id}`}>
           <RaisedButton className="btn" label="Cancel" secondary />
         </Link>
+
+        <Dialog open={this.state.modalOpen} modal title="Warning!"
+          children={<p>This action will delete the experiment and all data associated with it. Do you wish to proceed?</p>}
+          actions={[
+            <RaisedButton label="Cancel" onClick={()=>this.toggleModal()} primary/>,
+            <RaisedButton label="Delete" onClick={()=>this.deleteExperiment()} secondary/>
+          ]}
+        />
       </div>
     );
   }

@@ -15,13 +15,24 @@ router.get('/experiments', (req, res) => {
 });
 
 router.post('/experiment', (req, res) => {
-  Experiment.create(req.body)
+  if(!req.body.name) {
+    res.status(400).send('missing experiment name');
+  }
+  else if(!req.body.password) {
+    res.status(400).send('missing experiment join password');
+  }
+  else if(!req.body.adminPassword) {
+    res.status(400).send('missing admin password');
+  }
+  else{
+    Experiment.create(req.body)
     .then(resp => UserExperiment.create({
       userId: req.user.id,
       experimentId: resp.id,
       isAdmin: true
     })).then(resp => res.send({ success: true, response: resp }))
     .catch(e => console.log(e));
+  }
 });
 
 router.post('/join/experiment', (req, res) => {

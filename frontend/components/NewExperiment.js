@@ -16,10 +16,10 @@ class NewExperiment extends React.Component {
     e.preventDefault();
     if (e.target.adminPassword.value === e.target.adminPassRepeat.value) {
       axios.post('/api/experiment', {
-        name: e.target.name.value,
-        password: e.target.password.value,
+        name: e.target.name.value || null,
+        password: e.target.password.value || null,
         description: e.target.desc.value || null,
-        adminPassword: e.target.adminPassword.value
+        adminPassword: e.target.adminPassword.value || null
       }).then(resp => {
         if (resp.data.success) this.setState({ submitted: true });
       }).catch(err => console.log(err));
