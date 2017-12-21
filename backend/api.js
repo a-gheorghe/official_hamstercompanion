@@ -7,12 +7,16 @@ const { Experiment, UserExperiment, Mouse, Cage, TreatmentGroup, Session, Sequel
 const Op = Sequelize.Op;
 
 router.get('/experiments', (req, res) => {
-  console.log(req.user)
-  Experiment.findAll({ include: {
-    model: UserExperiment, where: { userId: req.user.id }
-  }}).then(resp => {
+  Experiment.findAll({
+    include: {
+      model: UserExperiment,
+      where: { userId: req.user.id }
+    }
+  })
+  .then(resp => {
     res.json(resp);
-  }).catch(e => console.log(e));
+  })
+  .catch(e => console.log(e));
 });
 
 router.post('/experiment', (req, res) => {
@@ -37,11 +41,13 @@ router.post('/experiment', (req, res) => {
 });
 
 router.post('/join/experiment', (req, res) => {
-  Experiment.findById(req.body.id, { include: {
-    model: UserExperiment,
-    required: false,
-    where: { userId: req.user.id }
-  } }).then(resp => {
+  Experiment.findById(req.body.id, {
+    include: {
+      model: UserExperiment,
+      required: false,
+      where: { userId: req.user.id }
+    }
+  }).then(resp => {
     if (!resp) {
       res.json({
         success: false,
@@ -63,7 +69,8 @@ router.post('/join/experiment', (req, res) => {
         experimentId: resp.id
       }).then(() => res.json({ success: true }));
     }
-  }).catch(e => console.log(e));
+  })
+  .catch(e => console.log(e));
 });
 
 
@@ -75,19 +82,19 @@ router.use('/experiment/:id', (req, res, next) => {
       userId: req.user.id
     }
   })
-    .then((resp)=>{
-      if(!resp.dataValues) {
-        res.send(false);
-      }
-      else{
-        req.isAdmin = resp.dataValues.isAdmin;
-        next();
-      }
-    })
-    .catch((err)=>{
-      console.log('Server Error');
-      res.status(500).send(err);
-    });
+  .then((resp)=>{
+    if(!resp.dataValues) {
+      res.send(false);
+    }
+    else{
+      req.isAdmin = resp.dataValues.isAdmin;
+      next();
+    }
+  })
+  .catch((err)=>{
+    console.log('Server Error');
+    res.status(500).send(err);
+  });
 });
 
 router.get('/experiment/:id', (req, res) => {
@@ -146,6 +153,10 @@ router.get('/experiment/:id', (req, res) => {
   }).catch(e => console.log(e));
 });
 
+router.get('/experiment/:id/checkAccess', (req, res)=>{
+  res.send(true);
+});
+
 router.get('/experiment/:id/sessions', (req, res)=>{
   Session.findAll({
     where: { experimentId: req.params.id },
@@ -183,6 +194,28 @@ router.get('/experiment/:id/sessions', (req, res)=>{
     });
 });
 
+router.get('/experiment/:id/:type/:typeId', (req, res) => {
+  switch (req.params.type) {
+    case 'group':
+      TreatmentGroup.findById(req.params.typeId).then(resp => {
+        res.send(resp);
+      }).catch(e => console.log(e));
+      break;
+    case 'cage':
+      Cage.findById(req.params.typeId).then(resp => {
+        res.send(resp);
+      }).catch(e => console.log(e));
+      break;
+    case 'mouse':
+      Mouse.findById(req.params.typeId).then(resp => {
+        res.send(resp);
+      }).catch(e => console.log(e));
+      break;
+    default:
+      res.send(false);
+  }
+});
+
 router.post('/experiment/:id/join/admin', (req, res) => {
   Experiment.findById(req.params.id)
     .then(resp => {
@@ -217,25 +250,41 @@ router.post('/experiment/:id/group/new', (req, res) => {
   }
 });
 
-router.delete('/experiment/:id/:type/:typeId', (req, res) => {
-  let find;
-  switch (req.params.type) {
-    case 'group':
-      find = TreatmentGroup.findById(req.params.typeId);
-      break;
-    case 'cage':
-      find = Cage.findById(req.params.typeId);
-      break;
-    case 'mouse':
-      find = Mouse.findById(req.params.typeId);
-      break;
-    default:
-      res.send(false);
+router.post('/experiment/:id/group/:groupId/cage/new', (req, res) => {
+  if(!req.body.name) {
+    res.send({success: false, error: "Cage name is required"});
+    return;
   }
-  find.then(resp => resp.destroy()).then(()=>{
-    res.json({ success: true });
-  }).catch((e)=>{
-    res.json({ success: false, error: e.errors[0].message });
+  if(!req.body.wheel_diameter) {
+    res.send({ success: false, error: 'Wheel diameter is required (if none, put 0)'});
+    return;
+  }
+  var wheelDiameter = parseInt(req.body.wheel_diameter, 10);
+  if(isNaN(wheelDiameter) || wheelDiameter < 0) {
+    res.send({ success: false, error: 'Invalid value for wheel diameter'});
+    return;
+  }
+  TreatmentGroup.findById(req.params.groupId, {
+    attributes: ['experimentId']
+  })
+  .then((resp) => {
+    if(parseInt(resp.dataValues.experimentId, 10) !== parseInt(req.params.id, 10)) {
+      res.send({success: false, error: "Trying to add cage to nonexistent group"});
+      return false;
+    }
+    return Cage.create({
+      experimentId: req.params.id,
+      treatmentGroupId: req.params.groupId,
+      name: req.body.name,
+      notes: req.body.notes,
+      wheel_diameter: wheelDiameter
+    });
+  })
+  .then(()=>{
+    res.send({success: true});
+  })
+  .catch((err)=>{
+    res.send({ success: false, error: err });
   });
 });
 
@@ -267,28 +316,27 @@ router.post('/experiment/:id/:type/:typeId', (req, res) => {
   }
 });
 
-router.get('/experiment/:id/:type/:typeId', (req, res) => {
+router.delete('/experiment/:id/:type/:typeId', (req, res) => {
+  let find;
   switch (req.params.type) {
     case 'group':
-      TreatmentGroup.findById(req.params.typeId).then(resp => {
-        res.send(resp);
-      }).catch(e => console.log(e));
+      find = TreatmentGroup.findById(req.params.typeId);
       break;
     case 'cage':
-      Cage.findById(req.params.typeId).then(resp => {
-        res.send(resp);
-      }).catch(e => console.log(e));
+      find = Cage.findById(req.params.typeId);
       break;
     case 'mouse':
-      Mouse.findById(req.params.typeId).then(resp => {
-        res.send(resp);
-      }).catch(e => console.log(e));
+      find = Mouse.findById(req.params.typeId);
       break;
     default:
       res.send(false);
   }
+  find.then(resp => resp.destroy()).then(()=>{
+    res.json({ success: true });
+  }).catch((e)=>{
+    res.json({ success: false, error: e.errors[0].message });
+  });
 });
-
 
 // MIDDLEWARE TO CHECK IF USER HAS ADMINISTRATIVE RIGHTS OVER AN EXPERIMENT
 router.use('/experiment/:id', (req, res, next)=>{
@@ -298,6 +346,17 @@ router.use('/experiment/:id', (req, res, next)=>{
   else{
     res.status(400).send('You do not have administrative rights to this experiment.');
   }
+});
+
+router.get('/experiment/:id/edit', (req, res)=>{
+  Experiment.findById(req.params.id, {
+    attributes: ['id', 'name', 'description']
+  })
+    .then(resp => {
+      res.send({
+        experiment: resp
+      });
+    }).catch(e => console.log(e));
 });
 
 router.post('/experiment/:id/delete', (req, res)=>{
@@ -315,17 +374,6 @@ router.post('/experiment/:id/delete', (req, res)=>{
     .catch((e)=>{
       res.json({ success: false, error: e.errors[0].message });
     });
-});
-
-router.get('/experiment/:id/edit', (req, res)=>{
-  Experiment.findById(req.params.id, {
-    attributes: ['id', 'name', 'description']
-  })
-    .then(resp => {
-      res.send({
-        experiment: resp
-      });
-    }).catch(e => console.log(e));
 });
 
 router.post('/experiment/:id/edit', (req, res) => {
