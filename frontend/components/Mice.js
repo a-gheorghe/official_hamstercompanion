@@ -46,6 +46,8 @@ class MouseEdit extends React.Component {
   }
 
   changeAge(e) { this.setState({ age: e.target.value }); }
+  changeSex(e) { this.setState({ sex: e.target.value }); }
+  toggleLife(isAlive) { this.setState({ isAlive }); }
 
   render() {
     if (this.state.submitted) return <Redirect to={`/experiment/${this.props.match.params.id}`} />;
@@ -54,23 +56,19 @@ class MouseEdit extends React.Component {
       <form onSubmit={e => this.submit(e)} className="form col">
         <h1>Mouse: {this.props.match.params.mouseId}</h1>
         <label>Sex:
-          <input type="radio" name="sex" value="M"
-            // { this.state.sex ? "checked" : "" }
-          /> Male
-          <input type="radio" name="sex" value="F"
-            // { this.state.sex ? "" : "checked" }
-          /> Female
+          <input type="radio" name="sex" value="M" checked={this.state.sex === 'M'} onChange={(e)=>this.changeSex(e)}/>
+            Male
+          <input type="radio" name="sex" value="F" checked={this.state.sex === 'F'} onChange={(e)=>this.changeSex(e)}/>
+            Female
         </label>
         <textarea name="notes" rows="3" placeholder="Group Notes">{this.state.notes}</textarea>
         <input type="number" name="age" placeholder="Mouse Age"
           value={this.state.age} onChange={e => this.changeAge(e)}
         />
         <label>Is Alive?
-          <input type="radio" name="isAlive" value="yes"
-            // { this.state.isAlive ? "checked" : "" }
+          <input type="radio" name="isAlive" value="yes" checked={this.state.isAlive} onChange={(e)=>this.toggleLife(e.target.value === "yes")}
           /> Yes
-          <input type="radio" name="isAlive" value="no"
-            // { this.state.isAlive ? "" : "checked" }
+          <input type="radio" name="isAlive" value="no" checked={!this.state.isAlive} onChange={(e)=>this.toggleLife(e.target.value === "yes")}
           /> No
         </label>
         <RaisedButton className="btn" primary label="Submit" type="submit" />

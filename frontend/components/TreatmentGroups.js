@@ -41,6 +41,12 @@ class TreatmentGroupEdit extends React.Component {
     }).catch(err => console.log(err));
   }
 
+  toggleControl(isControl) {
+    this.setState({
+      isControl
+    });
+  }
+
   changeName(e) { this.setState({ name: e.target.value }); }
 
   render() {
@@ -54,12 +60,10 @@ class TreatmentGroupEdit extends React.Component {
         />
         <textarea name="notes" rows="3" placeholder="Group Notes">{this.state.notes}</textarea>
         <label>Is Control?
-          <input type="radio" name="isControl" value="yes"
-            // { this.state.isControl ? "checked" : "" }
-          /> Yes
-          <input type="radio" name="isControl" value="no"
-            // { this.state.isControl ? "" : "checked" }
-          /> No
+          <input type="radio" name="isControl" value="yes" checked={this.state.isControl} onChange={(e)=>this.toggleControl(e.target.value === "yes")}/>
+            Yes
+          <input type="radio" name="isControl" value="no" checked={!this.state.isControl} onChange={(e)=>this.toggleControl(e.target.value === "yes")}/>
+            No
         </label>
         <RaisedButton className="btn" primary label="Submit" type="submit" />
         <Link to={`/experiment/${this.props.match.params.id}`}>

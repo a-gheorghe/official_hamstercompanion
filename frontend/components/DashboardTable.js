@@ -1,5 +1,6 @@
 import React from 'react';
 // import { Link } from 'react-router-dom';
+import { RaisedButton } from 'material-ui';
 
 class DashboardTable extends React.Component {
   constructor(props) {
@@ -46,8 +47,7 @@ class DashboardTable extends React.Component {
     return (
       <div id="dashboard-btn-bank">
         <div className="column">
-          <div><h2>Treatment Groups:</h2></div>
-          {/* <Link to={`/experiment/${this.state.experiment.id}/groups`}><button></button></Link> */}
+          <div className="column-label"><h2>Treatment Groups:</h2></div>
           {this.state.experiment ?
             (this.state.experiment.treatment_groups.map((group, index)=>(<button
               key={group.id} onClick={(evt)=>this.selectGroup(evt, index)}
@@ -60,12 +60,12 @@ class DashboardTable extends React.Component {
             </button>))
             ) : ''
           }
+          <RaisedButton label="+" backgroundColor="LimeGreen" style={{borderRadius: '5px', marginTop: '10px'}} labelStyle={{color: 'white', fontSize: '20px'}}/>
         </div>
         <div className="column">
-          <div><h2>Cages:</h2></div>
-          {/* <Link to={`/experiment/${this.state.experiment.id}/cages`}><button>Cages: </button></Link> */}
+          <div className="column-label"><h2>Cages:</h2></div>
           {this.state.groupSelected ?
-            (this.state.groupSelected.cages.map((cage, index)=>(
+            this.state.groupSelected.cages.map((cage, index)=>(
               <button
                 key={cage.id}
                 onClick={(evt)=>this.selectCage(evt, index)}
@@ -74,14 +74,17 @@ class DashboardTable extends React.Component {
                 ${(this.state.cageSelected && cage.id === this.state.cageSelected.id) ? 'selected' : ''}
                 ${cage.sessions.length <= this.state.experiment.minDailySessions ? 'inactive' : ''}`}>
                 <h2>{cage.name}</h2>
-              </button>))) :
-            (<div style={{marginTop: '20px'}}><h2>No group selected</h2></div>)}
+              </button>)) : ''}
+            {this.state.groupSelected ?
+                <RaisedButton label="+" backgroundColor="LimeGreen" style={{borderRadius: '5px', marginTop: '10px'}} labelStyle={{color: 'white', fontSize: '20px'}}/>
+                :
+                <div style={{marginTop: '20px'}}><h2>No group selected</h2></div>
+            }
         </div>
         <div className="column">
-          <div><h2>Mice:</h2></div>
-          {/* <Link to={`/experiment/${this.state.experiment.id}/mice`}><button>Mice: </button></Link> */}
+          <div className="column-label"><h2>Mice:</h2></div>
           {this.state.cageSelected ?
-            (this.state.cageSelected.mice.map((mouse, index)=>(
+            this.state.cageSelected.mice.map((mouse, index)=>(
               <button
                 key={mouse.id}
                 onClick={(evt)=>this.selectMouse(evt, index)}
@@ -89,10 +92,13 @@ class DashboardTable extends React.Component {
                 ${mouse.isAlive ? '' : 'inactive'}
                 ${(this.state.mouseSelected && mouse.id === this.state.mouseSelected.id) ? 'selected' : ''}
               `}>
-                {/* className={`list-btn ${(this.state.cageSelected && cage.id === this.state.cageSelected.id) ? 'selected' : ''}`}> */}
                 <h2>{mouse.id}</h2>
-              </button>))) :
-            (<div style={{marginTop: '20px'}}><h2>No cage selected</h2></div>)}
+              </button>)) : ''}
+          {this.state.cageSelected ?
+            <RaisedButton label="+" backgroundColor="LimeGreen" style={{borderRadius: '5px', marginTop: '10px'}} labelStyle={{color: 'white', fontSize: '20px'}}/>
+            :
+            <div style={{marginTop: '20px'}}><h2>No cage selected</h2></div>
+          }
         </div>
       </div>
     );

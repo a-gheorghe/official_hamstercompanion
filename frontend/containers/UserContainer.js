@@ -4,6 +4,8 @@ import Experiments from '../components/Experiments';
 import Dashboard from '../components/Dashboard';
 import EditExperiment from '../components/EditExperiment';
 import NewExperiment from '../components/NewExperiment';
+import NewGroup from '../components/NewGroup';
+import NewCage from '../components/NewCage';
 import TreatmentGroups from '../components/TreatmentGroups';
 import Cages from '../components/Cages';
 import Mice from '../components/Mice';
@@ -17,6 +19,8 @@ const UserContainer = () => {
         <Route path="/denied" exact component={PermissionsDenied} />
         <Route path="/experiment/new" exact component={NewExperiment} />
         <Route path="/experiment/:id/edit" component={EditExperiment} />
+        <Route path="/experiment/:id/group/new" exact component={NewGroup} />
+        <Route path="/experiment/:id/group/:groupId/cage/new" exact component={NewCage} />
         <Route path="/experiment/:id/group/:groupId" component={TreatmentGroups} />
         <Route path="/experiment/:id/cage/:cageId" component={Cages} />
         <Route path="/experiment/:id/mouse/:mouseId" component={Mice} />
