@@ -22,14 +22,18 @@ class TreatmentGroupEdit extends React.Component {
 
   submit(e) {
     e.preventDefault();
-    axios.post(`/api/experiment/${this.props.match.params.id}/group/new`, {
-      name: e.target.name.value,
-      notes: e.target.notes.value,
-      isControl: e.target.isControl.value === "yes",
-      experimentId: this.props.match.params.id
-    }).then(() => {
-      this.setState({ submitted: true });
-    }).catch(err => console.log(err));
+    if (e.target.name.value) {
+      axios.post(`/api/experiment/${this.props.match.params.id}/group/new`, {
+        name: e.target.name.value,
+        notes: e.target.notes.value,
+        isControl: e.target.isControl.value === "yes",
+        experimentId: this.props.match.params.id
+      }).then(() => {
+        this.setState({ submitted: true });
+      }).catch(err => console.log(err));
+    } else {
+      this.setState({ error: 'Group name required!'});
+    }
   }
 
   render() {
@@ -38,6 +42,7 @@ class TreatmentGroupEdit extends React.Component {
     return (this.state.loading ? (
       <form onSubmit={e => this.submit(e)} className="form col">
         <h1>New Treatment Group</h1>
+        { this.state.error ? <p className="error-msg">{this.state.error}</p> : null }
         <input type="text" name="name" placeholder="Group Name" />
         <textarea name="notes" rows="3" placeholder="Group Notes" />
         <label>Is Control?
