@@ -216,6 +216,28 @@ router.post('/experiment/:id/group/new', (req, res) => {
   }
 });
 
+router.delete('/experiment/:id/:type/:typeId', (req, res) => {
+  let find;
+  switch (req.params.type) {
+    case 'group':
+      find = TreatmentGroup.findById(req.params.typeId);
+      break;
+    case 'cage':
+      find = Cage.findById(req.params.typeId);
+      break;
+    case 'mouse':
+      find = Mouse.findById(req.params.typeId);
+      break;
+    default:
+      res.send(false);
+  }
+  find.then(resp => resp.destroy()).then(()=>{
+    res.json({ success: true });
+  }).catch((e)=>{
+    res.json({ success: false, error: e.errors[0].message });
+  });
+});
+
 router.post('/experiment/:id/:type/:typeId', (req, res) => {
   switch (req.params.type) {
     case 'group':

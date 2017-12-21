@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import { Link, Redirect } from 'react-router-dom';
-import { RaisedButton } from 'material-ui';
+import { RaisedButton, Dialog } from 'material-ui';
 import DashboardTable from './DashboardTable';
 import './styles/dashboard.css';
 
@@ -17,7 +17,8 @@ class Dashboard extends React.Component {
         type: null
       },
       error: '',
-      adminPassword: ''
+      adminPassword: '',
+      modalOpen: false
     };
   }
   componentWillMount() {
@@ -105,6 +106,18 @@ class Dashboard extends React.Component {
     });
   }
 
+  toggleModal() { this.setState({ modalOpen: !this.state.modalOpen }); }
+
+  deleteItem() {
+    axios.delete(`/api/experiment/${this.state.experiment.id}/${this.state.focusData.type}/${this.state.focusData.id}`)
+      .then(resp => {
+        console.log(resp);
+        if (resp.data.success) {
+          this.setState({ modalOpen: false }, () => this.componentWillMount());
+        } else alert(resp.data.error);
+      }).catch(e => alert(e.errors[0].message));
+  }
+
   render() {
     if(this.state.experiment === null) {
       return null;
@@ -125,7 +138,7 @@ class Dashboard extends React.Component {
         <div id="dashboard-main">
           <div id="dashboard-info">
             <div id="focus-data">
-              {this.state.focusData.data ? (<div>
+              {this.state.focusData.data ? (<div className="col">
                 <h2>{this.state.focusData.header}</h2>
                 <div id="attributes">
                   {this.state.focusData.data.map((attribute, index)=><p key={index}>{attribute}</p>)}
@@ -133,6 +146,9 @@ class Dashboard extends React.Component {
                 <Link to={`/experiment/${this.props.match.params.id}/${this.state.focusData.type}/${this.state.focusData.id}`}>
                   <RaisedButton className="btn" label={`Edit ${this.state.focusData.type}`} default />
                 </Link>
+                <RaisedButton className="btn" label={`Delete this ${this.state.focusData.type}`}
+                  onClick={() => this.toggleModal()} secondary
+                />
               </div>)
                 : <p>Select a treatment group, cage, or mouse to the right to view data.</p>
               }
@@ -157,6 +173,14 @@ class Dashboard extends React.Component {
             </div>)
           }
         </div>
+
+        <Dialog open={this.state.modalOpen} modal title="Warning!"
+          children={<p>This action will delete the {this.state.focusData.type} and all data associated with it. Do you wish to proceed?</p>}
+          actions={[
+            <RaisedButton label="Cancel" onClick={()=>this.toggleModal()} primary/>,
+            <RaisedButton label="Delete" onClick={()=>this.deleteItem()} secondary/>
+          ]}
+        />
       </div>
     );
   }

@@ -29,7 +29,7 @@ class TreatmentGroupEdit extends React.Component {
         isControl: e.target.isControl.value === "yes",
         experimentId: this.props.match.params.id
       }).then(resp => {
-        if (resp.success) this.setState({ submitted: true });
+        if (resp.data.success) this.setState({ submitted: true });
         else this.setState({ error: resp.error });
       }).catch(err => alert(err.errors[0].message));
     } else {
