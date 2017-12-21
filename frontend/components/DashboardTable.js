@@ -60,7 +60,7 @@ class DashboardTable extends React.Component {
             </button>))
             ) : ''
           }
-          <Link to={`/experiment/${this.props.experiment}/group/new`}>
+          <Link to={`/experiment/${this.props.experiment.id}/group/new`}>
             <RaisedButton label="+" backgroundColor="LimeGreen" style={{borderRadius: '5px', marginTop: '10px'}} labelStyle={{color: 'white', fontSize: '20px'}}/>
           </Link>
         </div>
