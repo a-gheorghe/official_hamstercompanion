@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { Session, Mouse } = require('./models');
+const { Session, Mouse, Cage, TreatmentGroup, Experiment } = require('./models');
 
 router.post('/new/session', (req, res) => {
   console.log(req.body);
@@ -11,12 +11,28 @@ router.post('/new/session', (req, res) => {
 });
 
 router.post('/new/mouse', (req, res) => {
-  console.log('inside adding new mouse')
+  console.log('inside adding new mouse');
   console.log(req.body);
-  Mouse.create(req.body).then(resp => {
+  Cage.findById(req.body.cageId, {
+    attributes: ['id', 'treatmentGroupId']
+  })
+  .then((resp)=>{
+    if (!resp) {
+      res.send('Error: specified cage does not exist');
+      return false;
+    }
+    var newMouse = Object.assign({}, req.body, {
+      treatmentGroupId: resp.treatmentGroupId
+    });
+    return Mouse.create(newMouse);
+  })
+  .then((resp)=>{
     console.log('RESPONSE', resp);
-    res.send('New Mouse created!');
-  }).catch(e => console.log(e));
+    res.send('New mouse created!');
+  })
+  .catch((e) => {
+    res.send('Internal server error');
+    console.log(e);});
 });
 
 router.get('/led', (req, res) => {
