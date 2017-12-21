@@ -22,6 +22,7 @@ class NewExperiment extends React.Component {
         adminPassword: e.target.adminPassword.value || null
       }).then(resp => {
         if (resp.data.success) this.setState({ submitted: true });
+        else { this.setState({ error: resp.data.error });}
       }).catch(err => console.log(err));
     } else this.setState({ error: 'Admin passwords do not match!'});
   }
@@ -40,14 +41,14 @@ class NewExperiment extends React.Component {
         { this.state.error ? <p style={{ color: 'red' }}>{this.state.error}</p> : '' }
         <form className="col form" onSubmit={e => this.submit(e)}>
           <input type="text" name="name" onChange={e => this.changeName(e)}
-            placeholder="Experiment Name" value=""
+            placeholder="Experiment Name"
           />
           <input type="password" name="password" placeholder="Password to Join Experiment" />
           <input type="text" name="desc" onChange={e => this.changeDesc(e)}
-            placeholder="Description of your experiment" value=""
+            placeholder="Description of your experiment"
           />
-          <input type="password" name="adminPassword" placeholder="Admin Password" value=""/>
-          <input type="password" name="adminPassRepeat" placeholder="Repeat Admin Password" value=""/>
+          <input type="password" name="adminPassword" placeholder="Admin Password" />
+          <input type="password" name="adminPassRepeat" placeholder="Repeat Admin Password" />
           <RaisedButton label="Submit" primary type="submit" />
         </form>
         <Link to="/">

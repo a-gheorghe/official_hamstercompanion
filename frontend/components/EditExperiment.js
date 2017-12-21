@@ -13,7 +13,8 @@ class EditExperiment extends React.Component {
       desc: '',
       isAdmin: null,
       adminPassword: '',
-      modalOpen: false
+      modalOpen: false,
+      deleted: false
     };
   }
 
@@ -43,7 +44,8 @@ class EditExperiment extends React.Component {
     else {
       const body = {
         name: this.state.name || null,
-        description: this.state.desc || null
+        description: this.state.desc || null,
+        currentAdminPassword: this.state.adminPassword
       };
       if (e.target.password.value) body.password = e.target.password.value;
       if (e.target.adminPassword.value) {
@@ -68,19 +70,42 @@ class EditExperiment extends React.Component {
   changeAdminPassword(e) { this.setState({ adminPassword: e.target.value }); }
 
   toggleModal() {
-    if(!this.state.modalOpen) {
-      console.log('You need admin password to open modal');
+    if(!this.state.modalOpen && !this.state.adminPassword) {
+      this.setState({
+        error: 'Admin password required to delete experiment.'
+      });
     }
-    this.setState({
-      modalOpen: !this.state.modalOpen
-    });
+    else{
+      this.setState({
+        modalOpen: !this.state.modalOpen
+      });
+    }
   }
 
   deleteExperiment() {
-
+    axios.post(`/api/experiment/${this.props.match.params.id}/delete`, {
+      adminPassword: this.state.adminPassword
+    })
+    .then((resp)=>{
+      this.setState({
+        deleted: resp.data.success,
+        error: resp.data.error || '',
+        modalOpen: false
+      });
+    })
+    .catch(()=>{
+      this.setState({
+        error: 'Something went wrong. Experiment not deleted',
+        modalOpen: false
+      });
+    });
   }
 
   render() {
+    if(this.state.deleted === true) {
+      return <Redirect to={'/'}/>;
+    }
+
     if(this.state.isAdmin === null) {
       return null;
     }

@@ -16,13 +16,13 @@ router.get('/experiments', (req, res) => {
 
 router.post('/experiment', (req, res) => {
   if(!req.body.name) {
-    res.status(400).send('missing experiment name');
+    res.json({success: false, error: 'missing experiment name'});
   }
   else if(!req.body.password) {
-    res.status(400).send('missing experiment join password');
+    res.json({success: false, error: 'missing experiment join password'});
   }
   else if(!req.body.adminPassword) {
-    res.status(400).send('missing admin password');
+    res.json({success: false, error: 'missing admin password'});
   }
   else{
     Experiment.create(req.body)
@@ -31,7 +31,7 @@ router.post('/experiment', (req, res) => {
       experimentId: resp.id,
       isAdmin: true
     })).then(resp => res.send({ success: true, response: resp }))
-    .catch(e => console.log(e));
+    .catch(e => res.json({ success: false, error: e.errors[0].message }));
   }
 });
 
@@ -237,6 +237,23 @@ router.use('/experiment/:id', (req, res, next)=>{
   }
 });
 
+router.post('/experiment/:id/delete', (req, res)=>{
+  Experiment.findById(req.params.id)
+  .then((experiment) => {
+    if(experiment.adminPassword === req.body.adminPassword) {
+      return experiment.destroy();
+    }
+    res.json({ success: false, error: 'Incorrect admin password' });
+    return false;
+  })
+  .then(()=>{
+    res.json({ success: true });
+  })
+  .catch((e)=>{
+    res.json({ success: false, error: e.errors[0].message });
+  });
+});
+
 router.get('/experiment/:id/edit', (req, res)=>{
   Experiment.findById(req.params.id, {
     attributes: ['id', 'name', 'description']
@@ -249,8 +266,18 @@ router.get('/experiment/:id/edit', (req, res)=>{
 });
 
 router.post('/experiment/:id/edit', (req, res) => {
-  Experiment.update(req.body, { where: { id: req.params.id }})
-    .then(resp => res.json({ success: true, respnse: resp }))
-    .catch(e => res.json({ success: false, error: e.errors[0].message }));
+  Experiment.findById(req.params.id)
+  .then((experiment) => {
+    if(experiment.adminPassword !== req.body.currentAdminPassword) {
+      res.json({ success: false, error: 'Incorrect admin password' });
+      return false;
+    }
+    var updates = Object.assign({}, req.body);
+    delete updates.currentAdminPassword;
+    return Experiment.update(updates, { where: { id: req.params.id }});
+  })
+  .then(resp => res.json({ success: true, respnse: resp }))
+  .catch(e => res.json({ success: false, error: e.errors[0].message }));
 });
+
 module.exports = router;
