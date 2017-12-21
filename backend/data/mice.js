@@ -1,28 +1,28 @@
 module.exports = [
   // EXPERIMENT 1 *****************************************
-  {
-    id: '2016090401',
-    sex: "M",
-    age: 1,
-    isAlive: false,
-    cageId: 1,
-    treatmentGroupId: 1,
-    experimentId: 1
-  },
-  {
-    id: '2016090517',
-    sex: "F",
-    cageId: 1,
-    treatmentGroupId: 1,
-    experimentId: 1
-  },
-  {
-    id: '545462628244',
-    sex: "F",
-    cageId: 1,
-    treatmentGroupId: 1,
-    experimentId: 1
-  },
+  // {
+  //   id: '2016090401',
+  //   sex: "M",
+  //   age: 1,
+  //   isAlive: false,
+  //   cageId: 1,
+  //   treatmentGroupId: 1,
+  //   experimentId: 1
+  // },
+  // {
+  //   id: '2016090517',
+  //   sex: "F",
+  //   cageId: 1,
+  //   treatmentGroupId: 1,
+  //   experimentId: 1
+  // },
+  // {
+  //   id: '545462628244',
+  //   sex: "F",
+  //   cageId: 1,
+  //   treatmentGroupId: 1,
+  //   experimentId: 1
+  // },
   {
     id: '1111111111',
     sex: "M",
