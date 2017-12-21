@@ -7,3 +7,4 @@ package-lock.json
 *hot-update.json
 env.sh
 view_db.sh
+*.log*
