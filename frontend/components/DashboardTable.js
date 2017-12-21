@@ -1,5 +1,5 @@
 import React from 'react';
-// import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { RaisedButton } from 'material-ui';
 
 class DashboardTable extends React.Component {
@@ -60,7 +60,9 @@ class DashboardTable extends React.Component {
             </button>))
             ) : ''
           }
-          <RaisedButton label="+" backgroundColor="LimeGreen" style={{borderRadius: '5px', marginTop: '10px'}} labelStyle={{color: 'white', fontSize: '20px'}}/>
+          <Link to={`/experiment/${this.props.experiment}/group/new`}>
+            <RaisedButton label="+" backgroundColor="LimeGreen" style={{borderRadius: '5px', marginTop: '10px'}} labelStyle={{color: 'white', fontSize: '20px'}}/>
+          </Link>
         </div>
         <div className="column">
           <div className="column-label"><h2>Cages:</h2></div>
@@ -76,7 +78,9 @@ class DashboardTable extends React.Component {
                 <h2>{cage.name}</h2>
               </button>)) : ''}
             {this.state.groupSelected ?
-                <RaisedButton label="+" backgroundColor="LimeGreen" style={{borderRadius: '5px', marginTop: '10px'}} labelStyle={{color: 'white', fontSize: '20px'}}/>
+                <Link to={`/experiment/${this.props.experiment}/group/${this.state.groupSelected}/cage/new`}>
+                  <RaisedButton label="+" backgroundColor="LimeGreen" style={{borderRadius: '5px', marginTop: '10px'}} labelStyle={{color: 'white', fontSize: '20px'}}/>
+                </Link>
                 :
                 <div style={{marginTop: '20px'}}><h2>No group selected</h2></div>
             }
