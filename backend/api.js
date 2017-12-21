@@ -100,6 +100,34 @@ router.get('/experiment/:id/:type/:typeId', (req, res) => {
   }
 });
 
+router.post('/experiment/:id/:type/:typeId', (req, res) => {
+  switch (req.params.type) {
+    case 'group':
+      TreatmentGroup.update(req.body, {
+        where: { id: req.params.typeId }
+      }).then(resp => {
+        res.send(resp);
+      }).catch(e => console.log(e));
+      break;
+    case 'cage':
+      Cage.update(req.body, {
+        where: { id: req.params.typeId }
+      }).then(resp => {
+        res.send(resp);
+      }).catch(e => console.log(e));
+      break;
+    case 'mouse':
+      Mouse.update(req.body, {
+        where: { id: req.params.typeId }
+      }).then(resp => {
+        res.send(resp);
+      }).catch(e => console.log(e));
+      break;
+    default:
+      res.send(false);
+  }
+});
+
 router.get('/experiment/:id', (req, res) => {
   var yesterday = new Date();
   yesterday = new Date(yesterday.setTime(yesterday.getTime() - 86400000));
