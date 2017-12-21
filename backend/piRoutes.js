@@ -11,6 +11,7 @@ router.post('/new/session', (req, res) => {
 });
 
 router.post('/new/mouse', (req, res) => {
+  console.log('inside adding new mouse')
   console.log(req.body);
   Mouse.create(req.body).then(resp => {
     console.log('RESPONSE', resp);

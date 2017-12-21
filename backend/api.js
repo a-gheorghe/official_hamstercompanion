@@ -5,6 +5,7 @@ const { Experiment, UserExperiment, Mouse, Cage, TreatmentGroup, Session, Sequel
 const Op = Sequelize.Op;
 
 router.get('/experiments', (req, res) => {
+  console.log(req.user)
   Experiment.findAll({ include: {
     model: UserExperiment, where: { userId: req.user.id }
   }}).then(resp => {
