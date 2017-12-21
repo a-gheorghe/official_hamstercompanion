@@ -89,6 +89,10 @@ router.use('/experiment/:id', (req, res, next) => {
     });
 });
 
+router.get('/experiment/:id/checkAccess', (req, res)=>{
+  res.send(true);
+});
+
 router.get('/experiment/:id', (req, res) => {
   var yesterday = new Date();
   yesterday = new Date(yesterday.setTime(yesterday.getTime() - 86400000));
@@ -204,6 +208,44 @@ router.post('/experiment/:id/join/admin', (req, res) => {
     success: false,
     error: e.errors[0].message
   }));
+});
+
+router.post('/experiment/:id/group/:groupId/cage/new', (req, res) => {
+  if(!req.body.name) {
+    res.send({success: false, error: "Cage name is required"});
+    return;
+  }
+  if(!req.body.wheel_diameter) {
+    res.send({ success: false, error: 'Wheel diameter is required (if none, put 0)'});
+    return;
+  }
+  var wheelDiameter = parseInt(req.body.wheel_diameter, 10);
+  if(isNaN(wheelDiameter) || wheelDiameter < 0) {
+    res.send({ success: false, error: 'Invalid value for wheel diameter'});
+    return;
+  }
+  TreatmentGroup.findById(req.params.groupId, {
+    attributes: ['experimentId']
+  })
+  .then((resp) => {
+    if(parseInt(resp.dataValues.experimentId, 10) !== parseInt(req.params.id, 10)) {
+      res.send({success: false, error: "Trying to add cage to nonexistent group"});
+      return false;
+    }
+    return Cage.create({
+      experimentId: req.params.id,
+      treatmentGroupId: req.params.groupId,
+      name: req.body.name,
+      notes: req.body.notes,
+      wheel_diameter: wheelDiameter
+    });
+  })
+  .then(()=>{
+    res.send({success: true});
+  })
+  .catch((err)=>{
+    res.send({success: false, error: err});
+  });
 });
 
 router.post('/experiment/:id/:type/:typeId', (req, res) => {

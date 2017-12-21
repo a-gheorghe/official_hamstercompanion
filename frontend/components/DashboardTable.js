@@ -78,7 +78,7 @@ class DashboardTable extends React.Component {
                 <h2>{cage.name}</h2>
               </button>)) : ''}
             {this.state.groupSelected ?
-                <Link to={`/experiment/${this.props.experiment}/group/${this.state.groupSelected}/cage/new`}>
+                <Link to={`/experiment/${this.props.experiment.id}/group/${this.state.groupSelected.id}/cage/new`}>
                   <RaisedButton label="+" backgroundColor="LimeGreen" style={{borderRadius: '5px', marginTop: '10px'}} labelStyle={{color: 'white', fontSize: '20px'}}/>
                 </Link>
                 :
