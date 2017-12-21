@@ -89,6 +89,28 @@ router.use('/experiment/:id', (req, res, next) => {
     });
 });
 
+router.get('/experiment/:id/:type/:typeId', (req, res) => {
+  switch (req.params.type) {
+    case 'group':
+      TreatmentGroup.findById(req.params.typeId).then(resp => {
+        res.send(resp);
+      }).catch(e => console.log(e));
+      break;
+    case 'cage':
+      Cage.findById(req.params.typeId).then(resp => {
+        res.send(resp);
+      }).catch(e => console.log(e));
+      break;
+    case 'mouse':
+      Mouse.findById(req.params.typeId).then(resp => {
+        res.send(resp);
+      }).catch(e => console.log(e));
+      break;
+    default:
+      res.send(false);
+  }
+});
+
 router.get('/experiment/:id', (req, res) => {
   var yesterday = new Date();
   yesterday = new Date(yesterday.setTime(yesterday.getTime() - 86400000));
@@ -136,12 +158,13 @@ router.get('/experiment/:id', (req, res) => {
           }
         ]
       }
-    ]}).then(resp => {
-      res.send({
-        experiment: resp,
-        isAdmin: req.isAdmin
-      });
-    }).catch(e => console.log(e));
+    ]
+  }).then(resp => {
+    res.send({
+      experiment: resp,
+      isAdmin: req.isAdmin
+    });
+  }).catch(e => console.log(e));
 });
 
 router.get('/experiment/:id/sessions', (req, res)=>{
@@ -218,11 +241,11 @@ router.get('/experiment/:id/edit', (req, res)=>{
   Experiment.findById(req.params.id, {
     attributes: ['id', 'name', 'description']
   })
-  .then(resp => {
-    res.send({
-      experiment: resp
-    });
-  }).catch(e => console.log(e));
+    .then(resp => {
+      res.send({
+        experiment: resp
+      });
+    }).catch(e => console.log(e));
 });
 
 router.post('/experiment/:id/edit', (req, res) => {
