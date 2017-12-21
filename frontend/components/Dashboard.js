@@ -152,7 +152,7 @@ class Dashboard extends React.Component {
               <RaisedButton style={{marginRight: '20px', width: '220px'}} type="submit" onClick={(e)=>this.becomeAdmin(e)} primary label="Become Administrator" />
               <input type="password" name="password" placeholder="Admin Password" value={this.state.adminPassword} onChange={(e)=>this.updateAdminPassword(e)} />
               <div>
-              { this.state.error ? <p className="error-msg">{this.state.error}</p> : null }
+                { this.state.error ? <p className="error-msg">{this.state.error}</p> : null }
               </div>
             </div>)
           }
