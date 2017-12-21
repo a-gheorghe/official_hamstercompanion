@@ -56,10 +56,10 @@ class EditExperiment extends React.Component {
         body.adminPassword = e.target.adminPassword.value;
       }
       axios.post(`/api/experiment/${this.props.match.params.id}/edit`, body)
-      .then(resp => {
-        if (resp.data.success) this.setState({ submitted: true });
-        else this.setState({ error: resp.data.error });
-      }).catch(err => console.log(err));
+        .then(resp => {
+          if (resp.data.success) this.setState({ submitted: true });
+          else this.setState({ error: resp.data.error });
+        }).catch(err => console.log(err));
     }
   }
 
@@ -85,15 +85,13 @@ class EditExperiment extends React.Component {
   deleteExperiment() {
     axios.post(`/api/experiment/${this.props.match.params.id}/delete`, {
       adminPassword: this.state.adminPassword
-    })
-    .then((resp)=>{
+    }).then((resp)=>{
       this.setState({
         deleted: resp.data.success,
         error: resp.data.error || '',
         modalOpen: false
       });
-    })
-    .catch(()=>{
+    }).catch(()=>{
       this.setState({
         error: 'Something went wrong. Experiment not deleted',
         modalOpen: false

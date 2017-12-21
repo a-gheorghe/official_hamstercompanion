@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import { Link, Redirect } from 'react-router-dom';
-import { RaisedButton } from 'material-ui';
+import { RaisedButton, Dialog } from 'material-ui';
 import DashboardTable from './DashboardTable';
 import './styles/dashboard.css';
 
@@ -17,7 +17,12 @@ class Dashboard extends React.Component {
         type: null
       },
       error: '',
-      adminPassword: ''
+      adminPassword: '',
+      modalOpen: false,
+      delete: false,
+      groupSelected: null,
+      cageSelected: null,
+      mouseSelected: null
     };
   }
   componentWillMount() {
@@ -32,6 +37,39 @@ class Dashboard extends React.Component {
         experiment: false
       });
     });
+  }
+
+  selectGroup(evt, index) {
+    console.log(index);
+    evt.preventDefault();
+    var newGroup = this.state.experiment.treatment_groups[index];
+    console.log(newGroup);
+    console.log(this.state.groupSelected);
+    this.setState({
+      groupSelected: newGroup,
+      cageSelected: newGroup === this.state.groupSelected ? this.state.cageSelected : null,
+      mouseSelected: null
+    });
+    this.updateFocusData('group', newGroup);
+  }
+
+  selectCage(evt, index) {
+    evt.preventDefault();
+    var newCage = this.state.groupSelected.cages[index];
+    this.setState({
+      cageSelected: newCage,
+      mouseSelected: null
+    });
+    this.updateFocusData('cage', newCage);
+  }
+
+  selectMouse(evt, index) {
+    evt.preventDefault();
+    var newMouse = this.state.cageSelected.mice[index];
+    this.setState({
+      mouseSelected: newMouse
+    });
+    this.updateFocusData('mouse', newMouse);
   }
 
   updateFocusData(dataType, data) {
@@ -105,9 +143,40 @@ class Dashboard extends React.Component {
     });
   }
 
+  toggleModal() { this.setState({ modalOpen: !this.state.modalOpen }); }
+
+  deleteItem() {
+    axios.delete(`/api/experiment/${this.state.experiment.id}/${this.state.focusData.type}/${this.state.focusData.id}`)
+      .then(resp => {
+        if (resp.data.success) {
+          var newState = {
+            modalOpen: false
+          };
+          switch (this.state.focusData.type) {
+            case 'group':
+              newState.groupSelected = null;
+              newState.cageSelected = null;
+              newState.mouseSelected = null;
+              break;
+            case 'cage':
+              newState.cageSelected = null;
+              newState.mouseSelected = null;
+              break;
+            default:
+              newState.mouseSelected = null;
+          }
+          this.setState(newState);
+        } else alert(resp.data.error);
+      }).catch(e => alert(e.errors[0].message));
+  }
+
   render() {
     if(this.state.experiment === null) {
       return null;
+    }
+
+    if(this.state.delete === true) {
+      return <Redirect to={`/experiment/${this.state.experiment.id}`}/>;
     }
     if(this.state.experiment === false) {
       return <Redirect to={'/denied'} />;
@@ -125,7 +194,7 @@ class Dashboard extends React.Component {
         <div id="dashboard-main">
           <div id="dashboard-info">
             <div id="focus-data">
-              {this.state.focusData.data ? (<div>
+              {this.state.focusData.data ? (<div className="col">
                 <h2>{this.state.focusData.header}</h2>
                 <div id="attributes">
                   {this.state.focusData.data.map((attribute, index)=><p key={index}>{attribute}</p>)}
@@ -133,12 +202,22 @@ class Dashboard extends React.Component {
                 <Link to={`/experiment/${this.props.match.params.id}/${this.state.focusData.type}/${this.state.focusData.id}`}>
                   <RaisedButton className="btn" label={`Edit ${this.state.focusData.type}`} default />
                 </Link>
+                <RaisedButton className="btn" label={`Delete this ${this.state.focusData.type}`}
+                  onClick={() => this.toggleModal()} secondary
+                />
               </div>)
                 : <p>Select a treatment group, cage, or mouse to the right to view data.</p>
               }
             </div>
           </div>
-          <DashboardTable experiment={this.state.experiment} updateFocusData = {(dataType, data)=>this.updateFocusData(dataType, data)}/>
+          <DashboardTable experiment={this.state.experiment}
+            selectGroup={(evt, groupId)=>this.selectGroup(evt, groupId)}
+            selectCage={(evt, cageId)=>this.selectCage(evt, cageId)}
+            selectMouse={(evt, mouseId)=>this.selectMouse(evt, mouseId)}
+            groupSelected={this.state.groupSelected}
+            cageSelected={this.state.cageSelected}
+            mouseSelected={this.state.mouseSelected}
+          />
         </div>
         <div id="dashboard-footer">
           <a download="sessions.csv" href={`/api/experiment/${this.props.match.params.id}/sessions`}>
@@ -157,6 +236,14 @@ class Dashboard extends React.Component {
             </div>)
           }
         </div>
+
+        <Dialog open={this.state.modalOpen} modal title="Warning!"
+          children={<p>This action will delete the {this.state.focusData.type} and all data associated with it. Do you wish to proceed?</p>}
+          actions={[
+            <RaisedButton label="Cancel" onClick={()=>this.toggleModal()} primary/>,
+            <RaisedButton label="Delete" onClick={()=>this.deleteItem()} secondary/>
+          ]}
+        />
       </div>
     );
   }
