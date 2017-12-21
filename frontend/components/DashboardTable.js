@@ -46,7 +46,7 @@ class DashboardTable extends React.Component {
     return (
       <div id="dashboard-btn-bank">
         <div className="column">
-          <div>Treatment Groups:</div>
+          <div><h2>Treatment Groups:</h2></div>
           {/* <Link to={`/experiment/${this.state.experiment.id}/groups`}><button></button></Link> */}
           {this.state.experiment ?
             (this.state.experiment.treatment_groups.map((group, index)=>(<button
@@ -62,7 +62,7 @@ class DashboardTable extends React.Component {
           }
         </div>
         <div className="column">
-          <div>Cages:</div>
+          <div><h2>Cages:</h2></div>
           {/* <Link to={`/experiment/${this.state.experiment.id}/cages`}><button>Cages: </button></Link> */}
           {this.state.groupSelected ?
             (this.state.groupSelected.cages.map((cage, index)=>(
@@ -75,10 +75,10 @@ class DashboardTable extends React.Component {
                 ${cage.sessions.length <= this.state.experiment.minDailySessions ? 'inactive' : ''}`}>
                 <h2>{cage.name}</h2>
               </button>))) :
-            (<div>No group selected</div>)}
+            (<div style={{marginTop: '20px'}}><h2>No group selected</h2></div>)}
         </div>
         <div className="column">
-          <div>Mice:</div>
+          <div><h2>Mice:</h2></div>
           {/* <Link to={`/experiment/${this.state.experiment.id}/mice`}><button>Mice: </button></Link> */}
           {this.state.cageSelected ?
             (this.state.cageSelected.mice.map((mouse, index)=>(
@@ -92,7 +92,7 @@ class DashboardTable extends React.Component {
                 {/* className={`list-btn ${(this.state.cageSelected && cage.id === this.state.cageSelected.id) ? 'selected' : ''}`}> */}
                 <h2>{mouse.id}</h2>
               </button>))) :
-            (<div>No cage selected</div>)}
+            (<div style={{marginTop: '20px'}}><h2>No cage selected</h2></div>)}
         </div>
       </div>
     );

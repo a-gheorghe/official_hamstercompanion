@@ -8,6 +8,10 @@
     left: 30px;
 }
 
+#dashboard-header {
+  width: 100%;
+}
+
 #dashboard-container {
     height: 100%;
     display: flex;
@@ -21,6 +25,7 @@
     display: flex;
     width: 100%;
     flex: 1;
+    min-height: 60vh;
 }
 
 #dashboard-info {
@@ -32,15 +37,18 @@
 #dashboard-btn-bank {
     flex: 2;
     display: flex;
+    border: 2px solid white;
+    padding: 20px 20px 20px 0;
+    background-color: rgb(10,70,120);
 }
 
 #focus-data {
     border: 2px solid white;
-    margin-top: 20px;
     flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
+    background-color: SteelBlue;
 }
 
 .column {
@@ -57,7 +65,7 @@
     justify-content: center;
     width: 100%;
     height: 50px;
-    color: black;
+    color: white;
     background-color: LightBlue;
     text-decoration: none;
     border: 3px solid white;
@@ -83,13 +91,14 @@
     width: calc(100% - 40px);
     margin-top: 10px;
     border-radius: 10px;
-    background-color: LightGreen;
+    background-color: SteelBlue;
     text-decoration: none;
     border: 3px solid white;
+    color: white;
 }
 
 .inactive {
-    background-color: red;
+    background-color: FireBrick;
 }
 
 .control-group {
@@ -103,4 +112,28 @@
 #dashboard-btn-bank a {
     text-decoration: none;
     width: 100%;
+}
+
+#dashboard-footer{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  margin-top: 40px;
+}
+
+#dashboard-footer a{
+  margin-right: 20px;
+}
+
+#form-become-admin input{
+  height: 29px;
+  width: 220px;
+  margin-right: 20px;
+}
+
+#form-become-admin {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex: 1;
 }

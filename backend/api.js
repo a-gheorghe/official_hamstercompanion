@@ -89,56 +89,6 @@ router.use('/experiment/:id', (req, res, next) => {
     });
 });
 
-router.get('/experiment/:id/:type/:typeId', (req, res) => {
-  switch (req.params.type) {
-    case 'group':
-      TreatmentGroup.findById(req.params.typeId).then(resp => {
-        res.send(resp);
-      }).catch(e => console.log(e));
-      break;
-    case 'cage':
-      Cage.findById(req.params.typeId).then(resp => {
-        res.send(resp);
-      }).catch(e => console.log(e));
-      break;
-    case 'mouse':
-      Mouse.findById(req.params.typeId).then(resp => {
-        res.send(resp);
-      }).catch(e => console.log(e));
-      break;
-    default:
-      res.send(false);
-  }
-});
-
-router.post('/experiment/:id/:type/:typeId', (req, res) => {
-  switch (req.params.type) {
-    case 'group':
-      TreatmentGroup.update(req.body, {
-        where: { id: req.params.typeId }
-      }).then(resp => {
-        res.send(resp);
-      }).catch(e => console.log(e));
-      break;
-    case 'cage':
-      Cage.update(req.body, {
-        where: { id: req.params.typeId }
-      }).then(resp => {
-        res.send(resp);
-      }).catch(e => console.log(e));
-      break;
-    case 'mouse':
-      Mouse.update(req.body, {
-        where: { id: req.params.typeId }
-      }).then(resp => {
-        res.send(resp);
-      }).catch(e => console.log(e));
-      break;
-    default:
-      res.send(false);
-  }
-});
-
 router.get('/experiment/:id', (req, res) => {
   var yesterday = new Date();
   yesterday = new Date(yesterday.setTime(yesterday.getTime() - 86400000));
@@ -233,7 +183,8 @@ router.get('/experiment/:id/sessions', (req, res)=>{
 });
 
 router.post('/experiment/:id/join/admin', (req, res) => {
-  Experiment.findById(req.params.id).then(resp => {
+  Experiment.findById(req.params.id)
+  .then(resp => {
     if (resp.adminPassword === req.body.password) {
       return UserExperiment.update({
         isAdmin: true
@@ -254,6 +205,57 @@ router.post('/experiment/:id/join/admin', (req, res) => {
     error: e.errors[0].message
   }));
 });
+
+router.post('/experiment/:id/:type/:typeId', (req, res) => {
+  switch (req.params.type) {
+    case 'group':
+      TreatmentGroup.update(req.body, {
+        where: { id: req.params.typeId }
+      }).then(resp => {
+        res.send(resp);
+      }).catch(e => console.log(e));
+      break;
+    case 'cage':
+      Cage.update(req.body, {
+        where: { id: req.params.typeId }
+      }).then(resp => {
+        res.send(resp);
+      }).catch(e => console.log(e));
+      break;
+    case 'mouse':
+      Mouse.update(req.body, {
+        where: { id: req.params.typeId }
+      }).then(resp => {
+        res.send(resp);
+      }).catch(e => console.log(e));
+      break;
+    default:
+      res.send(false);
+  }
+});
+
+router.get('/experiment/:id/:type/:typeId', (req, res) => {
+  switch (req.params.type) {
+    case 'group':
+      TreatmentGroup.findById(req.params.typeId).then(resp => {
+        res.send(resp);
+      }).catch(e => console.log(e));
+      break;
+    case 'cage':
+      Cage.findById(req.params.typeId).then(resp => {
+        res.send(resp);
+      }).catch(e => console.log(e));
+      break;
+    case 'mouse':
+      Mouse.findById(req.params.typeId).then(resp => {
+        res.send(resp);
+      }).catch(e => console.log(e));
+      break;
+    default:
+      res.send(false);
+  }
+});
+
 
 // MIDDLEWARE TO CHECK IF USER HAS ADMINISTRATIVE RIGHTS OVER AN EXPERIMENT
 router.use('/experiment/:id', (req, res, next)=>{

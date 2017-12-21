@@ -16,7 +16,8 @@ class Dashboard extends React.Component {
         data: false,
         type: null
       },
-      error: ''
+      error: '',
+      adminPassword: ''
     };
   }
   componentWillMount() {
@@ -89,11 +90,19 @@ class Dashboard extends React.Component {
   becomeAdmin(e) {
     e.preventDefault();
     axios.post(`/api/experiment/${this.props.match.params.id}/join/admin`, {
-      password: e.target.password.value
+      password: this.state.adminPassword
     }).then(resp => {
       if (resp.data.success) this.componentWillMount();
-      else this.setState({ error: resp.data.error });
+      else {
+        this.setState({ error: resp.data.error });
+      }
     }).catch(err => console.log(err));
+  }
+
+  updateAdminPassword(evt) {
+    this.setState({
+      adminPassword: evt.target.value
+    });
   }
 
   render() {
@@ -105,25 +114,16 @@ class Dashboard extends React.Component {
     }
     return (
       <div id="dashboard-container">
-        <a download="sessions.csv" className="back-btn" style={{ left: '260px' }}
-          href={`/api/experiment/${this.props.match.params.id}/sessions`}>
-          <RaisedButton className="btn" label="Download Data" default />
-        </a>
-        <div id="dashboard-header"><h1>Dashboard: {this.state.experiment.name}</h1></div>
+        <Link to="/">
+          <RaisedButton className="back-btn btn" label="Back to Experiments" secondary />
+        </Link>
+        <div id="dashboard-header">
+          <h1>Dashboard: {this.state.experiment.name}</h1>
+          <h3>Experiment ID: {this.state.experiment.id}</h3>
+          <h3>Description: {this.state.experiment.description}</h3>
+        </div>
         <div id="dashboard-main">
           <div id="dashboard-info">
-            <h3>Experiment ID: {this.state.experiment.id}</h3>
-            <h3>Description: {this.state.experiment.description}</h3>
-            {this.state.isAdmin ?
-              (<Link to={`/experiment/${this.state.experiment.id}/edit`}>
-                <RaisedButton label="Edit Experiment" primary />
-              </Link>) :
-              (<form className="col form" onSubmit={e => this.becomeAdmin(e)}>
-                { this.state.error ? <p className="error-msg">{this.state.error}</p> : null }
-                <input type="password" name="password" placeholder="Admin Password" />
-                <RaisedButton type="submit" primary label="Become Administrator" />
-              </form>)
-            }
             <div id="focus-data">
               {this.state.focusData.data ? (<div>
                 <h2>{this.state.focusData.header}</h2>
@@ -140,9 +140,23 @@ class Dashboard extends React.Component {
           </div>
           <DashboardTable experiment={this.state.experiment} updateFocusData = {(dataType, data)=>this.updateFocusData(dataType, data)}/>
         </div>
-        <Link to="/">
-          <RaisedButton className="back-btn btn" label="Back to Experiments" secondary />
-        </Link>
+        <div id="dashboard-footer">
+          <a download="sessions.csv" href={`/api/experiment/${this.props.match.params.id}/sessions`}>
+            <RaisedButton className="btn" style={{width: '220px'}} label="Download Data" default />
+          </a>
+          {this.state.isAdmin ?
+            (<Link to={`/experiment/${this.state.experiment.id}/edit`}>
+              <RaisedButton style={{width: '220px'}} label="Edit Experiment" primary />
+            </Link>) :
+            (<div id="form-become-admin">
+              <RaisedButton style={{marginRight: '20px', width: '220px'}} type="submit" onClick={(e)=>this.becomeAdmin(e)} primary label="Become Administrator" />
+              <input type="password" name="password" placeholder="Admin Password" value={this.state.adminPassword} onChange={(e)=>this.updateAdminPassword(e)} />
+              <div>
+              { this.state.error ? <p className="error-msg">{this.state.error}</p> : null }
+              </div>
+            </div>)
+          }
+        </div>
       </div>
     );
   }
