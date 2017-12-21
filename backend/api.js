@@ -26,12 +26,12 @@ router.post('/experiment', (req, res) => {
   }
   else{
     Experiment.create(req.body)
-    .then(resp => UserExperiment.create({
-      userId: req.user.id,
-      experimentId: resp.id,
-      isAdmin: true
-    })).then(resp => res.send({ success: true, response: resp }))
-    .catch(e => res.json({ success: false, error: e.errors[0].message }));
+      .then(resp => UserExperiment.create({
+        userId: req.user.id,
+        experimentId: resp.id,
+        isAdmin: true
+      })).then(resp => res.send({ success: true, response: resp }))
+      .catch(e => res.json({ success: false, error: e.errors[0].message }));
   }
 });
 
@@ -184,26 +184,32 @@ router.get('/experiment/:id/sessions', (req, res)=>{
 
 router.post('/experiment/:id/join/admin', (req, res) => {
   Experiment.findById(req.params.id)
-  .then(resp => {
-    if (resp.adminPassword === req.body.password) {
-      return UserExperiment.update({
-        isAdmin: true
-      }, {
-        where: {
-          userId: req.user.id,
-          experimentId: req.params.id
-        }
+    .then(resp => {
+      if (resp.adminPassword === req.body.password) {
+        return UserExperiment.update({
+          isAdmin: true
+        }, {
+          where: {
+            userId: req.user.id,
+            experimentId: req.params.id
+          }
+        });
+      }
+      res.json({
+        success: false,
+        error: 'Incorrect Admin Password'
       });
-    }
-    res.json({
+      return null;
+    }).then(() => res.json({ success: true })).catch(e => res.json({
       success: false,
-      error: 'Incorrect Admin Password'
-    });
-    return null;
-  }).then(() => res.json({ success: true })).catch(e => res.json({
-    success: false,
-    error: e.errors[0].message
-  }));
+      error: e.errors[0].message
+    }));
+});
+
+router.post('/experiment/:id/group/new', (req, res) => {
+  TreatmentGroup.create(req.body).then(() => {
+    res.send(true);
+  }).catch(e => console.log(e));
 });
 
 router.post('/experiment/:id/:type/:typeId', (req, res) => {
@@ -269,19 +275,19 @@ router.use('/experiment/:id', (req, res, next)=>{
 
 router.post('/experiment/:id/delete', (req, res)=>{
   Experiment.findById(req.params.id)
-  .then((experiment) => {
-    if(experiment.adminPassword === req.body.adminPassword) {
-      return experiment.destroy();
-    }
-    res.json({ success: false, error: 'Incorrect admin password' });
-    return false;
-  })
-  .then(()=>{
-    res.json({ success: true });
-  })
-  .catch((e)=>{
-    res.json({ success: false, error: e.errors[0].message });
-  });
+    .then((experiment) => {
+      if(experiment.adminPassword === req.body.adminPassword) {
+        return experiment.destroy();
+      }
+      res.json({ success: false, error: 'Incorrect admin password' });
+      return false;
+    })
+    .then(()=>{
+      res.json({ success: true });
+    })
+    .catch((e)=>{
+      res.json({ success: false, error: e.errors[0].message });
+    });
 });
 
 router.get('/experiment/:id/edit', (req, res)=>{
@@ -297,17 +303,17 @@ router.get('/experiment/:id/edit', (req, res)=>{
 
 router.post('/experiment/:id/edit', (req, res) => {
   Experiment.findById(req.params.id)
-  .then((experiment) => {
-    if(experiment.adminPassword !== req.body.currentAdminPassword) {
-      res.json({ success: false, error: 'Incorrect admin password' });
-      return false;
-    }
-    var updates = Object.assign({}, req.body);
-    delete updates.currentAdminPassword;
-    return Experiment.update(updates, { where: { id: req.params.id }});
-  })
-  .then(resp => res.json({ success: true, respnse: resp }))
-  .catch(e => res.json({ success: false, error: e.errors[0].message }));
+    .then((experiment) => {
+      if(experiment.adminPassword !== req.body.currentAdminPassword) {
+        res.json({ success: false, error: 'Incorrect admin password' });
+        return false;
+      }
+      var updates = Object.assign({}, req.body);
+      delete updates.currentAdminPassword;
+      return Experiment.update(updates, { where: { id: req.params.id }});
+    })
+    .then(resp => res.json({ success: true, respnse: resp }))
+    .catch(e => res.json({ success: false, error: e.errors[0].message }));
 });
 
 module.exports = router;

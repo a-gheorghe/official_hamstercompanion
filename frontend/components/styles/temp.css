@@ -3,3 +3,9 @@
     text-align: center;
     margin: auto;
 }
+
+.logout {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+}

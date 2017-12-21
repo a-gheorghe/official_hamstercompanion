@@ -60,7 +60,7 @@ class DashboardTable extends React.Component {
             </button>))
             ) : ''
           }
-          <Link to={`/experiment/${this.props.experiment}/group/new`}>
+          <Link to={`/experiment/${this.props.experiment.id}/group/new`}>
             <RaisedButton label="+" backgroundColor="LimeGreen" style={{borderRadius: '5px', marginTop: '10px'}} labelStyle={{color: 'white', fontSize: '20px'}}/>
           </Link>
         </div>
@@ -77,13 +77,13 @@ class DashboardTable extends React.Component {
                 ${cage.sessions.length <= this.state.experiment.minDailySessions ? 'inactive' : ''}`}>
                 <h2>{cage.name}</h2>
               </button>)) : ''}
-            {this.state.groupSelected ?
-                <Link to={`/experiment/${this.props.experiment}/group/${this.state.groupSelected}/cage/new`}>
-                  <RaisedButton label="+" backgroundColor="LimeGreen" style={{borderRadius: '5px', marginTop: '10px'}} labelStyle={{color: 'white', fontSize: '20px'}}/>
-                </Link>
-                :
-                <div style={{marginTop: '20px'}}><h2>No group selected</h2></div>
-            }
+          {this.state.groupSelected ?
+            <Link to={`/experiment/${this.props.experiment}/group/${this.state.groupSelected}/cage/new`}>
+              <RaisedButton label="+" backgroundColor="LimeGreen" style={{borderRadius: '5px', marginTop: '10px'}} labelStyle={{color: 'white', fontSize: '20px'}}/>
+            </Link>
+            :
+            <div style={{marginTop: '20px'}}><h2>No group selected</h2></div>
+          }
         </div>
         <div className="column">
           <div className="column-label"><h2>Mice:</h2></div>
