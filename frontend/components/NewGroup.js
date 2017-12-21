@@ -28,9 +28,10 @@ class TreatmentGroupEdit extends React.Component {
         notes: e.target.notes.value,
         isControl: e.target.isControl.value === "yes",
         experimentId: this.props.match.params.id
-      }).then(() => {
-        this.setState({ submitted: true });
-      }).catch(err => console.log(err));
+      }).then(resp => {
+        if (resp.success) this.setState({ submitted: true });
+        else this.setState({ error: resp.error });
+      }).catch(err => alert(err.errors[0].message));
     } else {
       this.setState({ error: 'Group name required!'});
     }

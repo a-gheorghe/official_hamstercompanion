@@ -207,9 +207,13 @@ router.post('/experiment/:id/join/admin', (req, res) => {
 });
 
 router.post('/experiment/:id/group/new', (req, res) => {
-  TreatmentGroup.create(req.body).then(() => {
-    res.send(true);
-  }).catch(e => console.log(e));
+  if (req.body.name) {
+    TreatmentGroup.create(req.body).then(() => {
+      res.json({ success: true });
+    }).catch(e => res.json({ success: false, error: e.errors[0].message }));
+  } else {
+    res.json({ success: false, error: 'Group name required!' });
+  }
 });
 
 router.post('/experiment/:id/:type/:typeId', (req, res) => {
