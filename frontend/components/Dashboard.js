@@ -19,7 +19,6 @@ class Dashboard extends React.Component {
       error: '',
       adminPassword: '',
       modalOpen: false,
-      delete: false,
       groupSelected: null,
       cageSelected: null,
       mouseSelected: null
@@ -157,13 +156,16 @@ class Dashboard extends React.Component {
               newState.groupSelected = null;
               newState.cageSelected = null;
               newState.mouseSelected = null;
+              this.state.groupSelected.deleted = true;
               break;
             case 'cage':
               newState.cageSelected = null;
               newState.mouseSelected = null;
+              this.state.cageSelected.deleted = true;
               break;
             default:
               newState.mouseSelected = null;
+              this.state.mouseSelected.deleted = true;
           }
           this.setState(newState);
         } else alert(resp.data.error);
@@ -173,10 +175,6 @@ class Dashboard extends React.Component {
   render() {
     if(this.state.experiment === null) {
       return null;
-    }
-
-    if(this.state.delete === true) {
-      return <Redirect to={`/experiment/${this.state.experiment.id}`}/>;
     }
     if(this.state.experiment === false) {
       return <Redirect to={'/denied'} />;
