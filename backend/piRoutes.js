@@ -3,7 +3,30 @@ const router = express.Router();
 const { Session, Mouse, Cage, TreatmentGroup, Experiment } = require('./models');
 
 router.post('/new/session', (req, res) => {
-  console.log(req.body);
+  Mouse.findById(req.body.mouseId, {
+    attributes: ['id', 'cageId', 'treatmentGroupId', 'experimentId']
+  })
+  .then((resp)=>{
+    if (!resp) {
+      res.send('Error: specified mouse does not exist');
+      return false;
+    }
+    var newSession = Object.assign({}, req.body, {
+      experimentId: resp.experimentId,
+      treatmentGroupId: resp.treatmentGroupId,
+      cageId: resp.cageId
+    });
+    console.log("New session to add:", newSession);
+    return Session.create(newSession);
+  })
+  .then(()=>{
+    res.send('New session created!');
+  })
+  .catch((e) => {
+    res.send('Internal server error');
+    console.log(e);});
+
+
   Session.create(req.body).then(resp => {
     console.log('RESPONSE', resp);
     res.send('Post request received!');
@@ -11,8 +34,6 @@ router.post('/new/session', (req, res) => {
 });
 
 router.post('/new/mouse', (req, res) => {
-  console.log('inside adding new mouse');
-  console.log(req.body);
   Cage.findById(req.body.cageId, {
     attributes: ['id', 'treatmentGroupId', 'experimentId']
   })
@@ -25,16 +46,15 @@ router.post('/new/mouse', (req, res) => {
       experimentId: resp.experimentId,
       treatmentGroupId: resp.treatmentGroupId
     });
-    console.log("New mouse to add:", newMouse);
     return Mouse.create(newMouse);
   })
-  .then((resp)=>{
-    console.log('RESPONSE', resp);
+  .then(()=>{
     res.send('New mouse created!');
   })
   .catch((e) => {
     res.send('Internal server error');
-    console.log(e);});
+    console.log(e);
+  });
 });
 
 router.get('/led', (req, res) => {
