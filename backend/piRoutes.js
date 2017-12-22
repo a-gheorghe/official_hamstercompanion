@@ -14,7 +14,7 @@ router.post('/new/mouse', (req, res) => {
   console.log('inside adding new mouse');
   console.log(req.body);
   Cage.findById(req.body.cageId, {
-    attributes: ['id', 'treatmentGroupId']
+    attributes: ['id', 'treatmentGroupId', 'experimentId']
   })
   .then((resp)=>{
     if (!resp) {
@@ -22,6 +22,7 @@ router.post('/new/mouse', (req, res) => {
       return false;
     }
     var newMouse = Object.assign({}, req.body, {
+      experimentId: resp.experimentId,
       treatmentGroupId: resp.treatmentGroupId
     });
     return Mouse.create(newMouse);
