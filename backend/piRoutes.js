@@ -25,6 +25,7 @@ router.post('/new/mouse', (req, res) => {
       experimentId: resp.experimentId,
       treatmentGroupId: resp.treatmentGroupId
     });
+    console.log("New mouse to add:", newMouse);
     return Mouse.create(newMouse);
   })
   .then((resp)=>{
