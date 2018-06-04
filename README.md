@@ -8,6 +8,13 @@ The Raspberry Pi (RPi) app (rodent_repo)
 This project is hosted on heroku and can be accessed at: http://hamster-companion.herokuapp.com/
 
 ![alt text](https://github.com/a-gheorghe/official_hamstercompanion/blob/master/screenshots/2018-03-05-183329_1824x984_scrot.png)
+![alt text](https://github.com/a-gheorghe/official_hamstercompanion/blob/master/screenshots/2018-03-05-183401_1824x984_scrot.png)
+![alt text](https://github.com/a-gheorghe/official_hamstercompanion/blob/master/screenshots/2018-03-05-183542_1824x984_scrot.png)
+![alt text](https://github.com/a-gheorghe/official_hamstercompanion/blob/master/screenshots/2018-03-05-183723_1824x984_scrot.png)
+![alt text](https://github.com/a-gheorghe/official_hamstercompanion/blob/master/screenshots/2018-03-05-184039_1824x984_scrot.png)
+
+
+
 
 
 
